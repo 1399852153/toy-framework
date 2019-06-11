@@ -1,0 +1,5 @@
+1. 乞丐版spring
+2. 乞丐版springMVC
+3. 乞丐版rpc框架
+4. 乞丐版mybatis
+5. 乞丐版注册中心、配置中心

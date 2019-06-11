@@ -1,12 +1,48 @@
-1.创建bean工厂
-	扫描出所有bean组件
-	根据@Autowired进行依赖注入
-2.拦截所有请求
-	根据requestMapping创建路由
-	注入request，response，根据@RequestBody，@RequestParam，@PathVariable注入请求参数
-	依据返回值类型判断返回json/页面
-	***（支持get、post等请求类型）
-	***（支持多种类型文件的上传）
-3.依赖aspectJ允许自定义切面
-	允许自定义切面
-	简单的事务切面(开启，提交，回滚)
+/*
+框架设计的基本思路
+
+一.实现IOC
+	创建bean工厂
+	1.扫描指定包路径下的所有文件,将含有特定注解(例如@Service,@Controller,@Component等框架自定义的注解)的类收集起来,
+构建一个组件bean的集合.
+	2.具体的数据结构为一个以class为key,同时创建一个对应class的实例化对象为value的hashMap.由于class作为唯一表示,因此所有的
+bean组件都天然是单例的(类似spring的beanFactory)
+	3.对于每一个bean对象,遍历它的成员变量,判断是否含有(例如:@Autowired之类的注解),如果含有对应的注解,则判断成员变量的类型,
+	并且在当前beanFactory中获得对应类型的bean,通过反射将其赋值给对应的成员变量
+	
+	至此,基本实现了最原始的IOC(控制反转)特性
+	
+二.实现类似springMVC的前端请求转发器
+	构造请求转发器
+	1.首先准备一个即将用来存储"url请求路径"->"对应执行方法"的HashMap(全局url映射器)
+	2.获得beanFactory中的所有含有@Controller注解的类,对于每一个controller对象,遍历它的所有方法,如果方法带有@RequestMapping注解,
+则将其和controller类自身的@RequestMapping注解的路径进行拼接,生成一个"url请求路径"->"对应执行方法"的键值对,存入"全局url映射器"
+	3.启动服务时,创建一个servlet,拦截所有的后台请求("/*"),当流程进入servlet("doService方法")时,判断url是否存在对应的处理方法,
+进行处理,如果没有直接抛出404错误.
+	4.如果找到了对应的controller方法
+		执行用户方法之前:
+		1.首先解析请求而来的参数,key/value形式.
+		2.获得对应的controller方法,判断其参数列表,获得类型,例如(servletRequest,servletResponse,@RequestBody等注解的).
+		3.对于servletRequest,servletResponse的参数类型,反射调用方法时,直接将当前的servletRequest,servletResponse传入.
+		4.对于带有@RequestBody的参数类型,new出一个对象,遍历其所有成员变量,将请求而来的参数通过key/变量名一一对应,将其赋值给对应的
+		  成员变量,达到参数映射注入的目的.
+		执行用户方法执行逻辑
+		执行用户方法之后:
+		1.判断用户当前方法的返回值.如果是需要返回对应视图的类型(例如:ModelAndView),将其中的key,value给request赋值,传递给
+		  视图解析器(jsp/freemarker等).
+		2.如果是需要返回数据的类型(例如:Model,带有@responseBody注解),将其中的key,value数据序列化为json字符串,直接返回给客户端.
+		
+	至此,基本实现了类似springMVC的前端请求转发器
+	
+三.实现AOP
+	问一个问题: 在方法含有切面的service中,通过this.aaa()调用,是否会执行切面逻辑?
+		1.了解静态代理
+		2.了解jdk动态代理
+		3.了解cglib动态代理
+   
+    1.在框架为组件 自动注入bean这一步之前,先扫描所有的bean组件,判断其是否需要增加切面逻辑,如果需要,则通过cglib生成符合用户定义的切面代理类
+,代替原生的bean对象.beanFactory中的含有切面的原始bean对象也就全部替换成了拥有切面逻辑的代理对象.
+    2.继续执行自动注入的逻辑,这时被注入到bean组件成员变量中的对象变成了代理对象,因此也就自然加上了对应的切面逻辑
+	
+	至此,基本实现了最原始的aop特性
+*/
