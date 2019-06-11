@@ -1,0 +1,12 @@
+1.创建bean工厂
+	扫描出所有bean组件
+	根据@Autowired进行依赖注入
+2.拦截所有请求
+	根据requestMapping创建路由
+	注入request，response，根据@RequestBody，@RequestParam，@PathVariable注入请求参数
+	依据返回值类型判断返回json/页面
+	***（支持get、post等请求类型）
+	***（支持多种类型文件的上传）
+3.依赖aspectJ允许自定义切面
+	允许自定义切面
+	简单的事务切面(开启，提交，回滚)
