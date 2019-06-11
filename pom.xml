@@ -12,6 +12,7 @@
 
     <modules>
         <module>demo</module>
+        <module>common</module>
         <module>toy_spring</module>
     </modules>
 
