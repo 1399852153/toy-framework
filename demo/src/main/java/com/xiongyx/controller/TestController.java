@@ -5,8 +5,10 @@ import com.xiongyx.annotation.MyController;
 import com.xiongyx.annotation.MyRequestMapping;
 import com.xiongyx.annotation.MyResponseBody;
 import com.xiongyx.service.TestService;
+import com.xiongyx.util.ClassUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 /**
  * @author xiongyx
@@ -24,5 +26,11 @@ public class TestController {
     public String method1(HttpServletRequest request){
         String param = request.getParameter("param");
         return testService.method1(param);
+    }
+
+    public static void main(String[] args) {
+        String packageName = "com.xiongyx";
+        Set set = ClassUtil.getClasses(packageName);
+        System.out.println(set);
     }
 }
