@@ -7,11 +7,9 @@ import java.lang.annotation.Target;
 
 /**
  * @author xiongyx
- * @date 2019/6/11
+ * on 2019/6/11.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@MyComponent
-public @interface MyService {
-    String value() default "";
+public @interface MyComponent {
 }

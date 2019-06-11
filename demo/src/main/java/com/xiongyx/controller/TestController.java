@@ -30,7 +30,8 @@ public class TestController {
 
     public static void main(String[] args) {
         String packageName = "com.xiongyx";
-        Set set = ClassUtil.getClasses(packageName);
-        System.out.println(set);
+        Set<Class<?>> set = ClassUtil.getClasses(packageName);
+
+        set.forEach(System.out::println);
     }
 }
