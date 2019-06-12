@@ -35,6 +35,7 @@ public class AliasForUtil {
         Method[] valueMethods = target.getDeclaredMethods();
 
         for(Method method : valueMethods){
+            // 名字为value，且返回值为String的方法
             if(StringUtils.equals(method.getName(),"value") && method.getReturnType() == String.class){
                 return method;
             }
