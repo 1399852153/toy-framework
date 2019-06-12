@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 public class BeanUtil {
 
-    public Set<Class<?>> getAllComponents(Set<Class<?>> classSet){
+    public static Set<Class<?>> getAllComponents(Set<Class<?>> classSet){
         return classSet.stream().filter(
                 clazz-> clazz.isAnnotationPresent(MyComponent.class)
         ).collect(Collectors.toSet());
