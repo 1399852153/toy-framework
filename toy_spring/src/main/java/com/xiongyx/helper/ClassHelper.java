@@ -37,7 +37,7 @@ public final class ClassHelper {
      * 获取应用包下的 component组件对象
      * */
     public static Set<Class<?>> getComponentClassSet(){
-        //:::获得所有的component组件
+        // 获得所有的component组件
         return new HashSet<>(getClassSetByAnnotation(MyComponent.class));
     }
 

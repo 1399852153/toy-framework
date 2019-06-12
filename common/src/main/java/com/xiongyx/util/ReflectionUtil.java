@@ -38,9 +38,9 @@ public class ReflectionUtil {
         Object result;
 
         try {
-            //:::设置方法为可访问
+            // 设置方法为可访问
             method.setAccessible(true);
-            //:::执行方法
+            // 执行方法
             result = method.invoke(obj,args);
             return result;
         } catch (Exception e) {
@@ -54,9 +54,9 @@ public class ReflectionUtil {
      * */
     public static void setField(Object obj, Field field, Object value){
         try {
-            //:::设置属性为可访问
+            // 设置属性为可访问
             field.setAccessible(true);
-            //:::为对象设置值
+            // 为对象设置值
             field.set(obj,value);
         } catch (IllegalAccessException e) {
             LOGGER.info("set field failure",e);
