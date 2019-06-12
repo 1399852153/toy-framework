@@ -1,10 +1,10 @@
-package com.xiongyx.controller;
+package com.xiongyx.demo.controller;
 
 import com.xiongyx.annotation.MyAutowired;
 import com.xiongyx.annotation.MyController;
 import com.xiongyx.annotation.MyRequestMapping;
 import com.xiongyx.annotation.MyResponseBody;
-import com.xiongyx.service.TestService;
+import com.xiongyx.demo.service.TestService;
 import com.xiongyx.util.ClassUtil;
 
 import javax.servlet.http.HttpServletRequest;

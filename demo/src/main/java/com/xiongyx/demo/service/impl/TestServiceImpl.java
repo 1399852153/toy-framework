@@ -1,7 +1,7 @@
-package com.xiongyx.service.impl;
+package com.xiongyx.demo.service.impl;
 
 import com.xiongyx.annotation.MyService;
-import com.xiongyx.service.TestService;
+import com.xiongyx.demo.service.TestService;
 
 /**
  * @author xiongyx

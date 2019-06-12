@@ -1,4 +1,4 @@
-package com.xiongyx.service;
+package com.xiongyx.demo.service;
 
 /**
  * @author xiongyx

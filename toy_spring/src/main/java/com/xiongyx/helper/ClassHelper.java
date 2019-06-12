@@ -53,8 +53,8 @@ public final class ClassHelper {
                             if(isComponentClass){
                                 return true;
                             }else{
-                                // todo 待实现 通过AliasFor进行继承
-                                return AliasForUtil.isAliasForAnnotation(null,annotationClass);
+                                // 通过AliasFor来识别别名
+                                return AliasForUtil.isAliasForAnnotation(clazz,annotationClass);
                             }
                         })
                 .collect(Collectors.toSet());
