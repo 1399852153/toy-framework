@@ -47,17 +47,22 @@ public final class ClassHelper {
      * */
     public static Set<Class<?>> getClassSetByAnnotation(Class<? extends Annotation> annotationClass){
         Set<Class<?>> classSet = CLASS_SET.stream()
-                .filter(
-                        clazz -> {
-                            boolean isComponentClass = clazz.isAnnotationPresent(annotationClass);
-                            if(isComponentClass){
-                                return true;
-                            }else{
-                                // 通过AliasFor来识别别名
-                                return AliasForUtil.isAliasForAnnotation(clazz,annotationClass);
-                            }
-                        })
+                .filter(item-> isClassByAnnotation(item,annotationClass))
                 .collect(Collectors.toSet());
         return classSet;
+    }
+
+    private static boolean isClassByAnnotation(Class<?> clazz,Class<? extends Annotation> annotationClass){
+        Annotation[] annotations = clazz.getAnnotations();
+
+        for(Annotation annotation : annotations){
+            Class<? extends Annotation> annotationType = annotation.annotationType();
+            // 存在目标类型注解 或者 "别名 AliasFor"为目标注解的注解
+            if(annotationType == annotationClass || AliasForUtil.isAliasForAnnotation(annotationType,annotationClass)){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
