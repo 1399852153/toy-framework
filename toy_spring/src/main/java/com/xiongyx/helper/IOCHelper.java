@@ -31,6 +31,7 @@ public class IOCHelper {
                         // 获得属性的class类型
                         Class<?> beanFieldClass = beanField.getType();
                         // 从bean容器中获得对应的bean实例
+                        // todo 需要按照接口类型获得class
                         Object beanFieldInstance = beanMap.get(beanFieldClass);
 
                         // 如果bean容器中实例存在
@@ -42,7 +43,7 @@ public class IOCHelper {
                             throw new RuntimeException("can not find bean" +
                                     "current bean is:" + beanClass.getName() +
                                     "field is:" + beanField.getName() +
-                                    "the bean need to autowired name is:" + beanFieldClass.getName()
+                                    "the bean need to autowired name is: " + beanFieldClass.getName()
                             );
                         }
                     }

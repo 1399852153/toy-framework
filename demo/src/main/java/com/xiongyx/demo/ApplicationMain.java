@@ -1,9 +1,6 @@
 package com.xiongyx.demo;
 
 import com.xiongyx.HelperLoader;
-import com.xiongyx.annotation.MyComponent;
-import com.xiongyx.annotation.MyService;
-import com.xiongyx.util.AliasForUtil;
 
 /**
  * @author xiongyx
