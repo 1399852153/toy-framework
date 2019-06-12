@@ -1,6 +1,7 @@
 package com.xiongyx.helper;
 
 import com.xiongyx.annotation.MyComponent;
+import com.xiongyx.util.AliasForUtil;
 import com.xiongyx.util.ClassUtil;
 
 import java.lang.annotation.Annotation;
@@ -47,7 +48,15 @@ public final class ClassHelper {
     public static Set<Class<?>> getClassSetByAnnotation(Class<? extends Annotation> annotationClass){
         Set<Class<?>> classSet = CLASS_SET.stream()
                 .filter(
-                        clazz -> clazz.isAnnotationPresent(annotationClass))
+                        clazz -> {
+                            boolean isComponentClass = clazz.isAnnotationPresent(annotationClass);
+                            if(isComponentClass){
+                                return true;
+                            }else{
+                                // todo 待实现 通过AliasFor进行继承
+                                return AliasForUtil.isAliasForAnnotation(null,annotationClass);
+                            }
+                        })
                 .collect(Collectors.toSet());
         return classSet;
     }

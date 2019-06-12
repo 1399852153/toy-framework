@@ -10,6 +10,7 @@ import com.xiongyx.service.TestService;
 @MyService("testService")
 public class TestServiceImpl implements TestService {
 
+    @Override
     public String method1(String param) {
         return param + "_ok!!!";
     }

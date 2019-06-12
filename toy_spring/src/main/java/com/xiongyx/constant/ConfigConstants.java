@@ -10,5 +10,5 @@ public interface ConfigConstants {
 
     String CONFIG_FILE = "application.properties";
 
-    String APP_BASE_PACKAGE = "smart.framework.app.base_package";
+    String APP_BASE_PACKAGE = "toy.spring.base_package";
 }
