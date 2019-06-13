@@ -1,6 +1,7 @@
 package com.xiongyx.helper;
 
 import com.xiongyx.annotation.MyComponent;
+import com.xiongyx.util.MetaAnnotationUtil;
 import com.xiongyx.util.ClassUtil;
 
 import java.lang.annotation.Annotation;
@@ -57,7 +58,10 @@ public final class ClassHelper {
             return true;
         }
 
-        // todo 判断元注解
-        return false;
+        Set<Annotation> metaAnnotations = MetaAnnotationUtil.readAllMetaAnnotation(clazz);
+        Set<Class<? extends Annotation>> metaAnnotationClasses = metaAnnotations.stream().map(Annotation::annotationType).collect(Collectors.toSet());
+
+        // 判断当前类 向上继承的所有元注解是否存在对应的注解
+        return metaAnnotationClasses.contains(annotationClass);
     }
 }
