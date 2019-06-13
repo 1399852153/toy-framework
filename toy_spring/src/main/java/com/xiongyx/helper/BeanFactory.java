@@ -3,6 +3,7 @@ package com.xiongyx.helper;
 import com.xiongyx.util.ReflectionUtil;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,5 +34,21 @@ public class BeanFactory {
      */
     public static Map<Class<?>,Object> getBeanMap(){
         return BEAN_MAP;
+    }
+
+    /**
+     * 按照类型获得符合要求的bean
+     * */
+    public static Set<Object> getClassSetByType(Class<?> clazz){
+        Set<Object> typeClasses = new HashSet<>();
+        for(Map.Entry<Class<?>,Object> entry : BEAN_MAP.entrySet()){
+            Class<?> beanClass = entry.getKey();
+            Object bean = entry.getValue();
+
+            if(clazz.isAssignableFrom(beanClass)){
+                typeClasses.add(bean);
+            }
+        }
+        return typeClasses;
     }
 }

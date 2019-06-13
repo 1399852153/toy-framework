@@ -2,12 +2,12 @@ package com.xiongyx.demo.controller;
 
 import com.xiongyx.annotation.MyAutowired;
 import com.xiongyx.annotation.MyRequestMapping;
-import com.xiongyx.annotation.MyResponseBody;
 import com.xiongyx.annotation.MyRestController;
-import com.xiongyx.demo.service.TestService;
+import com.xiongyx.demo.service.OrderService;
+import com.xiongyx.demo.service.ProductService;
+import com.xiongyx.demo.service.UserService;
 import com.xiongyx.util.ClassUtil;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 /**
@@ -19,14 +19,16 @@ import java.util.Set;
 public class TestController {
 
     @MyAutowired
-    private TestService testService;
+    private OrderService orderService;
 
-    @MyRequestMapping("/method1")
-    @MyResponseBody
-    public String method1(HttpServletRequest request){
-        String param = request.getParameter("param");
-        return testService.method1(param);
-    }
+    @MyAutowired
+    private ProductService productService;
+
+    @MyAutowired
+    private ProductService productService2;
+
+    @MyAutowired
+    private UserService userService;
 
     public static void main(String[] args) {
         String packageName = "com.xiongyx";

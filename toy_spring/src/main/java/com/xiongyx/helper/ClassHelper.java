@@ -58,10 +58,9 @@ public final class ClassHelper {
             return true;
         }
 
-        Set<Annotation> metaAnnotations = MetaAnnotationUtil.readAllMetaAnnotation(clazz);
-        Set<Class<? extends Annotation>> metaAnnotationClasses = metaAnnotations.stream().map(Annotation::annotationType).collect(Collectors.toSet());
+        Set<Class<? extends Annotation>> metaAnnotations = MetaAnnotationUtil.readAllMetaAnnotation(clazz);
 
         // 判断当前类 向上继承的所有元注解是否存在对应的注解
-        return metaAnnotationClasses.contains(annotationClass);
+        return metaAnnotations.contains(annotationClass);
     }
 }

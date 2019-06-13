@@ -5,6 +5,7 @@ import com.xiongyx.util.ReflectionUtil;
 
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author xiongyx
@@ -31,8 +32,9 @@ public class IOCHelper {
                         // 获得属性的class类型
                         Class<?> beanFieldClass = beanField.getType();
                         // 从bean容器中获得对应的bean实例
-                        // todo 需要按照接口类型获得class
-                        Object beanFieldInstance = beanMap.get(beanFieldClass);
+                        Set<Object> beanFieldInstanceSet = BeanFactory.getClassSetByType(beanFieldClass);
+                        // 校验获取的符合条件的类集合
+                        Object beanFieldInstance = validateInjectBean(beanClass,beanField,beanFieldInstanceSet);
 
                         // 如果bean容器中实例存在
                         if(beanFieldInstance != null){
@@ -50,5 +52,26 @@ public class IOCHelper {
                 }
             }
         }
+    }
+
+    private static Object validateInjectBean(Class<?> beanClass,Field needInjectBeanField,Set<Object> beanFieldInstanceSet){
+        if(beanFieldInstanceSet.isEmpty()){
+            // 没有找到匹配的bean
+            throw new RuntimeException("can not find least one bean to inject! "
+                    + " beanClass=" + beanClass.getName()
+                    + " needInjectBeanField" + needInjectBeanField.toString());
+        }
+
+        if(beanFieldInstanceSet.size() > 1){
+            // 找到超过至少一个的bean
+            throw new RuntimeException("find more than one bean to inject! "
+                    + " beanClass:" + beanClass.getName()
+                    + " needInjectBeanField:" + needInjectBeanField.toString()
+                    + " matched bean:" + beanFieldInstanceSet
+            );
+        }
+
+        // 返回唯一匹配的bean
+        return beanFieldInstanceSet.iterator().next();
     }
 }
