@@ -58,16 +58,16 @@ public class IOCHelper {
         if(beanFieldInstanceSet.isEmpty()){
             // 没有找到匹配的bean
             throw new RuntimeException("can not find least one bean to inject! "
-                    + " beanClass=" + beanClass.getName()
-                    + " needInjectBeanField" + needInjectBeanField.toString());
+                    + " beanClass: " + beanClass.getName()
+                    + " needInjectBeanField: " + needInjectBeanField.toString());
         }
 
         if(beanFieldInstanceSet.size() > 1){
             // 找到超过至少一个的bean
             throw new RuntimeException("find more than one bean to inject! "
-                    + " beanClass:" + beanClass.getName()
-                    + " needInjectBeanField:" + needInjectBeanField.toString()
-                    + " matched bean:" + beanFieldInstanceSet
+                    + " beanClass: " + beanClass.getName()
+                    + " needInjectBeanField: " + needInjectBeanField.toString()
+                    + " matched bean: " + beanFieldInstanceSet
             );
         }
 
