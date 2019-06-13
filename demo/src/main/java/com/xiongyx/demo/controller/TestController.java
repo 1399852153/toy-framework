@@ -1,9 +1,9 @@
 package com.xiongyx.demo.controller;
 
 import com.xiongyx.annotation.MyAutowired;
-import com.xiongyx.annotation.MyController;
 import com.xiongyx.annotation.MyRequestMapping;
 import com.xiongyx.annotation.MyResponseBody;
+import com.xiongyx.annotation.MyRestController;
 import com.xiongyx.demo.service.TestService;
 import com.xiongyx.util.ClassUtil;
 
@@ -14,7 +14,7 @@ import java.util.Set;
  * @author xiongyx
  * @date 2019/6/11
  */
-@MyController
+@MyRestController
 @MyRequestMapping("/test")
 public class TestController {
 

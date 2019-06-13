@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author xiongyx
@@ -16,8 +17,8 @@ public class MetaAnnotationUtil {
     /**
      * 获得当前类所有元注解
      * */
-    public static Set<Annotation> readAllMetaAnnotation(Class<?> clazz){
-        Set<Annotation> metaAnnotationSet = new HashSet<>();
+    public static Set<Class<? extends Annotation>> readAllMetaAnnotation(Class<?> clazz){
+        Set<Class<? extends Annotation>> metaAnnotationSet = new HashSet<>();
 
         Annotation[] annotations = clazz.getAnnotations();
         readAllMetaAnnotation(metaAnnotationSet,annotations);
@@ -25,12 +26,16 @@ public class MetaAnnotationUtil {
         return metaAnnotationSet;
     }
 
-    private static void readAllMetaAnnotation(Set<Annotation> annotationSet,Annotation[] metaAnnotations){
+    private static void readAllMetaAnnotation(Set<Class<? extends Annotation>> annotationSet,Annotation[] metaAnnotations){
         if(metaAnnotations.length == 0){
             return;
         }
         // 加入元注解集合
-        boolean hasNewAnnotation = annotationSet.addAll(Arrays.asList(metaAnnotations));
+        boolean hasNewAnnotation = annotationSet.addAll(
+            Arrays.stream(metaAnnotations)
+                .map(Annotation::annotationType)
+                .collect(Collectors.toSet())
+        );
         if(!hasNewAnnotation){
             // 如果不存在新的注解，退出递归，避免死循环
             return;
