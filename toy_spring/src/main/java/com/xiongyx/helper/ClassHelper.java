@@ -1,7 +1,6 @@
 package com.xiongyx.helper;
 
 import com.xiongyx.annotation.MyComponent;
-import com.xiongyx.util.AliasForUtil;
 import com.xiongyx.util.ClassUtil;
 
 import java.lang.annotation.Annotation;
@@ -53,16 +52,12 @@ public final class ClassHelper {
     }
 
     private static boolean isClassByAnnotation(Class<?> clazz,Class<? extends Annotation> annotationClass){
-        Annotation[] annotations = clazz.getAnnotations();
-
-        for(Annotation annotation : annotations){
-            Class<? extends Annotation> annotationType = annotation.annotationType();
-            // 存在目标类型注解 或者 "别名 AliasFor"为目标注解的注解
-            if(annotationType == annotationClass || AliasForUtil.isAliasForAnnotation(annotationType,annotationClass)){
-                return true;
-            }
+        boolean isPresent = clazz.isAnnotationPresent(annotationClass);
+        if(isPresent){
+            return true;
         }
 
+        // todo 判断元注解
         return false;
     }
 }
