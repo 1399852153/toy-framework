@@ -13,11 +13,17 @@ import java.util.Set;
  */
 public class BeanFactory {
 
-    private static Map<Class<?>,Object> BEAN_MAP;
+    /**
+     * 原始的beanMap
+     * */
+    private static Map<Class<?>,Object> BEAN_MAP = new HashMap<>();
+
+    /**
+     * 按类型 beanMap缓存
+     * */
+    private static Map<Class<?>,Set<Object>> TYPE_BEAN_MAP_CACHE = new HashMap<>();
 
     static{
-        BEAN_MAP = new HashMap<>();
-
         // 获得扫描得到的 beanClass集合
         Set<Class<?>> beanClassSet = ClassHelper.getComponentClassSet();
         // 遍历beanClass集合
@@ -40,15 +46,27 @@ public class BeanFactory {
      * 按照类型获得符合要求的bean
      * */
     public static Set<Object> getClassSetByType(Class<?> clazz){
-        Set<Object> typeClasses = new HashSet<>();
-        for(Map.Entry<Class<?>,Object> entry : BEAN_MAP.entrySet()){
-            Class<?> beanClass = entry.getKey();
-            Object bean = entry.getValue();
+        // 尝试从Type缓存中获取
+        Set<Object> beanFromCache = TYPE_BEAN_MAP_CACHE.get(clazz);
+        if(beanFromCache != null){
+            // 缓存中已经存在对应类型的bean，直接返回
+            return beanFromCache;
+        }else{
+            // 缓存中不存在对应类型的bean
+            Set<Object> typeClasses = new HashSet<>();
+            // 遍历整个BEAN_MAP，获取所有符合要求的bean
+            for(Map.Entry<Class<?>,Object> entry : BEAN_MAP.entrySet()){
+                Class<?> beanClass = entry.getKey();
+                Object bean = entry.getValue();
 
-            if(clazz.isAssignableFrom(beanClass)){
-                typeClasses.add(bean);
+                if(clazz.isAssignableFrom(beanClass)){
+                    typeClasses.add(bean);
+                }
             }
+
+            // 加入Type缓存
+            TYPE_BEAN_MAP_CACHE.put(clazz,typeClasses);
+            return typeClasses;
         }
-        return typeClasses;
     }
 }
