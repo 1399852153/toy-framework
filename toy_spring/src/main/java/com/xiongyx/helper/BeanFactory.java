@@ -58,7 +58,7 @@ public class BeanFactory {
             for(Map.Entry<Class<?>,Object> entry : BEAN_MAP.entrySet()){
                 Class<?> beanClass = entry.getKey();
                 Object bean = entry.getValue();
-
+                // bean是否是对应类型的类或者子类/接口实现
                 if(clazz.isAssignableFrom(beanClass)){
                     typeClasses.add(bean);
                 }

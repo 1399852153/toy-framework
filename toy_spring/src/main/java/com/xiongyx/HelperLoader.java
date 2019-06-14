@@ -14,6 +14,7 @@ import com.xiongyx.util.ClassUtil;
 public final class HelperLoader {
 
     public static void init(){
+        // 初始化 进行关键类文件的加载
         Class<?>[] classes = {
                 ClassHelper.class,
                 BeanFactory.class,

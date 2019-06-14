@@ -12,6 +12,7 @@ import java.util.Map;
 public class ApplicationMain {
 
     public static void main(String[] args) {
+        // 初始化框架
         HelperLoader.init();
 
         Map<Class<?>,Object> beanMap = BeanFactory.getBeanMap();

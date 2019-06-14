@@ -26,6 +26,9 @@ public class MetaAnnotationUtil {
         return metaAnnotationSet;
     }
 
+    /**
+     * 递归获取所有的元注解
+     * */
     private static void readAllMetaAnnotation(Set<Class<? extends Annotation>> annotationSet,Annotation[] metaAnnotations){
         if(metaAnnotations.length == 0){
             return;

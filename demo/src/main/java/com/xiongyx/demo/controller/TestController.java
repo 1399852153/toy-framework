@@ -32,7 +32,7 @@ public class TestController {
 
     public static void main(String[] args) {
         String packageName = "com.xiongyx";
-        Set<Class<?>> set = ClassUtil.getClasses(packageName);
+        Set<Class<?>> set = ClassUtil.scanAllClasses(packageName);
 
         set.forEach(System.out::println);
     }

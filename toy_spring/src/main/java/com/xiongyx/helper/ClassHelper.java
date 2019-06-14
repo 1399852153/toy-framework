@@ -24,14 +24,7 @@ public final class ClassHelper {
 
     static{
         String appBasePackage = ConfigHelper.getAppBasePackage();
-        CLASS_SET = ClassUtil.getClasses(appBasePackage);
-    }
-
-    /**
-     * 获取应用包下的类集合
-     * */
-    public static Set<Class<?>> getClassSet(){
-        return CLASS_SET;
+        CLASS_SET = ClassUtil.scanAllClasses(appBasePackage);
     }
 
     /**
@@ -46,10 +39,10 @@ public final class ClassHelper {
      * 获取应用包下某一个带有某一注解的类
      * */
     public static Set<Class<?>> getClassSetByAnnotation(Class<? extends Annotation> annotationClass){
-        Set<Class<?>> classSet = CLASS_SET.stream()
+        return CLASS_SET.stream()
+                // 过滤出符合要求的类
                 .filter(item-> isClassByAnnotation(item,annotationClass))
                 .collect(Collectors.toSet());
-        return classSet;
     }
 
     private static boolean isClassByAnnotation(Class<?> clazz,Class<? extends Annotation> annotationClass){
