@@ -29,11 +29,4 @@ public class TestController {
 
     @MyAutowired
     private UserService userService;
-
-    public static void main(String[] args) {
-        String packageName = "com.xiongyx";
-        Set<Class<?>> set = ClassUtil.scanAllClasses(packageName);
-
-        set.forEach(System.out::println);
-    }
 }
