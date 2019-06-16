@@ -6,9 +6,9 @@
 
 
 乞丐版spring整合乞丐版springMVC思路
-1.tomcat启动时加载springMVC
-2.springMVC会生成一个servlet拦截对应的请求，一般是"/*"拦截所有，作为请求转发器
-3.springMVC启动时加载spring
+1.tomcat启动时加载springMVC ok
+2.springMVC会生成一个servlet拦截对应的请求，一般是"/*"拦截所有，作为请求转发器 ok
+3.springMVC启动时加载spring ok
 4.加载完成之后，springMVC获得所有相关的bean，@Controller、@RestController等等
 5.根据对应bean的@RequestMapping/@GetMapping等注解，构造出请求url路径，http请求类型(get,post)和Controller方法的对应关系
 6.当接受到请求时，如果找到对应方法，解析方法的参数，进行相应的注入,例如request，response等
