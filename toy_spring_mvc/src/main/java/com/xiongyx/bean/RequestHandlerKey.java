@@ -58,4 +58,12 @@ public class RequestHandlerKey {
     public int hashCode() {
         return Objects.hash(completeRequestPath, method);
     }
+
+    @Override
+    public String toString() {
+        return "RequestHandlerKey{" +
+                "completeRequestPath='" + completeRequestPath + '\'' +
+                ", method=" + method +
+                '}';
+    }
 }

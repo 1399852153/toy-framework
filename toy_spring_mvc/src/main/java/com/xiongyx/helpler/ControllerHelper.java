@@ -8,6 +8,7 @@ import com.xiongyx.bean.RequestHandlerKey;
 import com.xiongyx.constant.URLConstant;
 import com.xiongyx.enums.RequestHttpMethodEnum;
 import com.xiongyx.helper.ClassHelper;
+import org.apache.log4j.Logger;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -22,6 +23,8 @@ import java.util.Set;
  */
 public class ControllerHelper {
 
+    private static final Logger logger = Logger.getLogger(ControllerHelper.class);
+
     /**
      * controller路径和controller映射关系
      * */
@@ -33,28 +36,35 @@ public class ControllerHelper {
     private static Map<RequestHandlerKey, RequestHandler> urlMappingMap = new HashMap<>();
 
     static{
+        logger.info("初始化 controller requestMapping映射 开始 ========================================");
+
         // 获得所有的controller bean
         Set<Class<?>> controllerBeanSet = ClassHelper.getClassSetByAnnotation(MyController.class);
 
         controllerBeanSet.forEach(controllerClass ->{
+                    String controllerRequestPath;
                     // 如果controller含有requestMapping注解
                     if(controllerClass.isAnnotationPresent(MyRequestMapping.class)){
                         MyRequestMapping myRequestMapping = controllerClass.getAnnotation(MyRequestMapping.class);
                         // 获得映射路径
-                        String controllerRequestPath = myRequestMapping.value();
+                        controllerRequestPath = myRequestMapping.value();
 
                         // 不以"/"开头，默认补上
                         if(!controllerRequestPath.startsWith(URLConstant.URL_SEPARATOR)){
                             controllerRequestPath = URLConstant.URL_SEPARATOR + controllerRequestPath;
                         }
-
-                        // 构造controllerBean
-                        Controller controllerBean = initControllerBean(controllerRequestPath,controllerClass);
-                        // 置入controllerMap之中
-                        controllerMap.put(controllerRequestPath,controllerBean);
+                    }else{
+                        controllerRequestPath = "";
                     }
+
+                    // 构造controllerBean
+                    Controller controllerBean = initControllerBean(controllerRequestPath,controllerClass);
+                    // 置入controllerMap之中
+                    controllerMap.put(controllerRequestPath,controllerBean);
                 }
         );
+
+        logger.info("初始化 controller requestMapping映射 结束 ========================================");
     }
 
     /**
@@ -72,12 +82,12 @@ public class ControllerHelper {
         for(Method method : controllerClass.getMethods()){
             // 如果存在requestMapping注解
             if(method.isAnnotationPresent(MyRequestMapping.class)){
-                MyRequestMapping myRequestMapping = controllerClass.getAnnotation(MyRequestMapping.class);
+                MyRequestMapping methodRequestMapping = method.getAnnotation(MyRequestMapping.class);
                 // 获得映射的路径
 
-                String actionRequestPath = myRequestMapping.value();
+                String actionRequestPath = methodRequestMapping.value();
 
-                RequestHttpMethodEnum[] requestHttpMethodEnum = myRequestMapping.method();
+                RequestHttpMethodEnum[] requestHttpMethodEnum = methodRequestMapping.method();
                 if(requestHttpMethodEnum.length == 0){
                     throw new RuntimeException("RequestHttpMethod is empty! method:" + method);
                 }
@@ -112,6 +122,8 @@ public class ControllerHelper {
 
                         // 设置完整的url地址和handler映射关系
                         urlMappingMap.put(requestHandlerKey,handler);
+
+                        logger.info("requestMapping scan:" + requestHandlerKey);
                     }
                 }
             }

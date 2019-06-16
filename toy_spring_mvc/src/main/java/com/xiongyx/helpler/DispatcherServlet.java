@@ -1,10 +1,6 @@
 package com.xiongyx.helpler;
 
 import com.xiongyx.HelperLoader;
-import com.xiongyx.annotation.MyController;
-import com.xiongyx.helper.BeanFactory;
-import com.xiongyx.helper.ClassHelper;
-import com.xiongyx.helper.ConfigHelper;
 import com.xiongyx.util.ClassUtil;
 
 import javax.servlet.*;
@@ -27,16 +23,16 @@ public class DispatcherServlet extends HttpServlet {
         // 加载ControllerHelper
         ClassUtil.loadClass(ControllerHelper.class.getName(),true);
 
-//        // 获得ServletContext对象
-//        ServletContext servletContext = servletConfig.getServletContext();
+        // 获得ServletContext对象
+        ServletContext servletContext = servletConfig.getServletContext();
 
         // 注册处理jsp的servlet
-//        ServletRegistration jspServlet = servletContext.getServletRegistration("jsp");
-//        jspServlet.addMapping(ConfigHelper.getAppJspPath() + "*");
+        ServletRegistration jspServlet = servletContext.getServletRegistration("jsp");
+        jspServlet.addMapping(MVCConfigHelper.getAppJspPath() + "*");
 
         // 注册处理静态资源的servlet
-//        ServletRegistration defaultServlet = servletContext.getServletRegistration("default");
-//        defaultServlet.addMapping(ConfigHelper.getAppAssetPath() + "*");
+        ServletRegistration defaultServlet = servletContext.getServletRegistration("default");
+        defaultServlet.addMapping(MVCConfigHelper.getAppAssetPath() + "*");
     }
 
     @Override
