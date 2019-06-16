@@ -6,8 +6,10 @@ import com.xiongyx.annotation.MyRestController;
 import com.xiongyx.demo.service.OrderService;
 import com.xiongyx.demo.service.ProductService;
 import com.xiongyx.demo.service.UserService;
+import com.xiongyx.enums.RequestHttpMethodEnum;
 import com.xiongyx.util.ClassUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 /**
@@ -29,4 +31,10 @@ public class TestController {
 
     @MyAutowired
     private UserService userService;
+
+    @MyRequestMapping(value = "/echo",method = {RequestHttpMethodEnum.GET,RequestHttpMethodEnum.POST})
+    public String echo(HttpServletRequest request){
+        String message = request.getParameter("message");
+        return message + " echo !";
+    }
 }
