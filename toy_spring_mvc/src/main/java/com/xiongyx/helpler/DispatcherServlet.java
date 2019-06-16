@@ -37,6 +37,12 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        // 获取请求的路径 + 请求的方式 get/post
+
+        // 从ControllerHelper中获取匹配的method反射调用
+
+        // 根据参数列表(参数注解)注入对应的参数
+
         super.service(req, res);
     }
 }
