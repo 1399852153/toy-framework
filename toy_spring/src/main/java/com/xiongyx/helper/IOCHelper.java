@@ -27,7 +27,7 @@ public class IOCHelper {
                 Field[] fields = beanClass.getDeclaredFields();
                 // 遍历bean的所有属性
                 for(Field beanField : fields){
-                    // 如果带有 依赖注入的注解
+                    // 如果带有 @MyAutowired注解
                     if(beanField.isAnnotationPresent(MyAutowired.class)){
                         // 获得属性的class类型
                         Class<?> beanFieldClass = beanField.getType();

@@ -1,6 +1,7 @@
 package com.xiongyx.helper;
 
 import com.xiongyx.util.ReflectionUtil;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +13,8 @@ import java.util.Set;
  * on 2019/6/11.
  */
 public class BeanFactory {
+
+    private static final Logger logger = Logger.getLogger(BeanFactory.class);
 
     /**
      * 原始的beanMap
@@ -32,6 +35,8 @@ public class BeanFactory {
             Object beanObj = ReflectionUtil.newInstance(beanClass);
             // 将bean对象存入 bean工厂
             BEAN_MAP.put(beanClass,beanObj);
+
+            logger.info("scan bean: class=" + beanClass.getName());
         }
     }
 
