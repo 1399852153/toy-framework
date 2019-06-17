@@ -4,6 +4,7 @@ import com.xiongyx.annotation.MyAutowired;
 import com.xiongyx.annotation.MyRequestMapping;
 import com.xiongyx.annotation.MyRestController;
 import com.xiongyx.bean.MyModel;
+import com.xiongyx.bean.MyModelAndView;
 import com.xiongyx.demo.service.OrderService;
 import com.xiongyx.demo.service.ProductService;
 import com.xiongyx.demo.service.UserService;
@@ -11,6 +12,9 @@ import com.xiongyx.enums.RequestHttpMethodEnum;
 import com.xiongyx.util.ClassUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -40,5 +44,17 @@ public class TestController {
         MyModel myModel = new MyModel();
         myModel.addObject("message",message + " echo !");
         return myModel;
+    }
+
+    @MyRequestMapping(value = "/testJsp",method = {RequestHttpMethodEnum.GET,RequestHttpMethodEnum.POST})
+    public MyModelAndView testJsp(HttpServletRequest request){
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        String currentTime = dateFormat.format(new Date());
+
+        MyModelAndView mv = new MyModelAndView();
+        mv.setViewName("hello.jsp");
+        mv.addObject("currentTime",currentTime);
+        return mv;
     }
 }

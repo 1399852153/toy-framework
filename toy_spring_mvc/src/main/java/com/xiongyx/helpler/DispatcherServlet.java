@@ -59,9 +59,10 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 获取请求的路径 + 请求的方式 get/post
+        // 获取请求的路径 + http请求的方法
         String requestPath = request.getPathInfo();
         String requestMethod = request.getMethod();
+        logger.info("doService requestPath=" + requestPath + " requestMethod=" + requestMethod);
 
         RequestHttpMethodEnum methodEnum = RequestHttpMethodEnum.getEnumByCode(requestMethod);
         if(methodEnum == null){
