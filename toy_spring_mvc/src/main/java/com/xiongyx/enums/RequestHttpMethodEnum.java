@@ -36,7 +36,7 @@ public enum RequestHttpMethodEnum {
 
     public static RequestHttpMethodEnum getEnumByCode(String code){
         for(RequestHttpMethodEnum requestHttpMethodEnum : RequestHttpMethodEnum.values()){
-            if(requestHttpMethodEnum.code.equals(requestHttpMethodEnum)){
+            if(requestHttpMethodEnum.code.equals(requestHttpMethodEnum.code)){
                 return requestHttpMethodEnum;
             }
         }
