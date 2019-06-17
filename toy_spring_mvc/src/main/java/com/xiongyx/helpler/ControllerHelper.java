@@ -67,6 +67,10 @@ public class ControllerHelper {
         logger.info("初始化 controller requestMapping映射 结束 ========================================");
     }
 
+    public static RequestHandler getHandler(RequestHandlerKey requestHandlerKey){
+        return urlMappingMap.get(requestHandlerKey);
+    }
+
     /**
      * 初始化 controllerBean
      * */

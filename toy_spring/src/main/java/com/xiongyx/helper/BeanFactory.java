@@ -48,6 +48,18 @@ public class BeanFactory {
     }
 
     /**
+     * 从bean工厂中获得bean对象
+     * */
+    @SuppressWarnings("unchecked")
+    public static <T> T getBean(Class<T> clazz){
+        if(!BEAN_MAP.containsKey(clazz)){
+            throw new RuntimeException("can not find bean by class: " + clazz);
+        }
+
+        return (T) BEAN_MAP.get(clazz);
+    }
+
+    /**
      * 按照类型获得符合要求的bean
      * */
     public static Set<Object> getClassSetByType(Class<?> clazz){

@@ -3,6 +3,7 @@ package com.xiongyx.demo.controller;
 import com.xiongyx.annotation.MyAutowired;
 import com.xiongyx.annotation.MyRequestMapping;
 import com.xiongyx.annotation.MyRestController;
+import com.xiongyx.bean.MyModel;
 import com.xiongyx.demo.service.OrderService;
 import com.xiongyx.demo.service.ProductService;
 import com.xiongyx.demo.service.UserService;
@@ -33,8 +34,11 @@ public class TestController {
     private UserService userService;
 
     @MyRequestMapping(value = "/echo",method = {RequestHttpMethodEnum.GET,RequestHttpMethodEnum.POST})
-    public String echo(HttpServletRequest request){
+    public MyModel echo(HttpServletRequest request){
         String message = request.getParameter("message");
-        return message + " echo !";
+
+        MyModel myModel = new MyModel();
+        myModel.addObject("message",message + " echo !");
+        return myModel;
     }
 }
