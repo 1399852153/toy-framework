@@ -2,6 +2,7 @@ package com.xiongyx.demo.controller;
 
 import com.xiongyx.annotation.MyAutowired;
 import com.xiongyx.annotation.MyRequestMapping;
+import com.xiongyx.annotation.MyRequestParam;
 import com.xiongyx.annotation.MyRestController;
 import com.xiongyx.bean.MyModel;
 import com.xiongyx.bean.MyModelAndView;
@@ -56,5 +57,14 @@ public class TestController {
         mv.setViewName("hello.jsp");
         mv.addObject("currentTime",currentTime);
         return mv;
+    }
+
+    @MyRequestMapping(value = "/testRequestParam",method = {RequestHttpMethodEnum.GET,RequestHttpMethodEnum.POST})
+    public MyModel testRequestParam(@MyRequestParam("name") String name,@MyRequestParam("age") int age,@MyRequestParam("money") double money){
+        System.out.println("testRequestParam: name=" + name + " age=" + age + "money=" + money);
+
+        MyModel myModel = new MyModel();
+        myModel.addObject("message","ojbk");
+        return myModel;
     }
 }

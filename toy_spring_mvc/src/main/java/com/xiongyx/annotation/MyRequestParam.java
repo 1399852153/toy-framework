@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * @author xiongyx
  * @date 2019/6/11
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyRequestParam {
     String value() default "";

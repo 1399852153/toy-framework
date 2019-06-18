@@ -160,6 +160,10 @@ public class DispatcherServlet extends HttpServlet {
             // 从请求中获取对应的value
             String param = request.getParameter(paramName);
 
+            if(myRequestParam.required() && param == null){
+                throw new RuntimeException("MyRequestParam required a value paramName=" + paramName);
+            }
+
             // 根据类型转化为对应的类型
             return TypeUtil.stringToSimpleType(methodParameterType,param);
         }
