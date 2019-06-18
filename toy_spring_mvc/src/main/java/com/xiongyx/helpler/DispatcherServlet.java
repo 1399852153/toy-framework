@@ -1,6 +1,7 @@
 package com.xiongyx.helpler;
 
 import com.xiongyx.HelperLoader;
+import com.xiongyx.annotation.MyRequestParam;
 import com.xiongyx.bean.MyModel;
 import com.xiongyx.bean.MyModelAndView;
 import com.xiongyx.bean.RequestHandler;
@@ -10,6 +11,7 @@ import com.xiongyx.helper.BeanFactory;
 import com.xiongyx.util.ClassUtil;
 import com.xiongyx.util.JsonUtil;
 import com.xiongyx.util.ReflectionUtil;
+import com.xiongyx.util.TypeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +27,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author xiongyx
@@ -89,10 +96,9 @@ public class DispatcherServlet extends HttpServlet {
         Object controllerBean = BeanFactory.getBean(controllerClass);
 
         Method actionMethod = requestHandler.getHandleMethod();
-        // 获得匹配到的方法的参数类型列表
-        Class<?>[] methodParameterTypes = actionMethod.getParameterTypes();
+
         // 获得需要传递给映射方法的参数列表
-        Object[] methodParams = getMethodParams(methodParameterTypes,request,response);
+        Object[] methodParams = getMethodParams(actionMethod,request,response);
 
         // 反射调用方法,获得返回值
         Object result = ReflectionUtil.invokeMethod(controllerBean,actionMethod,methodParams);
@@ -104,12 +110,19 @@ public class DispatcherServlet extends HttpServlet {
     /**
      * 获得需要传递给映射方法的参数列表
      * */
-    private Object[] getMethodParams(Class<?>[] methodParameterTypes,HttpServletRequest request,HttpServletResponse response){
+    private Object[] getMethodParams(Method actionMethod,HttpServletRequest request,HttpServletResponse response){
+        // 获得匹配到的方法的参数类型列表
+        Class<?>[] methodParameterTypes = actionMethod.getParameterTypes();
+        // 获得方法的各个参数注解
+        Annotation[][] parameterAnnotations = actionMethod.getParameterAnnotations();
+
         // 执行的参数类型列表
         Object[] methodParams = new Object[methodParameterTypes.length];
 
         for(int i=0; i<methodParameterTypes.length; i++){
             Class methodParameterType = methodParameterTypes[i];
+            // 当前参数的 注解列表
+            Annotation[] oneParamAnnotations = parameterAnnotations[i];
 
             if(methodParameterType.equals(HttpServletRequest.class)){
                 // 注入request
@@ -118,11 +131,40 @@ public class DispatcherServlet extends HttpServlet {
                 // 注入response
                 methodParams[i] = response;
             }else {
-                // todo 根据注解 注入相应的参数对象
+                Map<Class<? extends Annotation>,Annotation> oneParamAnnotationClasses = Arrays.stream(oneParamAnnotations)
+                        .collect(Collectors.toMap(Annotation::getClass,item-> item));
+
+                // 根据注解 生成相应的参数对象，注入对应的请求参数
+                Object injectedParam = handleAnnotationParam(methodParameterType,oneParamAnnotationClasses,request,response);
+                methodParams[i] = injectedParam;
             }
         }
 
         return methodParams;
+    }
+
+    /**
+     * 处理参数
+     * */
+    private Object handleAnnotationParam(Class methodParameterType,Map<Class<? extends Annotation>,Annotation> oneParamAnnotationClasses, HttpServletRequest request, HttpServletResponse response){
+        // 如果存在MyRequestParam
+        if(oneParamAnnotationClasses.get(MyRequestParam.class) != null){
+            // MyRequestParam 只支持简单类型的映射
+            if(TypeUtil.isSimpleType(methodParameterType.getSimpleName())){
+                throw new RuntimeException("MyRequestParam need inject by simpleType methodParameterType=" + methodParameterType.getSimpleName());
+            }
+
+            // 获取注解中param的key
+            MyRequestParam myRequestParam = (MyRequestParam)oneParamAnnotationClasses.get(MyRequestParam.class);
+            String paramName = myRequestParam.value();
+            // 从请求中获取对应的value
+            String param = request.getParameter(paramName);
+
+            // 根据类型转化为对应的类型
+            return TypeUtil.stringToSimpleType(methodParameterType,param);
+        }
+
+        return null;
     }
 
     /**
