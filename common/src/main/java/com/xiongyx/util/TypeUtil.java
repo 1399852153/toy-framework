@@ -35,6 +35,10 @@ public class TypeUtil {
     }
 
     public static Object stringToSimpleType(Class clazz, String value){
+        if(value == null){
+            return null;
+        }
+
         String simpleClassName = clazz.getSimpleName();
         if (simpleClassName.equals("int") || simpleClassName.equals("Integer")) {
             return Integer.parseInt(value);

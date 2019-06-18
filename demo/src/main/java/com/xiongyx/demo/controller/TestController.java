@@ -60,7 +60,10 @@ public class TestController {
     }
 
     @MyRequestMapping(value = "/testRequestParam",method = {RequestHttpMethodEnum.GET,RequestHttpMethodEnum.POST})
-    public MyModel testRequestParam(@MyRequestParam("name") String name,@MyRequestParam("age") int age,@MyRequestParam("money") double money){
+    public MyModel testRequestParam(
+            @MyRequestParam("name") String name,
+            @MyRequestParam("age") Integer age,
+            @MyRequestParam(value = "money",required = false) Double money){
         System.out.println("testRequestParam: name=" + name + " age=" + age + " money=" + money);
 
         MyModel myModel = new MyModel();
