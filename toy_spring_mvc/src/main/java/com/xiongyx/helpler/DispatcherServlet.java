@@ -30,9 +30,7 @@ import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -158,14 +156,21 @@ public class DispatcherServlet extends HttpServlet {
             MyRequestParam myRequestParam = (MyRequestParam)oneParamAnnotationClasses.get(MyRequestParam.class);
             String paramName = myRequestParam.value();
             // 从请求中获取对应的value
-            String param = request.getParameter(paramName);
+            String paramValue = request.getParameter(paramName);
 
-            if(myRequestParam.required() && param == null){
+            if(myRequestParam.required() && paramValue == null){
+                // 注解中标明必传 但是value是null
                 throw new RuntimeException("MyRequestParam required a value paramName=" + paramName);
             }
 
+            if(TypeUtil.isPrimitiveType(methodParameterType) && paramValue == null){
+                // 如果参数类型是基本类型 但是value是null
+                throw new RuntimeException("MyRequestParam param declared as a primitive type, but value is null paramName=" + paramName);
+            }
+
+
             // 根据类型转化为对应的类型
-            return TypeUtil.stringToSimpleType(methodParameterType,param);
+            return TypeUtil.stringToSimpleType(methodParameterType,paramValue);
         }
 
         return null;

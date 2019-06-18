@@ -35,11 +35,8 @@ public class TypeUtil {
     }
 
     public static Object stringToSimpleType(Class clazz, String value){
-        if(value == null){
-            return null;
-        }
-
         String simpleClassName = clazz.getSimpleName();
+
         if (simpleClassName.equals("int") || simpleClassName.equals("Integer")) {
             return Integer.parseInt(value);
         }
@@ -60,5 +57,27 @@ public class TypeUtil {
         }
 
         throw new RuntimeException("unknown simpleType clazz=" + clazz.getSimpleName());
+    }
+
+    /**
+     * 是否是基本类型
+     * */
+    public static boolean isPrimitiveType(Class clazz){
+        String simpleClassName = clazz.getSimpleName();
+
+        switch (simpleClassName){
+            case "int":
+                return true;
+            case "long":
+                return true;
+            case "double":
+                return true;
+            case "boolean":
+                return true;
+            case "float":
+                return true;
+            default:
+                return false;
+        }
     }
 }

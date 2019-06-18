@@ -63,7 +63,7 @@ public class TestController {
     public MyModel testRequestParam(
             @MyRequestParam("name") String name,
             @MyRequestParam("age") Integer age,
-            @MyRequestParam(value = "money",required = false) Double money){
+            @MyRequestParam(value = "money",required = false) double money){
         System.out.println("testRequestParam: name=" + name + " age=" + age + " money=" + money);
 
         MyModel myModel = new MyModel();
