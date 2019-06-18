@@ -132,7 +132,7 @@ public class DispatcherServlet extends HttpServlet {
                 methodParams[i] = response;
             }else {
                 Map<Class<? extends Annotation>,Annotation> oneParamAnnotationClasses = Arrays.stream(oneParamAnnotations)
-                        .collect(Collectors.toMap(Annotation::getClass,item-> item));
+                        .collect(Collectors.toMap(Annotation::annotationType, item-> item));
 
                 // 根据注解 生成相应的参数对象，注入对应的请求参数
                 Object injectedParam = handleAnnotationParam(methodParameterType,oneParamAnnotationClasses,request,response);
@@ -150,7 +150,7 @@ public class DispatcherServlet extends HttpServlet {
         // 如果存在MyRequestParam
         if(oneParamAnnotationClasses.get(MyRequestParam.class) != null){
             // MyRequestParam 只支持简单类型的映射
-            if(TypeUtil.isSimpleType(methodParameterType.getSimpleName())){
+            if(!TypeUtil.isSimpleType(methodParameterType.getSimpleName())){
                 throw new RuntimeException("MyRequestParam need inject by simpleType methodParameterType=" + methodParameterType.getSimpleName());
             }
 
