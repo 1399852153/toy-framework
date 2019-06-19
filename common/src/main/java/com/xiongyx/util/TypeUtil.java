@@ -67,13 +67,9 @@ public class TypeUtil {
 
         switch (simpleClassName){
             case "int":
-                return true;
             case "long":
-                return true;
             case "double":
-                return true;
             case "boolean":
-                return true;
             case "float":
                 return true;
             default:
