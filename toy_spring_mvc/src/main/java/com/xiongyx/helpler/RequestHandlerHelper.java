@@ -109,7 +109,7 @@ public class RequestHandlerHelper {
     @SuppressWarnings("unchecked")
     private static Object handleMyRequestBody(Class methodParameterType, Map<Class<? extends Annotation>,Annotation> oneParamAnnotationClasses,HttpServletRequest request){
         try {
-            BufferedReader streamReader = new BufferedReader(new InputStreamReader(request.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader streamReader = new BufferedReader(new InputStreamReader(request.getInputStream(),"UTF-8"));
             StringBuilder jsonStr = new StringBuilder();
             String inputStr;
             while ((inputStr = streamReader.readLine()) != null){

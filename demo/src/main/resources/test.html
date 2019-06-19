@@ -7,17 +7,21 @@
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script>
-    requestTest(i);
+    requestTest();
 
     function requestTest(){
+        debugger;
         $.ajax({
-            url : "http://localhost:8080/test/testRequestBody",
-            dataType : 'JSON',
-            data : {
+            // url : "http://localhost:8080/test/testRequestBody",
+            url : "http://localhost:8081/test",
+            dataType : 'json',
+            contentType: "application/json; charset=utf-8",
+            type : "POST",
+            data : JSON.stringify({
                 name : "name",
                 age : 10,
                 money : 100.52
-            },
+            }),
             success : function(data){
                 console.log('请求完成！data=' + data);
             }

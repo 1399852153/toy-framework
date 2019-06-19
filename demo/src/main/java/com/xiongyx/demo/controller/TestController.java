@@ -70,8 +70,8 @@ public class TestController {
     }
 
     @MyRequestMapping(value = "/testRequestBody",method = {RequestHttpMethodEnum.GET,RequestHttpMethodEnum.POST})
-    public MyModel testRequestParam(@MyRequestBody User user){
-        System.out.println("testRequestParam: user=" + user);
+    public MyModel testRequestBody(@MyRequestBody User user){
+        System.out.println("testRequestBody: user=" + user);
 
         MyModel myModel = new MyModel();
         myModel.addObject("message","ojbk");
