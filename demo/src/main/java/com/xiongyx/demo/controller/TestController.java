@@ -1,11 +1,9 @@
 package com.xiongyx.demo.controller;
 
-import com.xiongyx.annotation.MyAutowired;
-import com.xiongyx.annotation.MyRequestMapping;
-import com.xiongyx.annotation.MyRequestParam;
-import com.xiongyx.annotation.MyRestController;
+import com.xiongyx.annotation.*;
 import com.xiongyx.bean.MyModel;
 import com.xiongyx.bean.MyModelAndView;
+import com.xiongyx.demo.model.User;
 import com.xiongyx.demo.service.OrderService;
 import com.xiongyx.demo.service.ProductService;
 import com.xiongyx.demo.service.UserService;
@@ -65,6 +63,15 @@ public class TestController {
             @MyRequestParam("age") Integer age,
             @MyRequestParam(value = "money",required = false) double money){
         System.out.println("testRequestParam: name=" + name + " age=" + age + " money=" + money);
+
+        MyModel myModel = new MyModel();
+        myModel.addObject("message","ojbk");
+        return myModel;
+    }
+
+    @MyRequestMapping(value = "/testRequestBody",method = {RequestHttpMethodEnum.GET,RequestHttpMethodEnum.POST})
+    public MyModel testRequestParam(@MyRequestBody User user){
+        System.out.println("testRequestParam: user=" + user);
 
         MyModel myModel = new MyModel();
         myModel.addObject("message","ojbk");
