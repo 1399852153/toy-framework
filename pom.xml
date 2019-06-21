@@ -15,6 +15,7 @@
         <module>common</module>
         <module>toy_spring</module>
         <module>toy_spring_mvc</module>
+        <module>toy_mybatis</module>
     </modules>
 
     <properties>

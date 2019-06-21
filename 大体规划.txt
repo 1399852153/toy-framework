@@ -1,7 +1,7 @@
 1. 乞丐版spring
 2. 乞丐版springMVC
-3. 乞丐版rpc框架
-4. 乞丐版mybatis
+3. 乞丐版mybatis
+4. 乞丐版rpc框架
 5. 乞丐版注册中心、配置中心
 
 
@@ -16,3 +16,11 @@
 7.当对应controller方法执行完成之后，根据返回值，方法注解(@ResponseBody)判断，返回的方式
     ModelAndView/View 返回对应的jsp，jsp注入对应的参数(暂时不支持html、ftl等)
     @ResponseBody注解或者/Model 以json的形式返回响应结果
+
+乞丐版mybatis
+1.启动时扫描base包下的所有mybatis配置文件
+2.解析配置文件，将对应的sql单元(statement)注册进configuration
+3.当客户端调用时，从sqlSessionFactory中获取一个sqlSession,指定对应的sql单元(statement)和对应的参数
+4.解析sql单元(statement)，将参数转换成具体的sql语句，调用jdbc接口，和数据库交互
+5.根据jdbc响应的结果，将其组装成statement中对应的resultType(先不支持resultMap 0.0)返回给客户端
+
