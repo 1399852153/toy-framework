@@ -1,0 +1,6 @@
+乞丐版mybatis
+1.启动时扫描base包下的所有mybatis配置文件
+2.解析配置文件，将对应的sql单元(statement)注册进configuration
+3.当客户端调用时，从sqlSessionFactory中获取一个sqlSession,指定对应的sql单元(statement)和对应的参数
+4.解析sql单元(statement)，将参数转换成具体的sql语句，调用jdbc接口，和数据库交互
+5.根据jdbc响应的结果，将其组装成statement中对应的resultType(先不支持resultMap 0.0)返回给客户端
