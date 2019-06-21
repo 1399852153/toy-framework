@@ -68,6 +68,7 @@ public class ControllerHelper {
     }
 
     public static RequestHandler getHandler(RequestHandlerKey requestHandlerKey){
+        // todo /* 之类的动态匹配暂时不支持
         return urlMappingMap.get(requestHandlerKey);
     }
 

@@ -33,6 +33,7 @@ public class RequestHandlerHelper {
             // 如果存在MyRequestBody
             return handleMyRequestBody(methodParameterType,oneParamAnnotationClasses,request);
         }
+        // @MyPathVariable暂不支持
 
         return null;
     }
