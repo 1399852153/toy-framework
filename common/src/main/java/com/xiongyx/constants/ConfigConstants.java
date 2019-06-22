@@ -1,4 +1,4 @@
-package com.xiongyx.constant;
+package com.xiongyx.constants;
 
 /**
  * @Author xiongyx

@@ -1,6 +1,6 @@
 package com.xiongyx.helper;
 
-import com.xiongyx.constant.ConfigConstants;
+import com.xiongyx.constants.ConfigConstants;
 import com.xiongyx.util.PropsUtil;
 
 import java.util.Properties;

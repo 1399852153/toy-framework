@@ -1,7 +1,7 @@
 package com.xiongyx.helpler;
 
-import com.xiongyx.constant.ConfigConstants;
-import com.xiongyx.constant.MVCConfigConstants;
+import com.xiongyx.constants.ConfigConstants;
+import com.xiongyx.constant.WebConfigConstants;
 import com.xiongyx.util.PropsUtil;
 
 import java.util.Properties;
@@ -19,13 +19,13 @@ public class MVCConfigHelper {
      * 获得应用jsp路径
      * */
     public static String getAppJspPath(){
-        return PropsUtil.getString(CONFIG_PROPS, MVCConfigConstants.APP_JSP_PATH);
+        return PropsUtil.getString(CONFIG_PROPS, WebConfigConstants.APP_JSP_PATH);
     }
 
     /**
      * 获得应用静态资源路径
      * */
     public static String getAppAssetPath(){
-        return PropsUtil.getString(CONFIG_PROPS,MVCConfigConstants.APP_ASSET_PATH);
+        return PropsUtil.getString(CONFIG_PROPS, WebConfigConstants.APP_ASSET_PATH);
     }
 }

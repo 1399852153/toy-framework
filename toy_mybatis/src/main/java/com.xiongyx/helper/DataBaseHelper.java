@@ -1,6 +1,7 @@
 package com.xiongyx.helper;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.xiongyx.constants.ConfigConstants;
 import com.xiongyx.util.BeanUtil;
 import com.xiongyx.util.CollectionUtil;
 import com.xiongyx.util.PropsUtil;
@@ -66,21 +67,19 @@ public class DataBaseHelper {
     private static final DruidDataSource DATA_SOURCE;
 
     static{
-        //:::从配置文件中初始化数据
-        Properties properties = PropsUtil.loadProps("smart.properties");
-        DRIVER = PropsUtil.getString(properties,"jdbc.driver");
-        URL = PropsUtil.getString(properties,"jdbc.url");
-        USERNAME = PropsUtil.getString(properties,"jdbc.username");
-        PASSWORD = PropsUtil.getString(properties,"jdbc.password");
+        DRIVER = DataBaseConfigHelper.getDBDriver();
+        URL = DataBaseConfigHelper.getDBDriver();
+        USERNAME = DataBaseConfigHelper.getDBUserName();
+        PASSWORD = DataBaseConfigHelper.getDBPassword();
 
         try {
-            //:::尝试获取jdbc驱动类
+            // 尝试获取jdbc驱动类
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             LOGGER.error("can not load jdbc driver",e);
         }
 
-        //:::初始化druid数据库连接池
+        // 初始化druid数据库连接池
         DATA_SOURCE = new DruidDataSource();
         DATA_SOURCE.setDriverClassName(DRIVER);
         DATA_SOURCE.setUrl(URL);
@@ -92,18 +91,18 @@ public class DataBaseHelper {
      * 获取数据库连接
      * */
     public static Connection getConnection(){
-        //:::从线程变量中获得数据库连接
+        // 从线程变量中获得数据库连接
         Connection conn = CONNECTION_HOLDER.get();
 
         if(conn == null){
             try {
-                //:::获得数据库连接
+                // 获得数据库连接
                 conn = DATA_SOURCE.getConnection();
 
-                //:::将数据库连接存入线程变量中保存
+                // 将数据库连接存入线程变量中保存
                 CONNECTION_HOLDER.set(conn);
             } catch (SQLException e) {
-                //:::获取数据库连接失败
+                // 获取数据库连接失败
                 LOGGER.error("get connection fail",e);
             }
         }
@@ -119,7 +118,7 @@ public class DataBaseHelper {
 
         try {
             Connection conn = getConnection();
-            //:::执行更新语句
+            // 执行更新语句
             rows = QUERY_RUNNER.update(conn,sql,params);
         } catch (SQLException e) {
             LOGGER.error("execute update fail",e);
@@ -137,7 +136,7 @@ public class DataBaseHelper {
 
         try {
             Connection conn = getConnection();
-            //:::进行查询
+            // 进行查询
             result = QUERY_RUNNER.query(conn,sql,new MapListHandler(),params);
         } catch (SQLException e) {
             LOGGER.error("execute query fail",e);
@@ -156,7 +155,7 @@ public class DataBaseHelper {
 
         try {
             Connection conn = getConnection();
-            //:::进行查询
+            // 进行查询
             entity = QUERY_RUNNER.query(conn,sql,new BeanHandler<T>(entityClass),params);
         } catch (SQLException e) {
             LOGGER.error("query entity fail",e);
@@ -173,10 +172,10 @@ public class DataBaseHelper {
 
         try {
             Connection conn = getConnection();
-            //:::进行查询
+            // 进行查询
             entityList = QUERY_RUNNER.query(conn,sql,new BeanListHandler<>(entityClass),params);
         } catch (SQLException e) {
-            //:::查询失败
+            // 查询失败
             LOGGER.error("query entity list fail",e);
             throw new RuntimeException(e);
         }
@@ -195,36 +194,36 @@ public class DataBaseHelper {
             return false;
         }
 
-        //:::按照约定,获得表名
+        // 按照约定,获得表名
         String tableName = getTableName(entityClass);
-        //:::构造insert语句开头
+        // 构造insert语句开头
         String sql = "insert into " + tableName;
 
-        //:::insert语句列的部分
+        // insert语句列的部分
         StringBuilder columns = new StringBuilder("(");
-        //:::insert语句values的部分
+        // insert语句values的部分
         StringBuilder values = new StringBuilder("(");
-        //:::参数列表值
+        // 参数列表值
         List<Object> params = new ArrayList<>();
 
-        //:::遍历字段map,构造sql
+        // 遍历字段map,构造sql
         for(String fieldName : fieldMap.keySet()){
-            //:::构造列的部分
+            // 构造列的部分
             columns.append(fieldName).append(", ");
-            //:::构造values的部分
+            // 构造values的部分
             values.append("?, ");
 
-            //:::获得key对应的value
+            // 获得key对应的value
             Object value = fieldMap.get(fieldName);
-            //:::将其加入参数值列表
+            // 将其加入参数值列表
             params.add(value);
         }
 
-        //:::将列和value的最后一个逗号删除,并且在字符串的最后用 ')' 代替
+        // 将列和value的最后一个逗号删除,并且在字符串的最后用 ')' 代替
         columns.replace(columns.lastIndexOf(", "),columns.length()-1,")");
         values.replace(values.lastIndexOf(", "),values.length()-1,")");
 
-        //:::拼接构造出最终的sql
+        // 拼接构造出最终的sql
         sql += columns + "values" + values;
 
         return executeUpdate(sql,params.toArray()) == 1;
@@ -234,10 +233,10 @@ public class DataBaseHelper {
      * delete删除接口
      */
     public static <T> boolean deleteEntity(String id,Class<T> entityClass){
-        //:::获得表名
+        // 获得表名
         String tableName = getTableName(entityClass);
 
-        //:::按照约定,主键名必须为id
+        // 按照约定,主键名必须为id
         String sql = "delete from " + tableName + " where id = ?";
 
         return executeUpdate(sql,id) == 1;
@@ -254,35 +253,35 @@ public class DataBaseHelper {
             return false;
         }
 
-        //:::按照约定,获得表名
+        // 按照约定,获得表名
         String tableName = getTableName(entityClass);
-        //:::构造update语句开头
+        // 构造update语句开头
         String sql = "update " + tableName + " set ";
 
-        //:::sql列的部分
+        // sql列的部分
         StringBuilder columns = new StringBuilder();
-        //:::参数部分
+        // 参数部分
         List<Object> params = new ArrayList<>();
 
-        //:::构造update语句主体
+        // 构造update语句主体
         for(String fieldName : fieldMap.keySet()){
             Object value = fieldMap.get(fieldName);
 
-            //:::如果字段不为空,才加入sql
+            // 如果字段不为空,才加入sql
             if(value != null){
                 params.add(value);
                 columns.append(fieldName).append("=?, ");
             }
         }
 
-        //:::将列的最后一个逗号删除
+        // 将列的最后一个逗号删除
         columns.replace(columns.lastIndexOf(", "),columns.length(),"");
-        //:::加上查询条件 (查询条件默认为主键id)
+        // 加上查询条件 (查询条件默认为主键id)
         columns.append(" where id = ?");
-        //:::'?'参数最后加上查询条件id
+        // '?'参数最后加上查询条件id
         params.add(id);
 
-        //:::将sql字符串拼接
+        // 将sql字符串拼接
         sql += columns;
 
         return executeUpdate(sql,params.toArray()) == 1;
@@ -299,7 +298,7 @@ public class DataBaseHelper {
         try {
             String sql;
             while((sql = bufferedReader.readLine()) != null){
-                //:::执行sql语句
+                // 执行sql语句
                 executeUpdate(sql);
             }
         } catch (IOException e) {
