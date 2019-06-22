@@ -1,18 +1,12 @@
 package com.xiongyx.helpler;
 
 import com.xiongyx.HelperLoader;
-import com.xiongyx.annotation.MyRequestParam;
-import com.xiongyx.bean.MyModel;
-import com.xiongyx.bean.MyModelAndView;
 import com.xiongyx.bean.RequestHandler;
 import com.xiongyx.bean.RequestHandlerKey;
 import com.xiongyx.enums.RequestHttpMethodEnum;
 import com.xiongyx.helper.BeanFactory;
 import com.xiongyx.util.ClassUtil;
-import com.xiongyx.util.JsonUtil;
 import com.xiongyx.util.ReflectionUtil;
-import com.xiongyx.util.TypeUtil;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
