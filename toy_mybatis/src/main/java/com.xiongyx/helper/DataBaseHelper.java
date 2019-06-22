@@ -1,10 +1,8 @@
 package com.xiongyx.helper;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.xiongyx.constants.ConfigConstants;
 import com.xiongyx.util.BeanUtil;
 import com.xiongyx.util.CollectionUtil;
-import com.xiongyx.util.PropsUtil;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -21,7 +19,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * 数据库操作辅助类
@@ -68,7 +65,7 @@ public class DataBaseHelper {
 
     static{
         DRIVER = DataBaseConfigHelper.getDBDriver();
-        URL = DataBaseConfigHelper.getDBDriver();
+        URL = DataBaseConfigHelper.getDBUrl();
         USERNAME = DataBaseConfigHelper.getDBUserName();
         PASSWORD = DataBaseConfigHelper.getDBPassword();
 

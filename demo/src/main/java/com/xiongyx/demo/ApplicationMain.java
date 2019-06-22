@@ -1,9 +1,6 @@
 package com.xiongyx.demo;
 
-import com.xiongyx.HelperLoader;
-import com.xiongyx.helper.BeanFactory;
-
-import java.util.Map;
+import com.xiongyx.helper.DataBaseHelper;
 
 /**
  * @author xiongyx
@@ -17,11 +14,13 @@ public class ApplicationMain {
 //
 //        Map<Class<?>,Object> beanMap = BeanFactory.getBeanMap();
 
-        String path = "/test/251656777/bcd";
-        String pattern = "/test/{abc}/bcd";
+//        String path = "/test/251656777/bcd";
+//        String pattern = "/test/{abc}/bcd";
+//
+//        System.out.println(path.startsWith("/"));
+//        System.out.println(pattern.startsWith("/"));
 
-        System.out.println(path.startsWith("/"));
-        System.out.println(pattern.startsWith("/"));
 
+        DataBaseHelper.getConnection();
     }
 }
