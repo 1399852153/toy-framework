@@ -1,10 +1,7 @@
 package com.xiongyx.model;
 
-import com.xiongyx.constant.Constant;
 import com.xiongyx.helper.MapperParseHelper;
-import com.xiongyx.util.XmlUtil;
-import org.dom4j.Document;
-import org.dom4j.Element;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,12 +16,15 @@ import java.util.*;
  */
 public class Configuration {
 
-    private static Map<String,MappedStatement> mappedStatementMap = new HashMap<>();
+    private static final Logger logger = Logger.getLogger(Configuration.class);
 
-    private static Map<String,List<MappedStatement>> mappedStatementFileMap = new HashMap<>();
+    private static final Map<String,MappedStatement> MAPPED_STATEMENT_MAP = new HashMap<>();
+
+    private static final Map<String,List<MappedStatement>> MAPPED_STATEMENT_FILE_MAP = new HashMap<>();
 
     static{
         try {
+            // 扫描mapper文件夹下所有mapper文件
             Enumeration<URL> urls = Configuration.class.getClassLoader().getResources("mapper");
 
             while(urls.hasMoreElements()){
@@ -32,11 +32,12 @@ public class Configuration {
                 scanMapperXml(url);
             }
 
-//            mappedStatementMap.values().forEach(System.out::println);
-            mappedStatementFileMap.entrySet()
-                .forEach(System.out::println);
+            MAPPED_STATEMENT_MAP.values().forEach(System.out::println);
+            MAPPED_STATEMENT_FILE_MAP.entrySet().forEach(System.out::println);
+
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("scan mapper-xml error",e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -44,20 +45,33 @@ public class Configuration {
         // file(文件)类型
         String packagePath = url.getPath().replace("%20"," ");
 
-        File[] files = new File(packagePath).listFiles(
-            file-> file.isFile() && file.getName().endsWith(".xml")
+        // 解析当前目录下所有mapper-xml
+        parseMapperXml(new File(packagePath));
+    }
+
+    private static void parseMapperXml(File file){
+        File[] files = file.listFiles(
+            item-> item.isFile() && item.getName().endsWith(".xml") || item.isDirectory()
         );
 
         if(files == null){
             return;
         }
 
-        for(File file : files){
-            List<MappedStatement> mappedStatementList = MapperParseHelper.parseMapperXml(file);
-            mappedStatementFileMap.put(file.getName(),mappedStatementList);
-            for(MappedStatement mappedStatement : mappedStatementList){
-                mappedStatementMap.put(mappedStatement.getSqlId(),mappedStatement);
+        for(File fileItem : files){
+            if(fileItem.isFile()){
+                doParseMapperXml(fileItem);
+            }else{
+                parseMapperXml(fileItem);
             }
+        }
+    }
+
+    private static void doParseMapperXml(File file){
+        List<MappedStatement> mappedStatementList = MapperParseHelper.parseMapperXml(file);
+        MAPPED_STATEMENT_FILE_MAP.put(file.getName(),mappedStatementList);
+        for(MappedStatement mappedStatement : mappedStatementList){
+            MAPPED_STATEMENT_MAP.put(mappedStatement.getSqlId(),mappedStatement);
         }
     }
 }
