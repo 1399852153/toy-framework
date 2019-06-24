@@ -7,6 +7,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,7 +23,8 @@ public class Configuration {
     private static Map<String,MappedStatement> mappedStatementMap = new HashMap<>();
 
     static{
-        Document document = XmlUtil.readXml(new File("D:\\github\\toy-framework\\demo\\src\\main\\resources\\mapper\\UserMapper.xml"));
+        URL url = Configuration.class.getClassLoader().getResource("mapper/UserMapper.xml");
+        Document document = XmlUtil.readXml(url);
 
         // 获取xml中的根元素
         Element rootElement = document.getRootElement();
