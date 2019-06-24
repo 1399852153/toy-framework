@@ -2,7 +2,7 @@
  * 文件名：Constant.java 版权：Copyright by www.huawei.com 描述： 修改人：ZTE 修改时间：2019年3月8日 跟踪单号： 修改单号： 修改内容：
  */
 
-package com.xiongyx.constants;
+package com.xiongyx.constant;
 
 /**
  * 〈一句话功能简述〉

@@ -1,6 +1,5 @@
 package com.xiongyx.demo;
 
-import com.xiongyx.helper.DataBaseHelper;
 import com.xiongyx.util.XmlUtil;
 
 import java.io.File;
@@ -27,6 +26,6 @@ public class ApplicationMain {
 //        DataBaseHelper.getConnection();
 
         File file = new File("D:\\github\\toy-framework\\demo\\src\\main\\resources\\mapper\\UserMapper.xml");
-        XmlUtil.readMapperXml(file);
+        XmlUtil.readXml(file);
     }
 }

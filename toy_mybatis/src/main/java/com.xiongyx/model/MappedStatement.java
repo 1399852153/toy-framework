@@ -1,10 +1,13 @@
 package com.xiongyx.model;
 
-import java.sql.SQLType;
+import com.xiongyx.constant.Constant;
+
 
 /**
  * @author xiongyx
  * @date 2019/6/21
+ *
+ * sql单元
  */
 public class MappedStatement {
 
@@ -18,7 +21,7 @@ public class MappedStatement {
 
     private String sqlSource;
 
-    private SQLType sqlCommandType;
+    private Constant.SqlType sqlCommandType;
 
     public String getNameSpace() {
         return nameSpace;
@@ -60,11 +63,11 @@ public class MappedStatement {
         this.sqlSource = sqlSource;
     }
 
-    public SQLType getSqlCommandType() {
+    public Constant.SqlType getSqlCommandType() {
         return sqlCommandType;
     }
 
-    public void setSqlCommandType(SQLType sqlCommandType) {
+    public void setSqlCommandType(Constant.SqlType sqlCommandType) {
         this.sqlCommandType = sqlCommandType;
     }
 }

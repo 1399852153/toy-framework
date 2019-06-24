@@ -1,58 +1,33 @@
-/**
- * 
- */
 package com.xiongyx.util;
 
-
-import com.xiongyx.constants.Constant;
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.File;
-import java.util.Iterator;
-
 
 /**
- * XmlUtil.java
+ * Xml工具类
  */
 public final class XmlUtil {
 
+    private static Logger logger = Logger.getLogger(XmlUtil.class);
+
     /**
-     * readMapperXml
-     * 
-     * @param fileName
-     * @see
+     * readXml
      */
-    @SuppressWarnings("rawtypes")
-    public static void readMapperXml(File fileName) {
+    public static Document readXml(File fileName) {
         try {
             // 创建一个读取器
             SAXReader saxReader = new SAXReader();
-            saxReader.setEncoding(Constant.CHARSET_UTF8);
+            saxReader.setEncoding("UTF-8");
 
             // 读取文件内容
-            Document document = saxReader.read(fileName);
-
-            // 获取xml中的根元素
-            Element rootElement = document.getRootElement();
-
-            // 不是beans根元素的，文件不对
-            if (!Constant.XML_ROOT_LABEL.equals(rootElement.getName())) {
-                System.err.println("mapper xml文件根元素不是mapper");
-                return;
-            }
-
-            String namespace = rootElement.attributeValue(Constant.XML_SELECT_NAMESPACE);
-
-            for (Iterator iterator = rootElement.elementIterator(); iterator.hasNext(); ) {
-                Element element = (Element) iterator.next();
-                String eleName = element.getName();
-            }
+            return saxReader.read(fileName);
         } catch (DocumentException e) {
-            e.printStackTrace();
+            logger.info("read xml error",e);
+            throw new RuntimeException(e);
         }
-
     }
 }
