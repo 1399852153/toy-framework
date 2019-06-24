@@ -28,7 +28,6 @@ public class MapperParseHelper {
         }
         else {
             // 其他标签自己实现
-            System.err.println("不支持此xml标签解析:" + eleName);
             statement.setSqlCommandType(Constant.SqlType.DEFAULT);
         }
 
@@ -38,8 +37,6 @@ public class MapperParseHelper {
         statement.setSqlId(sqlId);
         statement.setNameSpace(namespace);
         statement.setSqlSource(StringUtils.trim(statementElement.getStringValue()));
-
-        System.out.println(statement);
 
         return statement;
     }

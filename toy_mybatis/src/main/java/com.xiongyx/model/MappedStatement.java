@@ -2,6 +2,7 @@ package com.xiongyx.model;
 
 import com.xiongyx.constant.Constant;
 
+import java.util.StringJoiner;
 
 /**
  * @author xiongyx
@@ -69,5 +70,16 @@ public class MappedStatement {
 
     public void setSqlCommandType(Constant.SqlType sqlCommandType) {
         this.sqlCommandType = sqlCommandType;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", MappedStatement.class.getSimpleName() + "[", "]").add("nameSpace='" + nameSpace + "'")
+            .add("sqlId='" + sqlId + "'")
+            .add("paramType='" + paramType + "'")
+            .add("resultType='" + resultType + "'")
+            .add("sqlSource='" + sqlSource + "'")
+            .add("sqlCommandType=" + sqlCommandType)
+            .toString();
     }
 }

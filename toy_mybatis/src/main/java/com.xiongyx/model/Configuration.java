@@ -6,7 +6,6 @@ import com.xiongyx.util.XmlUtil;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
-import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,5 +46,7 @@ public class Configuration {
                 throw new RuntimeException("has same sqlID sqlId=" + mappedStatement.getSqlId());
             }
         }
+
+        mappedStatementMap.values().forEach(System.out::println);
     }
 }
