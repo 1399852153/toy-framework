@@ -6,10 +6,10 @@ import com.xiongyx.util.XmlUtil;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author xiongyx
@@ -21,32 +21,43 @@ public class Configuration {
 
     private static Map<String,MappedStatement> mappedStatementMap = new HashMap<>();
 
+    private static Map<String,List<MappedStatement>> mappedStatementFileMap = new HashMap<>();
+
     static{
-        URL url = Configuration.class.getClassLoader().getResource("mapper/UserMapper.xml");
-        Document document = XmlUtil.readXml(url);
+        try {
+            Enumeration<URL> urls = Configuration.class.getClassLoader().getResources("mapper");
 
-        // 获取xml中的根元素
-        Element rootElement = document.getRootElement();
+            while(urls.hasMoreElements()){
+                URL url = urls.nextElement();
+                scanMapperXml(url);
+            }
 
-        // 不是beans根元素的，文件不对
-        if (!Constant.XML_ROOT_LABEL.equals(rootElement.getName())) {
-            System.err.println("mapper xml文件根元素不是mapper");
+//            mappedStatementMap.values().forEach(System.out::println);
+            mappedStatementFileMap.entrySet()
+                .forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void scanMapperXml(URL url){
+        // file(文件)类型
+        String packagePath = url.getPath().replace("%20"," ");
+
+        File[] files = new File(packagePath).listFiles(
+            file-> file.isFile() && file.getName().endsWith(".xml")
+        );
+
+        if(files == null){
+            return;
         }
 
-        String namespace = rootElement.attributeValue(Constant.XML_SELECT_NAMESPACE);
-        Iterator iterator = rootElement.elementIterator();
-        while(iterator.hasNext()) {
-            Element element = (Element)iterator.next();
-            MappedStatement mappedStatement = MapperParseHelper.parseMappedStatement(namespace,element);
-
-            // 存入map映射
-            MappedStatement sameKey = mappedStatementMap.put(mappedStatement.getSqlId(),mappedStatement);
-            if(sameKey != null){
-                // 发现存在相同sqlID的 mappedStatement
-                throw new RuntimeException("has same sqlID sqlId=" + mappedStatement.getSqlId());
+        for(File file : files){
+            List<MappedStatement> mappedStatementList = MapperParseHelper.parseMapperXml(file);
+            mappedStatementFileMap.put(file.getName(),mappedStatementList);
+            for(MappedStatement mappedStatement : mappedStatementList){
+                mappedStatementMap.put(mappedStatement.getSqlId(),mappedStatement);
             }
         }
-
-        mappedStatementMap.values().forEach(System.out::println);
     }
 }

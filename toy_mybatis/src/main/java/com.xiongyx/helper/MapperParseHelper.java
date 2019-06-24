@@ -2,8 +2,16 @@ package com.xiongyx.helper;
 
 import com.xiongyx.constant.Constant;
 import com.xiongyx.model.MappedStatement;
+import com.xiongyx.util.XmlUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.dom4j.Document;
 import org.dom4j.Element;
+
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author xiongyx
@@ -13,7 +21,34 @@ import org.dom4j.Element;
  */
 public class MapperParseHelper {
 
-    public static MappedStatement parseMappedStatement(String namespace, Element statementElement){
+    public static List<MappedStatement> parseMapperXml(File xmlUrl){
+        Document document = XmlUtil.readXmlByFile(xmlUrl);
+
+        // 获取xml中的根元素
+        Element rootElement = document.getRootElement();
+
+        // 不是beans根元素的，文件不对
+        if (!Constant.XML_ROOT_LABEL.equals(rootElement.getName())) {
+            System.err.println("mapper xml文件根元素不是mapper");
+        }
+
+        String namespace = rootElement.attributeValue(Constant.XML_SELECT_NAMESPACE);
+        Iterator iterator = rootElement.elementIterator();
+
+        // 当前xml文件中的sql单元列表
+        List<MappedStatement> mappedStatementList = new ArrayList<>();
+        while(iterator.hasNext()) {
+            Element element = (Element)iterator.next();
+            MappedStatement mappedStatement = MapperParseHelper.parseMappedStatement(namespace,element);
+
+            // 加入 当前xml文件中的sql单元列表
+            mappedStatementList.add(mappedStatement);
+        }
+
+        return mappedStatementList;
+    }
+
+    private static MappedStatement parseMappedStatement(String namespace, Element statementElement){
         String eleName = statementElement.getName();
 
         MappedStatement statement = new MappedStatement();
