@@ -33,8 +33,8 @@ public class Configuration {
         }
 
         String namespace = rootElement.attributeValue(Constant.XML_SELECT_NAMESPACE);
-
-        for (Iterator iterator = rootElement.elementIterator(); iterator.hasNext();) {
+        Iterator iterator = rootElement.elementIterator();
+        while(iterator.hasNext()) {
             Element element = (Element)iterator.next();
             MappedStatement mappedStatement = MapperParseHelper.parseMappedStatement(namespace,element);
 
