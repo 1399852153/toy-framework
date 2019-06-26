@@ -41,6 +41,10 @@ public class Configuration {
         }
     }
 
+    public MappedStatement getMappedStatement(String statementID){
+        return MAPPED_STATEMENT_MAP.get(statementID);
+    }
+
     private static void scanMapperXml(URL url){
         // file(文件)类型
         String packagePath = url.getPath().replace("%20"," ");
