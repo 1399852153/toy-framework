@@ -1,8 +1,11 @@
 package com.xiongyx.execute;
 
+import com.xiongyx.helper.DataBaseHelper;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
 
+import java.net.ConnectException;
+import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -20,6 +23,11 @@ public class SimpleExecutor implements Executor{
     @Override
     public <E> List<E> doQuery(MappedStatement ms, Object parameter) {
         // todo 查询数据库
+
+        // 获得数据库连接
+        Connection connection = DataBaseHelper.getConnection();
+
+
 
         return null;
     }
