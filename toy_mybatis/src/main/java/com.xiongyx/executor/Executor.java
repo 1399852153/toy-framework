@@ -1,4 +1,4 @@
-package com.xiongyx.execute;
+package com.xiongyx.executor;
 
 import com.xiongyx.model.MappedStatement;
 
@@ -13,10 +13,10 @@ public interface Executor {
     /**
      * 查询
      */
-    <E> List<E> doQuery(MappedStatement ms, Object parameter);
+    <E> List<E> doQuery(MappedStatement mappedStatement, Object parameter);
 
     /**
      * 更新
      */
-    void doUpdate(MappedStatement ms, Object parameter);
+    void doUpdate(MappedStatement mappedStatement, Object parameter);
 }

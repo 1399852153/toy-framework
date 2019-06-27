@@ -1,7 +1,7 @@
 package com.xiongyx.session.defaults;
 
-import com.xiongyx.execute.Executor;
-import com.xiongyx.execute.SimpleExecutor;
+import com.xiongyx.executor.Executor;
+import com.xiongyx.executor.SimpleExecutor;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
 import com.xiongyx.session.SqlSession;
