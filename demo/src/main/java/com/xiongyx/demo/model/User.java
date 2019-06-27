@@ -8,18 +8,26 @@ public class User {
 
     private String id;
 
-    private String name;
+    private String userName;
 
     private int age;
 
     private double money;
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getAge() {
@@ -41,7 +49,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
                 ", age=" + age +
                 ", money=" + money +
                 '}';
