@@ -6,6 +6,8 @@ package com.xiongyx.demo.model;
  */
 public class User {
 
+    private String id;
+
     private String name;
 
     private int age;
