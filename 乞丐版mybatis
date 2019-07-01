@@ -10,8 +10,9 @@ MappedStatement
 
 为什么mybatis需要抽象 Executor？
 Executor默认的是simple，还存在batch、reuse等不同处理方式的executor
+为什么mybatis需要抽象 ResultSetHandler？
+resultType/resultMap等需要不同的处理逻辑来对jdbc的结果集进行对象映射
 
 为什么mybatis需要抽象 SqlSessionFactory？
 为什么mybatis需要抽象 ParameterHandler？
 为什么mybatis需要抽象 StatementHandler？
-为什么mybatis需要抽象 ResultSetHandler？
