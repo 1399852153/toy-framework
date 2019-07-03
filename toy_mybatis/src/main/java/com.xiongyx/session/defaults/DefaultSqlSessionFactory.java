@@ -1,7 +1,5 @@
 package com.xiongyx.session.defaults;
 
-import com.xiongyx.executor.Executor;
-import com.xiongyx.executor.SimpleExecutor;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
@@ -12,10 +10,14 @@ import com.xiongyx.session.SqlSessionFactory;
  */
 public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
+    private Configuration configuration;
 
+    public DefaultSqlSessionFactory(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     @Override
     public SqlSession getSession() {
-        return null;
+        return new DefaultSqlSession(configuration);
     }
 }

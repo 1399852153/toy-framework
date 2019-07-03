@@ -33,9 +33,5 @@ public class ApplicationMain {
 //
 //        File file = new File("D:\\github\\toy-framework\\demo\\src\\main\\resources\\mapper\\UserMapper.xml");
 //        XmlUtil.readXml(file);
-
-        Configuration configuration = new Configuration();
-        List<Object> list = new DefaultSqlSession(configuration).selectList("test.dao.UserMapper.getAll",new Object());
-        System.out.println(list);
     }
 }
