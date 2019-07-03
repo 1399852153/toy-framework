@@ -35,6 +35,8 @@ public class ApplicationMain {
     }
 
     private static void mybatisDemo(){
+        // todo 实现sql的对象传参
+
         Configuration configuration = new Configuration();
 
         SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.getSqlSessionFactory(configuration);
