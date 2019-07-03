@@ -1,13 +1,10 @@
 package com.xiongyx.demo;
 
 import com.xiongyx.model.Configuration;
+import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
-import com.xiongyx.session.defaults.DefaultSqlSession;
-import com.xiongyx.session.defaults.DefaultSqlSessionFactory;
-import com.xiongyx.util.ClassUtil;
-import com.xiongyx.util.XmlUtil;
+import com.xiongyx.session.SqlSessionFactoryBuilder;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -33,5 +30,16 @@ public class ApplicationMain {
 //
 //        File file = new File("D:\\github\\toy-framework\\demo\\src\\main\\resources\\mapper\\UserMapper.xml");
 //        XmlUtil.readXml(file);
+
+        mybatisDemo();
+    }
+
+    private static void mybatisDemo(){
+        Configuration configuration = new Configuration();
+
+        SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.getSqlSessionFactory(configuration);
+        SqlSession sqlSession = sqlSessionFactory.getSession();
+        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getAll",new Object());
+        System.out.println(list);
     }
 }
