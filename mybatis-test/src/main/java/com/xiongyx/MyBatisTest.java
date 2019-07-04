@@ -18,9 +18,13 @@ public class MyBatisTest {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
         SqlSession session = sqlSessionFactory.openSession();
         try {
-            User user = session.selectOne("getUser", "123");
+            User param = new User();
+            param.setId("123");
+            param.setAge(12);
+            param.setMoney(32141);
+            User user = session.selectOne("getUser", param);
             session.commit();
-            System.out.println(user.getUserName());
+            System.out.println(user);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

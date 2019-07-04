@@ -1,5 +1,6 @@
 package com.xiongyx.demo;
 
+import com.xiongyx.demo.model.User;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
@@ -41,7 +42,9 @@ public class ApplicationMain {
 
         SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.getSqlSessionFactory(configuration);
         SqlSession sqlSession = sqlSessionFactory.getSession();
-        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getAll",new Object());
+
+        User user = new User();
+        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getAll",user);
         System.out.println(list);
     }
 }

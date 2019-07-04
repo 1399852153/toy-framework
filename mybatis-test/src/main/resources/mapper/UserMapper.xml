@@ -4,7 +4,11 @@
 <mapper namespace="test.dao.UserMapper">
 
 	<select id="getUser" resultType="com.xiongyx.User">
-		select * from user where id = #{id}
+		select * from user
+		where
+			id = #{id}
+		and age = #{age}
+		and money = #{money}
 	</select>
 	
 	<select id="getAll" resultType="com.xiongyx.User">

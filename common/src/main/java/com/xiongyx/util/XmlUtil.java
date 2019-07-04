@@ -15,15 +15,19 @@ public final class XmlUtil {
 
     private static Logger logger = Logger.getLogger(XmlUtil.class);
 
+    private static SAXReader saxReader;
+
+    static {
+        // 创建一个读取器
+        saxReader = new SAXReader();
+        saxReader.setEncoding("UTF-8");
+    }
+
     /**
      * readXml
      */
     public static Document readXmlByFile(File file) {
         try {
-            // 创建一个读取器
-            SAXReader saxReader = new SAXReader();
-            saxReader.setEncoding("UTF-8");
-
             // 读取文件内容
             return saxReader.read(file);
         } catch (DocumentException e) {
@@ -37,10 +41,6 @@ public final class XmlUtil {
      */
     public static Document readXmlByURL(URL url) {
         try {
-            // 创建一个读取器
-            SAXReader saxReader = new SAXReader();
-            saxReader.setEncoding("UTF-8");
-
             // 读取文件内容
             return saxReader.read(url);
         } catch (DocumentException e) {
