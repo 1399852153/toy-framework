@@ -44,7 +44,7 @@ public class ApplicationMain {
         SqlSession sqlSession = sqlSessionFactory.getSession();
 
         User user = new User();
-        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getAll",user);
+        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
         System.out.println(list);
     }
 }

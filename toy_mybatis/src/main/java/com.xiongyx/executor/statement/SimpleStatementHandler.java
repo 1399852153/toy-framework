@@ -47,18 +47,15 @@ public class SimpleStatementHandler implements StatementHandler
      * @throws SQLException
      */
     @Override
-    public PreparedStatement prepare(Connection paramConnection)
-        throws SQLException
-    {
+    public PreparedStatement prepare(Connection paramConnection) throws SQLException {
         String originalSql = mappedStatement.getSqlSource();
 
-        if (StringUtils.isNotEmpty(originalSql))
-        {
+        if (StringUtils.isNotEmpty(originalSql)) {
             // 替换#{}，预处理，防止SQL注入
-            return paramConnection.prepareStatement(parseSymbol(originalSql));
+            String sql = parseSymbol(originalSql);
+            return paramConnection.prepareStatement(sql);
         }
-        else
-        {
+        else {
             throw new SQLException("original sql is null.");
         }
     }
@@ -71,9 +68,7 @@ public class SimpleStatementHandler implements StatementHandler
      * @throws SQLException
      */
     @Override
-    public ResultSet query(PreparedStatement preparedStatement)
-        throws SQLException
-    {
+    public ResultSet query(PreparedStatement preparedStatement) throws SQLException {
         return preparedStatement.executeQuery();
     }
 
@@ -84,9 +79,7 @@ public class SimpleStatementHandler implements StatementHandler
      * @throws SQLException
      */
     @Override
-    public void update(PreparedStatement preparedStatement)
-        throws SQLException
-    {
+    public void update(PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.executeUpdate();
     }
 
@@ -96,8 +89,7 @@ public class SimpleStatementHandler implements StatementHandler
      * @param source
      * @return
      */
-    private static String parseSymbol(String source)
-    {
+    private static String parseSymbol(String source) {
         source = source.trim();
         Matcher matcher = param_pattern.matcher(source);
         return matcher.replaceAll("?");

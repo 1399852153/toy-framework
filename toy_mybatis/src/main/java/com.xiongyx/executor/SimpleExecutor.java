@@ -41,7 +41,7 @@ public class SimpleExecutor implements Executor{
             PreparedStatement preparedStatement = statementHandler.prepare(connection);
 
             // 实例化ParameterHandler，将SQL语句中？参数化
-            ParameterHandler parameterHandler = new DefaultParameterHandler(parameter);
+            ParameterHandler parameterHandler = new DefaultParameterHandler(parameter,mappedStatement);
             parameterHandler.setParameters(preparedStatement);
 
             // 执行SQL，得到结果集ResultSet
