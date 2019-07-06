@@ -44,7 +44,7 @@ public class DefaultParameterHandler implements ParameterHandler
             String paramType = mappedStatement.getParamType();
 
             // 解析sqlSource中的#{}，获得其中的值，按照顺序构造一个实参列表
-            List realParams = SqlParamConvertHelper.parseSqlParam(sqlSource,paramType,parameter);
+            List realParams = SqlParamConvertHelper.parseSqlParam(sqlSource,parameter);
             for(int i=0; i<realParams.size(); i++){
                 Object realParam = realParams.get(i);
                 // 向PreparedStatement注入参数 setObject(index,param),用于顶替?

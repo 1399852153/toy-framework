@@ -44,7 +44,7 @@ public class ReflectionUtil {
             result = method.invoke(obj,args);
             return result;
         } catch (Exception e) {
-           LOGGER.info("invoke method failure",e);
+            LOGGER.info("invoke method failure",e);
             throw new RuntimeException(e);
         }
     }
@@ -62,6 +62,17 @@ public class ReflectionUtil {
             LOGGER.info("set field failure",e);
             throw new RuntimeException(e);
         }
+    }
 
+    /***
+     * 将通过keyName获得对应的bean对象的get方法名称的字符串
+     * @param keyName 属性名
+     * @return  返回get方法名称的字符串
+     */
+    public static String makeGetMethodName(String keyName){
+        //:::将第一个字母转为大写
+        String newKeyName = StringUtil.transFirstCharUpperCase(keyName);
+
+        return "get" + newKeyName;
     }
 }
