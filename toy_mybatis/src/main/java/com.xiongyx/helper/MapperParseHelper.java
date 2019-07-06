@@ -57,11 +57,9 @@ public class MapperParseHelper {
             String resultType = statementElement.attributeValue(Constant.XML_SELECT_RESULTTYPE);
             statement.setResultType(resultType);
             statement.setSqlCommandType(Constant.SqlType.SELECT);
-        }
-        else if (Constant.SqlType.UPDATE.value().equals(eleName)) {
+        } else if (Constant.SqlType.UPDATE.value().equals(eleName)) {
             statement.setSqlCommandType(Constant.SqlType.UPDATE);
-        }
-        else {
+        } else {
             // 其他标签自己实现
             statement.setSqlCommandType(Constant.SqlType.DEFAULT);
         }
