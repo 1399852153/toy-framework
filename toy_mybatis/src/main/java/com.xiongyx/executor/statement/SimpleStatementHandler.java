@@ -7,6 +7,7 @@ package com.xiongyx.executor.statement;
 import com.xiongyx.model.MappedStatement;
 import com.xiongyx.pattern.Patterns;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +24,7 @@ import java.util.regex.Matcher;
  */
 public class SimpleStatementHandler implements StatementHandler {
 
+    private static Logger logger = Logger.getLogger(SimpleStatementHandler.class);
 
     private MappedStatement mappedStatement;
 
@@ -76,6 +78,7 @@ public class SimpleStatementHandler implements StatementHandler {
      */
     @Override
     public ResultSet query(PreparedStatement preparedStatement) throws SQLException {
+        logger.info(preparedStatement);
         return preparedStatement.executeQuery();
     }
 
