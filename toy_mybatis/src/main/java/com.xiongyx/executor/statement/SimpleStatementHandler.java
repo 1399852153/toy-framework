@@ -5,6 +5,7 @@ package com.xiongyx.executor.statement;
 
 
 import com.xiongyx.model.MappedStatement;
+import com.xiongyx.pattern.Patterns;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.Connection;
@@ -12,8 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 
 /**
@@ -22,12 +21,20 @@ import java.util.regex.Pattern;
  * @author PLF
  * @date 2019年3月6日
  */
-public class SimpleStatementHandler implements StatementHandler
-{
-    /** #{}正则匹配 */
-    private static Pattern param_pattern = Pattern.compile("#\\{([^\\{\\}]*)\\}");
+public class SimpleStatementHandler implements StatementHandler {
+
 
     private MappedStatement mappedStatement;
+
+    public static void main(String[] args) {
+        String source = "select * from user where id=#{id}, age=#{age}, money=#{money}";
+        Matcher matcher = Patterns.param_pattern.matcher(source);
+
+        while(matcher.find()){
+            String str = matcher.group();
+            System.out.println(str);
+        }
+    }
 
     /**
      * 默认构造方法
@@ -91,7 +98,7 @@ public class SimpleStatementHandler implements StatementHandler
      */
     private static String parseSymbol(String source) {
         source = source.trim();
-        Matcher matcher = param_pattern.matcher(source);
+        Matcher matcher = Patterns.param_pattern.matcher(source);
         return matcher.replaceAll("?");
     }
 
