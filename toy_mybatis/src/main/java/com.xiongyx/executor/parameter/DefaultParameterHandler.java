@@ -4,9 +4,11 @@
 package com.xiongyx.executor.parameter;
 
 
+import com.xiongyx.helper.SqlParamConvertHelper;
 import com.xiongyx.model.MappedStatement;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 
 
 /**
@@ -40,17 +42,13 @@ public class DefaultParameterHandler implements ParameterHandler
         try {
             String sqlSource = mappedStatement.getSqlSource();
             String paramType = mappedStatement.getParamType();
-            Class clazz = Class.forName(paramType);
 
             // 解析sqlSource中的#{}，获得其中的值，按照顺序构造一个实参列表
-            // 向PreparedStatement注入参数 setObject(index,param),用于顶替?
-
-            if (parameter.getClass().isArray()) {
-                Object[] params = (Object[])parameter;
-                for (int i = 0; i < params.length; i++ ) {
-                    //Mapper保证传入参数类型匹配，这里就不做类型转换了
-                    ps.setObject(i +1, params[i]);
-                }
+            List realParams = SqlParamConvertHelper.parseSqlParam(sqlSource,paramType,parameter);
+            for(int i=0; i<realParams.size(); i++){
+                Object realParam = realParams.get(i);
+                // 向PreparedStatement注入参数 setObject(index,param),用于顶替?
+                ps.setObject(i+1,realParam);
             }
         } catch (Exception e) {
             e.printStackTrace();
