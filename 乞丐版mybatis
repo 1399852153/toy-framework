@@ -21,4 +21,8 @@ CallableStatementHandler 处理存储过程
 RoutingStatementHandler 根据MappedStatement类型，使用策略模式进行StatementHandler路由
 
 为什么mybatis需要抽象 SqlSessionFactory？
+因为可以以不同的方式 初始化mybatis，配置文件/文件流/环境变量等等
+
+当前目标
+resultType对结果集进行映射
 
