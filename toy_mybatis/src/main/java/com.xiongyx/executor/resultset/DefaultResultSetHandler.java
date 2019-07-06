@@ -37,42 +37,32 @@ public class DefaultResultSetHandler implements ResultSetHandler
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <E> List<E> handleResultSets(ResultSet resultSet)
-    {
-        try
-        {
+    public <E> List<E> handleResultSets(ResultSet resultSet) {
+        try {
 
             List<E> result = new ArrayList<>();
 
-            if (null == resultSet)
-            {
+            if (null == resultSet) {
                 return null;
             }
 
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 // 通过反射实例化返回类
                 Class<?> entityClass = Class.forName(mappedStatement.getResultType());
                 E entity = (E)entityClass.newInstance();
                 Field[] declaredFields = entityClass.getDeclaredFields();
 
-                for (Field field : declaredFields)
-                {
+                for (Field field : declaredFields) {
                     // 对成员变量赋值
                     field.setAccessible(true);
                     Class<?> fieldType = field.getType();
 
                     // 目前只实现了string和int转换
-                    if (String.class.equals(fieldType))
-                    {
+                    if (String.class.equals(fieldType)) {
                         field.set(entity, resultSet.getString(field.getName()));
-                    }
-                    else if (int.class.equals(fieldType) || Integer.class.equals(fieldType))
-                    {
+                    } else if (int.class.equals(fieldType) || Integer.class.equals(fieldType)) {
                         field.set(entity, resultSet.getInt(field.getName()));
-                    }
-                    else
-                    {
+                    } else {
                         // 其他类型自己转换，这里就直接设置了
                         field.set(entity, resultSet.getObject(field.getName()));
                     }
@@ -83,8 +73,7 @@ public class DefaultResultSetHandler implements ResultSetHandler
 
             return result;
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return null;
