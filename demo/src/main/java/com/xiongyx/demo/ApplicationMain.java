@@ -6,7 +6,10 @@ import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
 import com.xiongyx.session.SqlSessionFactoryBuilder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author xiongyx
@@ -43,11 +46,18 @@ public class ApplicationMain {
         SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.getSqlSessionFactory(configuration);
         SqlSession sqlSession = sqlSessionFactory.getSession();
 
-        User user = new User();
-        user.setId("123");
-        user.setAge(12);
-        user.setMoney(32141);
-        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
+//        User user = new User();
+//        user.setId("123");
+//        user.setAge(12);
+//        user.setMoney(32141);
+//        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
+//        System.out.println(list);
+
+        Map<String,Object> param = new HashMap<>();
+        param.put("id","123");
+        param.put("age",12);
+        param.put("money",32141);
+        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",param);
         System.out.println(list);
     }
 }
