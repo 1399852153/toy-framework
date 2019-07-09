@@ -1,6 +1,5 @@
 package com.xiongyx.demo;
 
-import com.xiongyx.demo.model.User;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
@@ -9,7 +8,6 @@ import com.xiongyx.session.SqlSessionFactoryBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * @author xiongyx
@@ -43,7 +41,7 @@ public class ApplicationMain {
 
         Configuration configuration = new Configuration();
 
-        SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.getSqlSessionFactory(configuration);
+        SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.build(configuration);
         SqlSession sqlSession = sqlSessionFactory.getSession();
 
 //        User user = new User();
