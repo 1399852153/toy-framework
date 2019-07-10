@@ -32,7 +32,7 @@ public class ConfigXmlParseHelper {
             logger.info("config-xml文件根元素不是" + ROOT_ELEMENT);
         }
 
-        // 解析environment
+        // todo 解析environment 目前只有dataSource配置
         Element environment = rootElement.element("environments");
 
 //        rootElement.
