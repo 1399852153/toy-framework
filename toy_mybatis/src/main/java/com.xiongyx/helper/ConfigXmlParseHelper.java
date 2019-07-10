@@ -27,7 +27,7 @@ public class ConfigXmlParseHelper {
         Document document = XmlUtil.readXml(reader);
         // 获取xml中的根元素
         Element rootElement = document.getRootElement();
-        // 不是beans根元素的，文件不对
+        // 根元素是否匹配
         if (!ROOT_ELEMENT.equals(rootElement.getName())) {
             logger.info("config-xml文件根元素不是" + ROOT_ELEMENT);
         }
