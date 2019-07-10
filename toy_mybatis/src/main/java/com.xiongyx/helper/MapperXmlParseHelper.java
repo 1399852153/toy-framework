@@ -4,6 +4,7 @@ import com.xiongyx.constant.Constant;
 import com.xiongyx.model.MappedStatement;
 import com.xiongyx.util.XmlUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
@@ -20,15 +21,17 @@ import java.util.List;
  */
 public class MapperXmlParseHelper {
 
+    private static final Logger logger = Logger.getLogger(ConfigXmlParseHelper.class);
+
     public static List<MappedStatement> parseMapperXml(File xmlUrl){
-        Document document = XmlUtil.readXmlByFile(xmlUrl);
+        Document document = XmlUtil.readXml(xmlUrl);
 
         // 获取xml中的根元素
         Element rootElement = document.getRootElement();
 
         // 不是beans根元素的，文件不对
         if (!Constant.XML_ROOT_LABEL.equals(rootElement.getName())) {
-            System.err.println("mapper xml文件根元素不是mapper");
+            logger.info("mapper xml文件根元素不是mapper");
         }
 
         String namespace = rootElement.attributeValue(Constant.XML_SELECT_NAMESPACE);

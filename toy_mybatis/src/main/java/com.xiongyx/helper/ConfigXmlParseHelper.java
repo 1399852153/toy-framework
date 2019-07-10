@@ -1,6 +1,11 @@
 package com.xiongyx.helper;
 
+import com.xiongyx.constant.Constant;
 import com.xiongyx.model.Configuration;
+import com.xiongyx.util.XmlUtil;
+import org.apache.log4j.Logger;
+import org.dom4j.Document;
+import org.dom4j.Element;
 
 import java.io.File;
 import java.io.Reader;
@@ -13,11 +18,25 @@ import java.io.Reader;
  */
 public class ConfigXmlParseHelper {
 
-    public static Configuration parseMapperXml(File xmlUrl){
-        return null;
-    }
+    private static final Logger logger = Logger.getLogger(ConfigXmlParseHelper.class);
+
+    private static final String ROOT_ELEMENT = "configuration";
+
 
     public static Configuration parseMapperXml(Reader reader){
+        Document document = XmlUtil.readXml(reader);
+        // 获取xml中的根元素
+        Element rootElement = document.getRootElement();
+        // 不是beans根元素的，文件不对
+        if (!ROOT_ELEMENT.equals(rootElement.getName())) {
+            logger.info("config-xml文件根元素不是" + ROOT_ELEMENT);
+        }
+
+        // 解析environment
+        Element environment = rootElement.element("environments");
+
+//        rootElement.
+
         return null;
     }
 }
