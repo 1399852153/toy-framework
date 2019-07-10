@@ -1,6 +1,6 @@
 package com.xiongyx.model;
 
-import com.xiongyx.helper.MapperParseHelper;
+import com.xiongyx.helper.MapperXmlParseHelper;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -72,7 +72,7 @@ public class Configuration {
     }
 
     private static void doParseMapperXml(File file){
-        List<MappedStatement> mappedStatementList = MapperParseHelper.parseMapperXml(file);
+        List<MappedStatement> mappedStatementList = MapperXmlParseHelper.parseMapperXml(file);
         MAPPED_STATEMENT_FILE_MAP.put(file.getName(),mappedStatementList);
         for(MappedStatement mappedStatement : mappedStatementList){
             MAPPED_STATEMENT_MAP.put(mappedStatement.getSqlId(),mappedStatement);

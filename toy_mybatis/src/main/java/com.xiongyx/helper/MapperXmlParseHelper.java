@@ -8,7 +8,6 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,9 +16,9 @@ import java.util.List;
  * @author xiongyx
  * @date 2019/6/24
  *
- * 解析mapper-xml文件
+ * mapper-xml文件 解析器
  */
-public class MapperParseHelper {
+public class MapperXmlParseHelper {
 
     public static List<MappedStatement> parseMapperXml(File xmlUrl){
         Document document = XmlUtil.readXmlByFile(xmlUrl);
@@ -39,7 +38,7 @@ public class MapperParseHelper {
         List<MappedStatement> mappedStatementList = new ArrayList<>();
         while(iterator.hasNext()) {
             Element element = (Element)iterator.next();
-            MappedStatement mappedStatement = MapperParseHelper.parseMappedStatement(namespace,element);
+            MappedStatement mappedStatement = MapperXmlParseHelper.parseMappedStatement(namespace,element);
 
             // 加入 当前xml文件中的sql单元列表
             mappedStatementList.add(mappedStatement);
