@@ -44,4 +44,5 @@ public class DefaultSqlSession implements SqlSession {
     public void insert(String statementId, Object parameter) {
 
     }
+
 }
