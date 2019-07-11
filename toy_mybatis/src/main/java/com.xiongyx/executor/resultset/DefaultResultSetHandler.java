@@ -8,6 +8,8 @@ import com.xiongyx.model.MappedStatement;
 import com.xiongyx.util.JsonUtil;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
@@ -51,7 +53,7 @@ public class DefaultResultSetHandler implements ResultSetHandler
 
 
 
-            // Class<E> eClass = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+            // FIXME mappedStatement  中的eclass  不正确
             Class<?> eClass = Class.forName(mappedStatement.getResultType());
 
 
@@ -76,11 +78,10 @@ public class DefaultResultSetHandler implements ResultSetHandler
             }
 
 
-            //
             // while (resultSet.next()) {
             //     // 通过反射实例化返回类
             //     Class<?> entityClass = Class.forName(mappedStatement.getResultType());
-            //     E entity = (E)entityClass.newInstance();
+            //     E entity = (E) entityClass.newInstance();
             //     Field[] declaredFields = entityClass.getDeclaredFields();
             //
             //     for (Field field : declaredFields) {

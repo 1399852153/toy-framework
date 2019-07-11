@@ -14,6 +14,9 @@ public class User {
 
     private double money;
 
+
+    private Date createtime;
+
     public String getId() {
         return id;
     }
@@ -44,6 +47,14 @@ public class User {
 
     public void setMoney(double money) {
         this.money = money;
+    }
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
     @Override

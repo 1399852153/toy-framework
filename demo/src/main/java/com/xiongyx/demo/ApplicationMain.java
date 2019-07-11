@@ -1,5 +1,6 @@
 package com.xiongyx.demo;
 
+import com.xiongyx.demo.model.User;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
@@ -50,6 +51,7 @@ public class ApplicationMain {
 //        user.setId("123");
 //        user.setAge(12);
 //        user.setMoney(32141);
+//           sqlSession.insert();
 //        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
 //        System.out.println(list);
 
@@ -57,7 +59,7 @@ public class ApplicationMain {
         param.put("id","123");
         param.put("age",12);
         param.put("money",32141);
-        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",param);
+        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUser",param);
         System.out.println(list);
     }
 }
