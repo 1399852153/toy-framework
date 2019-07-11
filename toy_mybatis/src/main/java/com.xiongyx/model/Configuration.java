@@ -19,7 +19,7 @@ public class Configuration {
 
     private static final Logger logger = Logger.getLogger(Configuration.class);
 
-    private static Environment environment;
+    private Environment environment;
 
     private static final Map<String,MappedStatement> MAPPED_STATEMENT_MAP = new HashMap<>();
 
@@ -42,6 +42,14 @@ public class Configuration {
             logger.info("scan mapper-xml error",e);
             throw new RuntimeException(e);
         }
+    }
+
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 
     public MappedStatement getMappedStatement(String statementID){
@@ -79,6 +87,25 @@ public class Configuration {
         MAPPED_STATEMENT_FILE_MAP.put(file.getName(),mappedStatementList);
         for(MappedStatement mappedStatement : mappedStatementList){
             MAPPED_STATEMENT_MAP.put(mappedStatement.getSqlId(),mappedStatement);
+        }
+    }
+
+    //==================================builder==============================
+
+    public static class Builder{
+        private Configuration target;
+
+        public Builder() {
+            target = new Configuration();
+        }
+
+        public Builder environment(Environment environment){
+            target.environment = environment;
+            return this;
+        }
+
+        public Configuration build(){
+            return target;
         }
     }
 }

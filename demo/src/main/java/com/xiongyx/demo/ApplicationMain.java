@@ -5,6 +5,9 @@ import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
 import com.xiongyx.session.SqlSessionFactoryBuilder;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,11 +40,10 @@ public class ApplicationMain {
     }
 
     private static void mybatisDemo(){
-        // todo 实现sql的对象传参
-
-        Configuration configuration = new Configuration();
-
-        SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.build(configuration);
+//        Configuration configuration = new Configuration();
+        InputStream inputStream = ApplicationMain.class.getClassLoader().getResourceAsStream("mybatis-config.xml");
+        Reader reader = new InputStreamReader(inputStream);
+        SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.build(reader);
         SqlSession sqlSession = sqlSessionFactory.getSession();
 
 //        User user = new User();

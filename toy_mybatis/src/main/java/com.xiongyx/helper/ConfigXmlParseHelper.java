@@ -1,7 +1,7 @@
 package com.xiongyx.helper;
 
 import com.xiongyx.datasource.DataSource;
-import com.xiongyx.datasource.DruidDataSource;
+import com.xiongyx.datasource.DruidDataSourceManager;
 import com.xiongyx.environment.Environment;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.util.XmlUtil;
@@ -27,7 +27,7 @@ public class ConfigXmlParseHelper {
     private static final String ROOT_ELEMENT = "configuration";
 
 
-    public static Configuration parseMapperXml(Reader reader){
+    public static Configuration parseConfigXml(Reader reader){
         Document document = XmlUtil.readXml(reader);
         // 获取xml中的根元素
         Element rootElement = document.getRootElement();
@@ -36,13 +36,15 @@ public class ConfigXmlParseHelper {
             logger.info("config-xml文件根元素不是" + ROOT_ELEMENT);
         }
 
-        // todo 解析environment 目前只有dataSource配置
+        // 解析environment 目前只有dataSource配置
         Element environmentNode = rootElement.element("environments");
 
         // 解析出Environment配置
         Environment environment = parseEnvironmentNode(environmentNode);
 
-        return null;
+        return new Configuration.Builder()
+                .environment(environment)
+                .build();
     }
 
     /**
@@ -60,7 +62,7 @@ public class ConfigXmlParseHelper {
         }
 
         // 构建数据源
-        DataSource dataSource = new DruidDataSource(dataSourceProperties);
+        DataSource dataSource = new DruidDataSourceManager(dataSourceProperties);
 
         // 返回Environment
         return new Environment(dataSource);

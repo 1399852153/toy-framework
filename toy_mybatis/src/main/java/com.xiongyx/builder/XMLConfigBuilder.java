@@ -24,7 +24,7 @@ public class XMLConfigBuilder {
     }
 
     public Configuration parse(){
-        Configuration configuration = ConfigXmlParseHelper.parseMapperXml(reader);
+        Configuration configuration = ConfigXmlParseHelper.parseConfigXml(reader);
         return configuration;
     }
 }

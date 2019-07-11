@@ -1,12 +1,13 @@
 package com.xiongyx.executor;
 
+import com.xiongyx.datasource.DataSource;
+import com.xiongyx.environment.Environment;
 import com.xiongyx.executor.parameter.DefaultParameterHandler;
 import com.xiongyx.executor.parameter.ParameterHandler;
 import com.xiongyx.executor.resultset.DefaultResultSetHandler;
 import com.xiongyx.executor.resultset.ResultSetHandler;
 import com.xiongyx.executor.statement.SimpleStatementHandler;
 import com.xiongyx.executor.statement.StatementHandler;
-import com.xiongyx.helper.DataBaseHelper;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
 
@@ -32,7 +33,9 @@ public class SimpleExecutor implements Executor{
     public <E> List<E> doQuery(MappedStatement mappedStatement, Object parameter) {
         try {
             // 获得数据库连接
-            Connection connection = DataBaseHelper.getConnection();
+            Environment environment = conf.getEnvironment();
+            DataSource dataSource = environment.getDataSource();
+            Connection connection = dataSource.getConnection();
 
             // 实例化StatementHandler对象，
             StatementHandler statementHandler = new SimpleStatementHandler(mappedStatement);
