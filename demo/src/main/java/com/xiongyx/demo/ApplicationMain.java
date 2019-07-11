@@ -54,7 +54,7 @@ public class ApplicationMain {
 //        System.out.println(list);
 
         Map<String,Object> param = new HashMap<>();
-        // param.put("id","123");
+        param.put("id","123");
         param.put("age",12);
         param.put("money",32141);
         List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",param);
