@@ -1,14 +1,18 @@
 package com.xiongyx.helper;
 
-import com.xiongyx.constant.Constant;
+import com.xiongyx.datasource.DataSource;
+import com.xiongyx.datasource.DruidDataSource;
+import com.xiongyx.environment.Environment;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.util.XmlUtil;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
-import java.io.File;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xiongyx
@@ -33,10 +37,32 @@ public class ConfigXmlParseHelper {
         }
 
         // todo 解析environment 目前只有dataSource配置
-        Element environment = rootElement.element("environments");
+        Element environmentNode = rootElement.element("environments");
 
-//        rootElement.
+        // 解析出Environment配置
+        Environment environment = parseEnvironmentNode(environmentNode);
 
         return null;
+    }
+
+    /**
+     * 解析Environment节点
+     * */
+    private static Environment parseEnvironmentNode(Element environmentNode){
+        Element dataSourceNode = environmentNode.element("dataSource");
+
+        List<Element> properties = dataSourceNode.elements("property");
+        Map<String,String> dataSourceProperties = new HashMap<>();
+        for(Element property : properties){
+            String name = property.attributeValue("name");
+            String value = property.attributeValue("value");
+            dataSourceProperties.put(name,value);
+        }
+
+        // 构建数据源
+        DataSource dataSource = new DruidDataSource(dataSourceProperties);
+
+        // 返回Environment
+        return new Environment(dataSource);
     }
 }

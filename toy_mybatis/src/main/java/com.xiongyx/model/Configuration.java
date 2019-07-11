@@ -1,5 +1,6 @@
 package com.xiongyx.model;
 
+import com.xiongyx.environment.Environment;
 import com.xiongyx.helper.MapperXmlParseHelper;
 import org.apache.log4j.Logger;
 
@@ -17,6 +18,8 @@ import java.util.*;
 public class Configuration {
 
     private static final Logger logger = Logger.getLogger(Configuration.class);
+
+    private static Environment environment;
 
     private static final Map<String,MappedStatement> MAPPED_STATEMENT_MAP = new HashMap<>();
 

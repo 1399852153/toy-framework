@@ -1,6 +1,6 @@
 package com.xiongyx.environment;
 
-import javax.sql.DataSource;
+import com.xiongyx.datasource.DataSource;
 
 /**
  * @author xiongyx
