@@ -42,6 +42,8 @@ public class ConfigXmlParseHelper {
         // 解析出Environment配置
         Environment environment = parseEnvironmentNode(environmentNode);
 
+        // todo 读取扫描mapper-xml范围的配置
+
         return new Configuration.Builder()
                 .environment(environment)
                 .build();
