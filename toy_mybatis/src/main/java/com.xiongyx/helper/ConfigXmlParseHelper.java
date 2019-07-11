@@ -40,7 +40,7 @@ public class ConfigXmlParseHelper {
         Element environmentNode = rootElement.element("environments");
 
         // 解析出Environment配置
-        Environment environment = parseEnviromentNode(environmentNode);
+        Environment environment = parseEnvironmentNode(environmentNode);
 
         return null;
     }
@@ -48,7 +48,7 @@ public class ConfigXmlParseHelper {
     /**
      * 解析Environment节点
      * */
-    private static Environment parseEnviromentNode(Element environmentNode){
+    private static Environment parseEnvironmentNode(Element environmentNode){
         Element dataSourceNode = environmentNode.element("dataSource");
 
         List<Element> properties = dataSourceNode.elements("property");
