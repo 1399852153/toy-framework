@@ -22,41 +22,14 @@ public class Configuration {
 
     private Environment environment;
 
-    private static final Map<String,MappedStatement> MAPPED_STATEMENT_MAP = new HashMap<>();
-
-    static{
-        try {
-            // 扫描mapper文件夹下所有mapper文件
-            Enumeration<URL> urls = Configuration.class.getClassLoader().getResources("mapper");
-
-            while(urls.hasMoreElements()){
-                URL url = urls.nextElement();
-                List<MappedStatement> mappedStatementList = MapperXmlScanUtil.scanMapperXml(url);
-
-                for(MappedStatement mappedStatement : mappedStatementList){
-                    MappedStatement old = MAPPED_STATEMENT_MAP.put(mappedStatement.getSqlId(),mappedStatement);
-                    if(old != null){
-                        // 存在相同的sqlId相同的mappedStatement
-                        throw new RuntimeException("has same sqlId =>" + old.getSqlId());
-                    }
-                }
-            }
-
-            // 打印扫描出来的sql单元
-            MAPPED_STATEMENT_MAP.values().forEach(System.out::println);
-
-        } catch (IOException e) {
-            logger.info("scan mapper-xml error",e);
-            throw new RuntimeException(e);
-        }
-    }
+    private Map<String,MappedStatement> mappedStatementMap = new HashMap<>();
 
     public Environment getEnvironment() {
         return environment;
     }
 
     public MappedStatement getMappedStatement(String statementID){
-        return MAPPED_STATEMENT_MAP.get(statementID);
+        return mappedStatementMap.get(statementID);
     }
 
     //==================================builder==============================
@@ -70,6 +43,14 @@ public class Configuration {
 
         public Builder environment(Environment environment){
             target.environment = environment;
+            return this;
+        }
+
+        public Builder mappedStatementMap(Map<String,MappedStatement> mappedStatementMap){
+            target.mappedStatementMap = mappedStatementMap;
+
+            // 打印扫描出的MappedStatement信息
+            mappedStatementMap.values().forEach(logger::info);
             return this;
         }
 

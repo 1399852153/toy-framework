@@ -31,9 +31,12 @@ public class MapperXmlScanUtil {
     /**
      * 扫描并解析当前mapper-xml文件
      * */
-    public static List<MappedStatement> parseMapperXmlInFile(File xmlFile){
-        // 解析当前目录下所有mapper-xml
-        return MapperXmlParseHelper.parseMapperXml(xmlFile);
+    public static List<MappedStatement> parseMapperXmlInFile(URL xmlFileUrl){
+        // file(文件)类型
+        String xmlFileUrlPath = xmlFileUrl.getPath().replace("%20"," ");
+
+        // 解析当前mapper-xml
+        return MapperXmlParseHelper.parseMapperXml(new File(xmlFileUrlPath));
     }
 
     //======================================私有方法==============================================

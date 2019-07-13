@@ -12,5 +12,8 @@
 
     <mappers>
         <mapper resource="mapper/UserMapper.xml"/>
+
+        <!-- 指定扫描resource目录下所有mapper文件 -->
+<!--        <scan-mapper package="mapper"/>-->
     </mappers>
 </configuration>
