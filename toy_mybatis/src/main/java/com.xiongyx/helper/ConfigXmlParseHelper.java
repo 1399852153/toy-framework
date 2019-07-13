@@ -78,20 +78,20 @@ public class ConfigXmlParseHelper {
      * */
     private static Map<String, MappedStatement> parseMapperNode(Element mapperNode){
         Element scanMapperNode = mapperNode.element("scan-mapper");
+        // scan-mapper扫描
         if(scanMapperNode != null){
             String directorPath = scanMapperNode.attributeValue("package");
             return scanMapperByPackage(directorPath);
         }
 
+        // mapper列表配置扫描
         List<Element> mapperElementList = mapperNode.elements("mapper");
         if(!mapperElementList.isEmpty()){
             return parseMapperByMapperList(mapperElementList);
         }
 
         // 如果 scan-mapper和mapper配置全都不存在，抛出异常
-        throw new RuntimeException("parseMapperNode error " +
-                "mapper node scan-mapper or mappers not exist"
-                );
+        throw new RuntimeException("parseMapperNode error mapper node scan-mapper or mappers not exist");
     }
 
     /**
