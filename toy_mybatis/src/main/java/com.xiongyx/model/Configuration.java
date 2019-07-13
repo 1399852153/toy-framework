@@ -2,6 +2,7 @@ package com.xiongyx.model;
 
 import com.xiongyx.environment.Environment;
 import com.xiongyx.helper.MapperXmlParseHelper;
+import com.xiongyx.util.MapperXmlScanUtil;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -23,8 +24,6 @@ public class Configuration {
 
     private static final Map<String,MappedStatement> MAPPED_STATEMENT_MAP = new HashMap<>();
 
-    private static final Map<String,List<MappedStatement>> MAPPED_STATEMENT_FILE_MAP = new HashMap<>();
-
     static{
         try {
             // 扫描mapper文件夹下所有mapper文件
@@ -32,11 +31,19 @@ public class Configuration {
 
             while(urls.hasMoreElements()){
                 URL url = urls.nextElement();
-                scanMapperXml(url);
+                List<MappedStatement> mappedStatementList = MapperXmlScanUtil.scanMapperXml(url);
+
+                for(MappedStatement mappedStatement : mappedStatementList){
+                    MappedStatement old = MAPPED_STATEMENT_MAP.put(mappedStatement.getSqlId(),mappedStatement);
+                    if(old != null){
+                        // 存在相同的sqlId相同的mappedStatement
+                        throw new RuntimeException("has same sqlId =>" + old.getSqlId());
+                    }
+                }
             }
 
+            // 打印扫描出来的sql单元
             MAPPED_STATEMENT_MAP.values().forEach(System.out::println);
-            MAPPED_STATEMENT_FILE_MAP.entrySet().forEach(System.out::println);
 
         } catch (IOException e) {
             logger.info("scan mapper-xml error",e);
@@ -48,46 +55,8 @@ public class Configuration {
         return environment;
     }
 
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
-
     public MappedStatement getMappedStatement(String statementID){
         return MAPPED_STATEMENT_MAP.get(statementID);
-    }
-
-    private static void scanMapperXml(URL url){
-        // file(文件)类型
-        String packagePath = url.getPath().replace("%20"," ");
-
-        // 解析当前目录下所有mapper-xml
-        parseMapperXml(new File(packagePath));
-    }
-
-    private static void parseMapperXml(File file){
-        File[] files = file.listFiles(
-            item-> item.isFile() && item.getName().endsWith(".xml") || item.isDirectory()
-        );
-
-        if(files == null){
-            return;
-        }
-
-        for(File fileItem : files){
-            if(fileItem.isFile()){
-                doParseMapperXml(fileItem);
-            }else{
-                parseMapperXml(fileItem);
-            }
-        }
-    }
-
-    private static void doParseMapperXml(File file){
-        List<MappedStatement> mappedStatementList = MapperXmlParseHelper.parseMapperXml(file);
-        MAPPED_STATEMENT_FILE_MAP.put(file.getName(),mappedStatementList);
-        for(MappedStatement mappedStatement : mappedStatementList){
-            MAPPED_STATEMENT_MAP.put(mappedStatement.getSqlId(),mappedStatement);
-        }
     }
 
     //==================================builder==============================

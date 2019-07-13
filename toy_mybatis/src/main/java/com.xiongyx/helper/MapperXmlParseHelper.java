@@ -23,8 +23,8 @@ public class MapperXmlParseHelper {
 
     private static final Logger logger = Logger.getLogger(ConfigXmlParseHelper.class);
 
-    public static List<MappedStatement> parseMapperXml(File xmlUrl){
-        Document document = XmlUtil.readXml(xmlUrl);
+    public static List<MappedStatement> parseMapperXml(File mapperXml){
+        Document document = XmlUtil.readXml(mapperXml);
 
         // 获取xml中的根元素
         Element rootElement = document.getRootElement();

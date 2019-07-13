@@ -69,4 +69,9 @@ public class ConfigXmlParseHelper {
         // 返回Environment
         return new Environment(dataSource);
     }
+
+    /**
+     * 解析mapper节点
+     * */
+//    private static
 }
