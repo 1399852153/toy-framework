@@ -1,6 +1,7 @@
 package com.xiongyx;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * @author xiongyx
@@ -15,6 +16,8 @@ public class User {
     private Integer age;
 
     private Double money;
+
+    private List<String> idListQuery;
 
     public String getId() {
         return id;
@@ -46,6 +49,14 @@ public class User {
 
     public void setMoney(Double money) {
         this.money = money;
+    }
+
+    public List<String> getIdListQuery() {
+        return idListQuery;
+    }
+
+    public void setIdListQuery(List<String> idListQuery) {
+        this.idListQuery = idListQuery;
     }
 
     @Override
