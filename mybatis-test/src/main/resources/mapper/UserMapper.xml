@@ -17,7 +17,11 @@
 	</select>
 	
 	<update id="updateUser">
-		update user set name = '张三2' where id = #{id}
+		update user
+		<set>
+			<if test="name != null">name = '张三2'</if>
+		</set>
+		where id = #{id}
 	</update>
 	
 </mapper>

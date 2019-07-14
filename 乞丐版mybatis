@@ -23,12 +23,18 @@ RoutingStatementHandler 根据MappedStatement类型，使用策略模式进行St
 为什么mybatis需要抽象 SqlSessionFactory？
 因为可以以不同的方式 初始化mybatis，配置文件/文件流/环境变量等等
 
-当前目标
-resultType对结果集进行映射
-
-1.sqlSessionFactoryBuilder 支持多种方式初始化mybatis配置
+1.sqlSessionFactoryBuilder 支持多种方式初始化mybatis配置 ok
 2.解析sqlStatement中的子标签语句，实现动态传参 <where>、<set>、<if>等等(加强版 forEach)
 3.resultMap解析结果集映射(加强版 嵌套映射 collection、association等)
 4.提供事务，批处理执行方式
 5.增加拦截器接口，并且自定义一个分页查询的插件
+
+当前目标
+动态sql解析
+1.初始化时，sqlStatement解析内部子标签，判断是纯文本sql还是动态sql
+    动态sql对内部子标签进行解析，递归生成对应的sqlNode节点
+2.执行sql前，通过传入的参数context和子标签进行结合，使用访问者模式进行递归的解析。
+    涉及到if的表达式判断，使用ognl表达式解析，判断真假
+3.todo forEach由于难度更大，作为可选项
+
 
