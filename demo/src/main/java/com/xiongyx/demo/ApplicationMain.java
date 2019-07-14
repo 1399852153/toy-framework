@@ -59,7 +59,10 @@ public class ApplicationMain {
         param.put("id","123");
         param.put("age",12);
         param.put("money",32141);
-        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUser",param);
+//        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUser",param);
+
+        // todo 动态sql
+        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUserByParam",param);
         System.out.println(list);
     }
 }
