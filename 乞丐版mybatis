@@ -37,4 +37,23 @@ RoutingStatementHandler 根据MappedStatement类型，使用策略模式进行St
     涉及到if的表达式判断，使用ognl表达式解析，判断真假
 3.todo forEach由于难度更大，作为可选项
 
+mybatis各种类型动态sql节点：
+1.文本节点
+StaticTextSqlNode(纯文本，无#{}占位符)
+TextSqlNode(纯文本，存在#{}占位符)
+
+2.动态sql
+TrimSqlNode 空语句，用于删除sql前后缀
+IfSqlNode if表达式判断是否包含内部sql
+ChooseSqlNode choose表达式判断是否包含对应分支的内部sql
+SetSqlNode(TrimSqlNode子类) set用于sql中set语句，remove掉多余的','
+WhereSqlNode(TrimSqlNode子类)  where用于sql中where语句，remove掉多余的'and'
+ForEachSqlNode 遍历Collection，拼接对应的sql
+
+3.绑定变量节点
+ValDeclSqlNode 在动态sql的解析过程中在context中绑定对应的k/v键值对
+
+4.综合，父类节点
+MixedSqlNode 存在多种类型节点的树干节点(rootSqlNode)
+
 

@@ -66,6 +66,7 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", age=" + age +
                 ", money=" + money +
+                ", idListQuery=" + idListQuery +
                 '}';
     }
 }
