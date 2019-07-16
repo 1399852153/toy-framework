@@ -9,6 +9,15 @@
 
     <name>mybatis-test</name>
 
+    <properties>
+        <encoding>UTF-8</encoding>
+        <!-- define java compile level-->
+        <compile.version>1.8</compile.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+    </properties>
+
     <dependencies>
         <!-- mysql -->
         <dependency>
@@ -24,5 +33,20 @@
             <version>3.4.0</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>${compile.version}</source>
+                    <target>${compile.version}</target>
+                    <encoding>${encoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

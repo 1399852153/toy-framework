@@ -21,7 +21,7 @@
 	<select id="getAll" resultType="com.xiongyx.User">
 		select * from user
 	</select>
-	
+
 	<update id="updateUser">
 		update user
 		<set>
