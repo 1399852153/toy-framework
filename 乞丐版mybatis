@@ -37,6 +37,8 @@ RoutingStatementHandler 根据MappedStatement类型，使用策略模式进行St
     涉及到if的表达式判断，使用ognl表达式解析，判断真假
 3.todo forEach由于难度更大，作为可选项
 
+sqlNode在解析mapper-xml，构造MappedStatement时就已经解析完毕
+==> XMLMapperBuilder.buildStatementFromContext 方法
 mybatis各种类型动态sql节点：
 1.文本节点
 StaticTextSqlNode(纯文本，无#{}占位符)

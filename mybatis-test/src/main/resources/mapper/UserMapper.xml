@@ -18,16 +18,16 @@
 		</where>
 	</select>
 	
-	<select id="getAll" resultType="com.xiongyx.User">
-		select * from user
-	</select>
-
-	<update id="updateUser">
-		update user
-		<set>
-			<if test="name != null">name = '张三2'</if>
-		</set>
-		where id = #{id}
-	</update>
+<!--	<select id="getAll" resultType="com.xiongyx.User">-->
+<!--		select * from user-->
+<!--	</select>-->
+<!--	-->
+<!--	<update id="updateUser">-->
+<!--		update user-->
+<!--		<set>-->
+<!--			<if test="name != null">name = '张三2'</if>-->
+<!--		</set>-->
+<!--		where id = #{id}-->
+<!--	</update>-->
 	
 </mapper>
