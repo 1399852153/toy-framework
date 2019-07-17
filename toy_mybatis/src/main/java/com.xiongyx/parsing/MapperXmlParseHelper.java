@@ -37,7 +37,7 @@ org.w3c.dom.Document doc = dBuilder.parse(mapperXmlFile);
             // 解析mapper标签
             String mapperPath = "/mapper";
             Node mapperNode = (Node) xPath.compile(mapperPath).evaluate(doc, XPathConstants.NODE);
-            if(!(mapperNode instanceof Element)){
+            if(mapperNode.getNodeType() != Node.ELEMENT_NODE){
                 // 无法解析当前mapper文件
                 logger.info("can not parse any mapper element" + mapperXmlFile);
                 return new ArrayList<>();
@@ -52,7 +52,7 @@ org.w3c.dom.Document doc = dBuilder.parse(mapperXmlFile);
             for(int i=0; i<nodeList.getLength(); i++){
                 Node sqlUnitNode = nodeList.item(i);
 
-                if(sqlUnitNode instanceof Element){
+                if(sqlUnitNode.getNodeType() == Node.ELEMENT_NODE){
                     MappedStatement mappedStatement = parseMappedStatement(namespace,(Element)sqlUnitNode);
                     // 加入 当前xml文件中的sql单元列表
                     mappedStatementList.add(mappedStatement);
