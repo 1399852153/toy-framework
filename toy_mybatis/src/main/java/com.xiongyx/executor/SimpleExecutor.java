@@ -1,7 +1,7 @@
 package com.xiongyx.executor;
 
 import com.xiongyx.datasource.DataSource;
-import com.xiongyx.environment.Environment;
+import com.xiongyx.mapping.Environment;
 import com.xiongyx.executor.parameter.DefaultParameterHandler;
 import com.xiongyx.executor.parameter.ParameterHandler;
 import com.xiongyx.executor.resultset.DefaultResultSetHandler;

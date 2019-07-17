@@ -1,13 +1,8 @@
 package com.xiongyx.model;
 
-import com.xiongyx.environment.Environment;
-import com.xiongyx.helper.MapperXmlParseHelper;
-import com.xiongyx.util.MapperXmlScanUtil;
+import com.xiongyx.mapping.Environment;
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 /**

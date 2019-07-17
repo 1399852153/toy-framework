@@ -1,8 +1,8 @@
 package com.xiongyx;
 
-import com.xiongyx.helper.BeanFactory;
-import com.xiongyx.helper.ClassHelper;
-import com.xiongyx.helper.IOCHelper;
+import com.xiongyx.parsing.BeanFactory;
+import com.xiongyx.parsing.ClassHelper;
+import com.xiongyx.parsing.IOCHelper;
 import com.xiongyx.util.ClassUtil;
 
 /**

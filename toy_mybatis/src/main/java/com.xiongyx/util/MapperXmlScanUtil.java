@@ -1,6 +1,6 @@
 package com.xiongyx.util;
 
-import com.xiongyx.helper.MapperXmlParseHelper;
+import com.xiongyx.parsing.MapperXmlParseHelper;
 import com.xiongyx.model.MappedStatement;
 
 import java.io.File;

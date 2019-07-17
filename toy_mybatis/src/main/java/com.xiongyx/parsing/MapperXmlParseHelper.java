@@ -1,4 +1,4 @@
-package com.xiongyx.helper;
+package com.xiongyx.parsing;
 
 import com.xiongyx.constant.Constant;
 import com.xiongyx.model.MappedStatement;
@@ -32,6 +32,8 @@ public class MapperXmlParseHelper {
         // 不是beans根元素的，文件不对
         if (!Constant.XML_ROOT_LABEL.equals(rootElement.getName())) {
             logger.info("mapper xml文件根元素不是mapper");
+            // 直接返回
+            return new ArrayList<>();
         }
 
         String namespace = rootElement.attributeValue(Constant.XML_SELECT_NAMESPACE);
@@ -66,12 +68,14 @@ public class MapperXmlParseHelper {
             statement.setSqlCommandType(Constant.SqlType.DEFAULT);
         }
 
-        //设置SQL的唯一ID
+        //设置SQL的唯一ID = namespace + "." + mapper.id
         String sqlId = namespace + "." + statementElement.attributeValue(Constant.XML_ELEMENT_ID);
 
         statement.setSqlId(sqlId);
         statement.setNameSpace(namespace);
-        statement.setSqlSource(StringUtils.trim(statementElement.getStringValue()));
+
+        // todo 构造SqlSource
+        statement.setSqlSource(null);
 
         return statement;
     }

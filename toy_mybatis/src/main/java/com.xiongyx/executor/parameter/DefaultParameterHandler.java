@@ -4,7 +4,9 @@
 package com.xiongyx.executor.parameter;
 
 
-import com.xiongyx.helper.SqlParamConvertHelper;
+import com.xiongyx.mapping.BoundSql;
+import com.xiongyx.mapping.sqlsource.SqlSource;
+import com.xiongyx.parsing.SqlParamConvertHelper;
 import com.xiongyx.model.MappedStatement;
 
 import java.sql.PreparedStatement;
@@ -12,10 +14,10 @@ import java.util.List;
 
 
 /**
- * DefaultParameterHandler.java
+ * 参数解析器
  * 
- * @author PLF
- * @date 2019年3月6日
+ * @author xiongyx
+ * @date 2019/7/17
  */
 public class DefaultParameterHandler implements ParameterHandler
 {
@@ -30,8 +32,6 @@ public class DefaultParameterHandler implements ParameterHandler
     
     /**
      * 将SQL参数设置到PreparedStatement中
-     *
-     * @param ps
      */
     @Override
     public void setParameters(PreparedStatement ps) {
@@ -40,11 +40,11 @@ public class DefaultParameterHandler implements ParameterHandler
         }
 
         try {
-            String sqlSource = mappedStatement.getSqlSource();
-            String paramType = mappedStatement.getParamType();
+            SqlSource sqlSource = mappedStatement.getSqlSource();
+            BoundSql boundSql = sqlSource.getBoundSql(parameter);
 
             // 解析sqlSource中的#{}，获得其中的值，按照顺序构造一个实参列表
-            List realParams = SqlParamConvertHelper.parseSqlParam(sqlSource,parameter);
+            List realParams = SqlParamConvertHelper.parseSqlParam(boundSql.getSqlText(),parameter);
             for(int i=0; i<realParams.size(); i++){
                 Object realParam = realParams.get(i);
                 // 向PreparedStatement注入参数 setObject(index,param),用于顶替?

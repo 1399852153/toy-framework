@@ -1,4 +1,4 @@
-package com.xiongyx.environment;
+package com.xiongyx.mapping;
 
 import com.xiongyx.datasource.DataSource;
 

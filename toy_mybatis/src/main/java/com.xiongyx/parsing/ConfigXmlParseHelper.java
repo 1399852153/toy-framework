@@ -1,8 +1,8 @@
-package com.xiongyx.helper;
+package com.xiongyx.parsing;
 
 import com.xiongyx.datasource.DataSource;
 import com.xiongyx.datasource.DruidDataSourceManager;
-import com.xiongyx.environment.Environment;
+import com.xiongyx.mapping.Environment;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
 import com.xiongyx.util.MapperXmlScanUtil;

@@ -19,20 +19,20 @@ public class MyBatisTest {
         Reader reader = Resources.getResourceAsReader("mybatis-config.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
         SqlSession session = sqlSessionFactory.openSession();
-        try {
-            User param = new User();
-//            param.setId("123");
-            param.setIdListQuery(Arrays.asList("123","321"));
-
-//            param.setAge(12);
-//            param.setMoney(32141);
-            List<User> userList = session.selectList("getUser", param);
-            session.commit();
-            System.out.println(userList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
+//        try {
+//            User param = new User();
+////            param.setId("123");
+//            param.setIdListQuery(Arrays.asList("123","321"));
+//
+////            param.setAge(12);
+////            param.setMoney(32141);
+//            List<User> userList = session.selectList("getUser", param);
+//            session.commit();
+//            System.out.println(userList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }
     }
 }
