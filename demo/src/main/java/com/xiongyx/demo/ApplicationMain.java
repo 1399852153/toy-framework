@@ -55,14 +55,14 @@ public class ApplicationMain {
 //        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
 //        System.out.println(list);
 
-        Map<String,Object> param = new HashMap<>();
-        param.put("id","123");
-        param.put("age",12);
-        param.put("money",32141);
-//        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUser",param);
-
-        // todo 动态sql
-        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUserByParam",param);
-        System.out.println(list);
+//        Map<String,Object> param = new HashMap<>();
+//        param.put("id","123");
+//        param.put("age",12);
+//        param.put("money",32141);
+////        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUser",param);
+//
+//        // todo 动态sql
+//        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUserByParam",param);
+//        System.out.println(list);
     }
 }

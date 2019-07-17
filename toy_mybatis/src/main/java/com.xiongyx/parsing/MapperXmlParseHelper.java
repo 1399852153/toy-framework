@@ -1,16 +1,20 @@
 package com.xiongyx.parsing;
 
 import com.xiongyx.constant.Constant;
+import com.xiongyx.mapping.sqlsource.SqlSource;
 import com.xiongyx.model.MappedStatement;
-import com.xiongyx.util.XmlUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.dom4j.Document;
-import org.dom4j.Element;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -23,59 +27,77 @@ public class MapperXmlParseHelper {
 
     private static final Logger logger = Logger.getLogger(ConfigXmlParseHelper.class);
 
-    public static List<MappedStatement> parseMapperXml(File mapperXml){
-        Document document = XmlUtil.readXml(mapperXml);
+    public static List<MappedStatement> parseMapperXml(File mapperXmlFile){
+        try {
+            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+org.w3c.dom.Document doc = dBuilder.parse(mapperXmlFile);
+            doc.getDocumentElement().normalize();
+            XPath xPath =  XPathFactory.newInstance().newXPath();
 
-        // 获取xml中的根元素
-        Element rootElement = document.getRootElement();
+            // 解析mapper标签
+            String mapperPath = "/mapper";
+            Node mapperNode = (Node) xPath.compile(mapperPath).evaluate(doc, XPathConstants.NODE);
+            if(!(mapperNode instanceof Element)){
+                // 无法解析当前mapper文件
+                logger.info("can not parse any mapper element" + mapperXmlFile);
+                return new ArrayList<>();
+            }
 
-        // 不是beans根元素的，文件不对
-        if (!Constant.XML_ROOT_LABEL.equals(rootElement.getName())) {
-            logger.info("mapper xml文件根元素不是mapper");
-            // 直接返回
-            return new ArrayList<>();
+            // 获取namespace
+            String namespace = ((Element)mapperNode).getAttribute("namespace");
+            NodeList nodeList = mapperNode.getChildNodes();
+
+            List<MappedStatement> mappedStatementList = new ArrayList<>();
+            // 当前xml文件中的sql单元列表
+            for(int i=0; i<nodeList.getLength(); i++){
+                Node sqlUnitNode = nodeList.item(i);
+
+                if(sqlUnitNode instanceof Element){
+                    MappedStatement mappedStatement = parseMappedStatement(namespace,(Element)sqlUnitNode);
+                    // 加入 当前xml文件中的sql单元列表
+                    mappedStatementList.add(mappedStatement);
+                }
+            }
+            return mappedStatementList;
+        } catch (Exception e) {
+            logger.info("parseMapperXml error",e);
+
+            throw new RuntimeException(e);
         }
-
-        String namespace = rootElement.attributeValue(Constant.XML_SELECT_NAMESPACE);
-        Iterator iterator = rootElement.elementIterator();
-
-        // 当前xml文件中的sql单元列表
-        List<MappedStatement> mappedStatementList = new ArrayList<>();
-        while(iterator.hasNext()) {
-            Element element = (Element)iterator.next();
-            MappedStatement mappedStatement = MapperXmlParseHelper.parseMappedStatement(namespace,element);
-
-            // 加入 当前xml文件中的sql单元列表
-            mappedStatementList.add(mappedStatement);
-        }
-
-        return mappedStatementList;
     }
 
-    private static MappedStatement parseMappedStatement(String namespace, Element statementElement){
-        String eleName = statementElement.getName();
-
+    private static MappedStatement parseMappedStatement(String namespace, Element sqlUnitNode){
+        String eleName = sqlUnitNode.getNodeName();
         MappedStatement statement = new MappedStatement();
 
         if (Constant.SqlType.SELECT.value().equals(eleName)) {
-            String resultType = statementElement.attributeValue(Constant.XML_SELECT_RESULTTYPE);
+            // select
+            String resultType = sqlUnitNode.getAttribute("resultType");
             statement.setResultType(resultType);
             statement.setSqlCommandType(Constant.SqlType.SELECT);
         } else if (Constant.SqlType.UPDATE.value().equals(eleName)) {
+            // update
             statement.setSqlCommandType(Constant.SqlType.UPDATE);
-        } else {
-            // 其他标签自己实现
+        } else if (Constant.SqlType.INSERT.value().equals(eleName)) {
+            // insert
+            statement.setSqlCommandType(Constant.SqlType.INSERT);
+        } else if (Constant.SqlType.DELETE.value().equals(eleName)) {
+            // delete
+            statement.setSqlCommandType(Constant.SqlType.DELETE);
+        } else{
+            // default 默认类型
             statement.setSqlCommandType(Constant.SqlType.DEFAULT);
         }
 
         //设置SQL的唯一ID = namespace + "." + mapper.id
-        String sqlId = namespace + "." + statementElement.attributeValue(Constant.XML_ELEMENT_ID);
+        String sqlId = namespace + "." + sqlUnitNode.getAttribute("id");
 
         statement.setSqlId(sqlId);
         statement.setNameSpace(namespace);
 
-        // todo 构造SqlSource
-        statement.setSqlSource(null);
+        // 构造SqlSource
+        SqlSource sqlSource = MappedStatementParseHelper.parseSqlUnit(sqlUnitNode);
+        statement.setSqlSource(sqlSource);
 
         return statement;
     }

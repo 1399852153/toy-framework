@@ -4,6 +4,8 @@
 package com.xiongyx.executor.statement;
 
 
+import com.xiongyx.mapping.BoundSql;
+import com.xiongyx.mapping.sqlsource.SqlSource;
 import com.xiongyx.model.MappedStatement;
 import com.xiongyx.pattern.Patterns;
 import org.apache.commons.lang3.StringUtils;
@@ -56,8 +58,10 @@ public class SimpleStatementHandler implements StatementHandler {
      * @throws SQLException
      */
     @Override
-    public PreparedStatement prepare(Connection paramConnection) throws SQLException {
-        String originalSql = mappedStatement.getSqlSource();
+    public PreparedStatement prepare(Connection paramConnection, Object paramObject) throws SQLException {
+        SqlSource sqlSource = mappedStatement.getSqlSource();
+        BoundSql boundSql = sqlSource.getBoundSql(paramObject);
+        String originalSql = boundSql.getSqlText();
 
         if (StringUtils.isNotEmpty(originalSql)) {
             // 替换#{}，预处理，防止SQL注入

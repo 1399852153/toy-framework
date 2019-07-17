@@ -12,8 +12,8 @@
 
     <mappers>
         <mapper resource="mapper/UserMapper.xml"/>
-        <mapper resource="mapper/OrderMapper.xml"/>
-        <mapper resource="mapper/order/OrderMapper1.xml"/>
+        <!--<mapper resource="mapper/OrderMapper.xml"/>-->
+        <!--<mapper resource="mapper/order/OrderMapper1.xml"/>-->
 
         <!-- 指定扫描resource目录下所有mapper文件 -->
 <!--        <scan-mapper package="mapper"/>-->
