@@ -52,12 +52,15 @@ public class MappedStatementParseHelper {
                 TextSqlNode textSqlNode = new TextSqlNode(data);
                 contents.add(textSqlNode);
             }else{
-                // 复合节点
-                String nodeName = nodeItem.getNodeName();
-                // 根据节点名称从工厂中获取对应的SqlNodeHandler
-                SqlNodeHandler sqlNodeHandler = SqlNodeHandlerFactory.getSqlNodeHandlerByType(nodeName);
-                // SqlNodeHandler对特定类型的节点进行相应的处理
-                sqlNodeHandler.handleNode(nodeItem,contents);
+                // 判断是否是注释节点
+                if(nodeItem.getNodeType() != Node.COMMENT_NODE){
+                    // 复合节点
+                    String nodeName = nodeItem.getNodeName();
+                    // 根据节点名称从工厂中获取对应的SqlNodeHandler
+                    SqlNodeHandler sqlNodeHandler = SqlNodeHandlerFactory.getSqlNodeHandlerByType(nodeName);
+                    // SqlNodeHandler对特定类型的节点进行相应的处理
+                    sqlNodeHandler.handleNode(nodeItem,contents);
+                }
             }
         }
 
