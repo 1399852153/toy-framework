@@ -12,12 +12,12 @@ public class SqlNodeHandlerFactory {
                 return new IfSqlNodeHandler();
             case "where":
                 return new WhereSqlNodeHandler();
-            case "forEach":
+            case "foreach":
                 return new ForEachSqlNodeHandler();
             case "set":
                 return new SetSqlNodeHandler();
             default:
-                throw new RuntimeException("unknown sqlNode type");
+                throw new RuntimeException("unknown sqlNode type " + type);
         }
     }
 }
