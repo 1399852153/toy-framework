@@ -1,7 +1,19 @@
 package com.xiongyx.parsing;
 
+import com.xiongyx.mapping.sqlsource.DynamicSqlSource;
 import com.xiongyx.mapping.sqlsource.SqlSource;
+import com.xiongyx.parsing.handler.SqlNodeHandler;
+import com.xiongyx.parsing.handler.SqlNodeHandlerFactory;
+import com.xiongyx.scripting.sqlnode.MixedSqlNode;
+import com.xiongyx.scripting.sqlnode.SqlNode;
+import com.xiongyx.scripting.sqlnode.TextSqlNode;
+import org.w3c.dom.CharacterData;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xiongyx
@@ -15,15 +27,40 @@ public class MappedStatementParseHelper {
      * 解析sql单元，构造SqlSource
      * */
     public static SqlSource parseSqlUnit(Element sqlUnitNode){
-        // todo
+        // 解析对应的 sqlUnitNode，获得SqlNode有序列表
+        List<SqlNode> contents = parseDynamicSqlNode(sqlUnitNode);
 
         // rootNode是一个MixedNode，持有一个 contentsList
-        // 获取sqlUnitNode的所有一级孩子节点,判断孩子节点类型
-            // 文本节点 ==> TextSqlNode 加入contentsList
-            // 非文本节点
-                // 根据当前节点的名称决定对应的SqlNodeHandler，handler能够递归的解析目前节点的孩子节点
-        // 将最终的 contentsList存入rootNode，并构造对应的SqlSource
+        MixedSqlNode rootNode = new MixedSqlNode(contents);
 
-        return null;
+        return new DynamicSqlSource(rootNode);
+    }
+
+    public static List<SqlNode> parseDynamicSqlNode(Element sqlUnitNode){
+        // 当前Element节点解析之后对应的SqlNode有序列表
+        List<SqlNode> contents = new ArrayList<>();
+
+        // 获取sqlUnitNode的所有一级孩子节点,判断孩子节点类型
+        NodeList children = sqlUnitNode.getChildNodes();
+        for(int i=0; i<children.getLength(); i++){
+            Node nodeItem = children.item(i);
+
+            // 判断孩子节点类型
+            if(nodeItem.getNodeType() == Node.CDATA_SECTION_NODE || nodeItem.getNodeType() == Node.TEXT_NODE) {
+                // 文本节点
+                String data = ((CharacterData) nodeItem).getData();
+                TextSqlNode textSqlNode = new TextSqlNode(data);
+                contents.add(textSqlNode);
+            }else{
+                // 复合节点
+                String nodeName = nodeItem.getNodeName();
+                // 根据节点名称从工厂中获取对应的SqlNodeHandler
+                SqlNodeHandler sqlNodeHandler = SqlNodeHandlerFactory.getSqlNodeHandlerByType(nodeName);
+                // SqlNodeHandler对特定类型的节点进行相应的处理
+                sqlNodeHandler.handleNode(nodeItem,contents);
+            }
+        }
+
+        return contents;
     }
 }

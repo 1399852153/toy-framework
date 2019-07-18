@@ -7,6 +7,13 @@ package com.xiongyx.scripting.sqlnode;
  * Where节点
  */
 public class WhereSqlNode implements SqlNode{
+
+    private MixedSqlNode contents;
+
+    public WhereSqlNode(MixedSqlNode contents) {
+        this.contents = contents;
+    }
+
     @Override
     public void apply(DynamicSqlParseContext context) {
 

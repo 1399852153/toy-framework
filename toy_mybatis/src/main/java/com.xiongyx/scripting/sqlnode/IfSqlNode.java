@@ -7,6 +7,19 @@ package com.xiongyx.scripting.sqlnode;
  * If节点
  */
 public class IfSqlNode implements SqlNode{
+
+    /**
+     * test条件表达式
+     * */
+    private String testExpression;
+
+    private SqlNode contents;
+
+    public IfSqlNode(SqlNode contents,String testExpression) {
+        this.contents = contents;
+        this.testExpression = testExpression;
+    }
+
     @Override
     public void apply(DynamicSqlParseContext context) {
 
