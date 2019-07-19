@@ -1,5 +1,7 @@
 package com.xiongyx.session;
 
+import com.xiongyx.model.Configuration;
+
 import java.util.List;
 
 /**
@@ -40,4 +42,6 @@ public interface SqlSession {
      * @param parameter
      */
     void insert(String statementId, Object parameter);
+
+    Configuration getConfiguration();
 }
