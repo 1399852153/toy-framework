@@ -58,4 +58,9 @@ public class Configuration {
             return target;
         }
     }
+
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
 }
