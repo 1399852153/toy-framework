@@ -1,6 +1,7 @@
 package com.xiongyx.parsing.handler;
 
 import com.xiongyx.parsing.MappedStatementParseHelper;
+import com.xiongyx.scripting.sqlnode.MixedSqlNode;
 import com.xiongyx.scripting.sqlnode.SqlNode;
 import com.xiongyx.scripting.sqlnode.WhereSqlNode;
 import org.w3c.dom.Element;
