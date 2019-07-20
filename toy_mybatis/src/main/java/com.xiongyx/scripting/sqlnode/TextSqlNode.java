@@ -16,7 +16,7 @@ public class TextSqlNode implements SqlNode{
 
     @Override
     public void apply(DynamicSqlParseContext context) {
-        // todo 解析动态参数
+        // 文本节点，直接拼接
         context.appendSql(this.text);
     }
 }

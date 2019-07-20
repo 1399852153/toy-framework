@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>toy-mybatis</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-dynamic-sql-SNAPSHOT</version>
     <name>toy-mybatis</name>
 
     <dependencies>

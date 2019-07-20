@@ -45,8 +45,7 @@ public class SimpleStatementHandler implements StatementHandler {
      * 
      * @param mappedStatement
      */
-    public SimpleStatementHandler(MappedStatement mappedStatement)
-    {
+    public SimpleStatementHandler(MappedStatement mappedStatement) {
         this.mappedStatement = mappedStatement;
     }
 
@@ -60,6 +59,8 @@ public class SimpleStatementHandler implements StatementHandler {
     @Override
     public PreparedStatement prepare(Connection paramConnection, Object paramObject) throws SQLException {
         SqlSource sqlSource = mappedStatement.getSqlSource();
+
+        // todo 获得BoundSql
         BoundSql boundSql = sqlSource.getBoundSql(paramObject);
         String originalSql = boundSql.getSqlText();
 
@@ -67,8 +68,7 @@ public class SimpleStatementHandler implements StatementHandler {
             // 替换#{}，预处理，防止SQL注入
             String sql = parseSymbol(originalSql);
             return paramConnection.prepareStatement(sql);
-        }
-        else {
+        } else {
             throw new SQLException("original sql is null.");
         }
     }

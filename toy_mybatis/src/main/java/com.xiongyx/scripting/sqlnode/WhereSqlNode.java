@@ -16,6 +16,6 @@ public class WhereSqlNode implements SqlNode{
 
     @Override
     public void apply(DynamicSqlParseContext context) {
-
+        contents.apply(context);
     }
 }

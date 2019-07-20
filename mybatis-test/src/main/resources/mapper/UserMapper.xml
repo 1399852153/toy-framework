@@ -6,15 +6,24 @@
 	<select id="getUser" resultType="com.xiongyx.User">
 		select * from user
 		<where>
-			<if test="id != null">and id = #{id}</if>
-			<if test="age != null">and age = #{age}</if>
-			<if test="money != null">and money = #{money}</if>
+
 			<if test="idListQuery != null">
 				and id in
 				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">
 					#{item}
 				</foreach>
 			</if>
+
+			<if test="idListQuery != null">
+				and id in
+				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+
+			<if test="id != null">and id = #{id}</if>
+			<if test="age != null">and age = #{age}</if>
+			<if test="money != null">and money = #{money}</if>
 		</where>
 	</select>
 	

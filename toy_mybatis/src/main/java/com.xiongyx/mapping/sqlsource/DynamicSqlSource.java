@@ -2,7 +2,7 @@ package com.xiongyx.mapping.sqlsource;
 
 import com.xiongyx.mapping.BoundSql;
 import com.xiongyx.scripting.sqlnode.DynamicSqlParseContext;
-import com.xiongyx.scripting.sqlnode.SqlNode;
+import com.xiongyx.scripting.sqlnode.MixedSqlNode;
 
 /**
  * @author xiongyx
@@ -15,9 +15,9 @@ public class DynamicSqlSource implements SqlSource{
     /**
      * sqlNode 根节点
      * */
-    private SqlNode rootNode;
+    private MixedSqlNode rootNode;
 
-    public DynamicSqlSource(SqlNode rootNode) {
+    public DynamicSqlSource(MixedSqlNode rootNode) {
         this.rootNode = rootNode;
     }
 
@@ -25,6 +25,7 @@ public class DynamicSqlSource implements SqlSource{
     public BoundSql getBoundSql(Object paramObject) {
         DynamicSqlParseContext dynamicSqlParseContext = new DynamicSqlParseContext(paramObject);
 
+        // 递归进去，绑定参数，拼接sql
         rootNode.apply(dynamicSqlParseContext);
 
         // todo 构造最终的sql

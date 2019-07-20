@@ -8,14 +8,14 @@ package com.xiongyx.scripting.sqlnode;
  */
 public class SetSqlNode implements SqlNode{
 
-    private MixedSqlNode mixedSqlNode;
+    private MixedSqlNode contents;
 
-    public SetSqlNode(MixedSqlNode mixedSqlNode) {
-        this.mixedSqlNode = mixedSqlNode;
+    public SetSqlNode(MixedSqlNode contents) {
+        this.contents = contents;
     }
 
     @Override
     public void apply(DynamicSqlParseContext context) {
-
+        contents.apply(context);
     }
 }
