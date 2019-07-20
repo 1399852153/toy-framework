@@ -47,13 +47,12 @@ public class ApplicationMain {
         SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.build(reader);
         SqlSession sqlSession = sqlSessionFactory.getSession();
 
-//        User user = new User();
-//        user.setId("123");
-//        user.setAge(12);
-//        user.setMoney(32141);
-//           sqlSession.insert();
-//        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
-//        System.out.println(list);
+        User user = new User();
+        user.setId("123");
+        user.setAge(12);
+        user.setMoney(32141);
+        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
+        System.out.println(list);
 
 //        Map<String,Object> param = new HashMap<>();
 //        param.put("id","123");
