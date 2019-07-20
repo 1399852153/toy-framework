@@ -12,13 +12,17 @@ import java.io.Reader;
  */
 public class SqlSessionFactoryBuilder {
 
-    public static SqlSessionFactory build(Reader reader){
+    public static SqlSessionFactory build(Reader reader) {
         XMLConfigBuilder xmlConfigBuilder = new XMLConfigBuilder(reader);
         Configuration configuration = xmlConfigBuilder.parse();
         return build(configuration);
     }
 
-    public static SqlSessionFactory build(Configuration configuration){
+    public static SqlSessionFactory build(Configuration configuration) {
+        return new DefaultSqlSessionFactory(configuration);
+    }
+
+    public SqlSessionFactory privateBuild(Configuration configuration) {
         return new DefaultSqlSessionFactory(configuration);
     }
 }
