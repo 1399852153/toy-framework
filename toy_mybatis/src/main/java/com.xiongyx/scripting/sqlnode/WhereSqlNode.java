@@ -22,4 +22,4 @@ public class WhereSqlNode extends TrimSqlNode{
         // 转化为TrimSqlNode，其前缀为where，需要重载处理的内部前缀列表为"AND"
         super("where",AND_PREFIX,null,null,contents);
     }
-·}
+}
