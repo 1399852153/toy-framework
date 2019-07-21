@@ -9,6 +9,7 @@ import com.xiongyx.session.SqlSessionFactoryBuilder;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,7 @@ public class ApplicationMain {
         user.setId("123");
         user.setAge(12);
         user.setMoney(32141);
+        user.setIdListQuery(Arrays.asList("123","321"));
         List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
         System.out.println(list);
 
