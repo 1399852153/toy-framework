@@ -1,5 +1,9 @@
 package com.xiongyx.scripting.sqlnode;
 
+import com.xiongyx.util.OgnlUtil;
+
+import java.util.Map;
+
 /**
  * @author xiongyx
  * @date 2019/7/17
@@ -66,6 +70,14 @@ public class ForEachSqlNode implements SqlNode{
 
     @Override
     public void apply(DynamicSqlParseContext context) {
+        Map<String, Object> bindings = context.getBindings();
+        // 解析出 foreach collection对应的Iterable迭代对象
+        final Iterable<?> iterable = OgnlUtil.evaluateIterable(collectionExpression, bindings);
+        if (!iterable.iterator().hasNext()) {
+            // 迭代对象为空，不处理直接返回
+            return;
+        }
 
+        // todo 解析
     }
 }
