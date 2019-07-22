@@ -19,7 +19,6 @@ public class User {
 
     private List<String> idListQuery;
 
-
     public String getId() {
         return id;
     }

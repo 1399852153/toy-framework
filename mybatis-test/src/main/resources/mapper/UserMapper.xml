@@ -7,6 +7,9 @@
 		select * from user
 		<where>
 
+<!--			<if test="__frch_item_0 != null">and id = #{__frch_item_0}</if>-->
+
+
 			<if test="idListQuery != null">
 				and id in
 				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">
@@ -20,6 +23,7 @@
 					#{item}
 				</foreach>
 			</if>
+
 
 			<if test="id != null">and id = #{id}</if>
 			<if test="age != null">and age = #{age}</if>

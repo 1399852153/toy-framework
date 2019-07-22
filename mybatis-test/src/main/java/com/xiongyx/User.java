@@ -17,7 +17,18 @@ public class User {
 
     private Double money;
 
+    private String __frch_item_0;
+
     private List<String> idListQuery;
+
+    public String get__frch_item_0() {
+        return __frch_item_0;
+    }
+
+    public void set__frch_item_0(String __frch_item_0) {
+        this.__frch_item_0 = __frch_item_0;
+    }
+
 
     public String getId() {
         return id;

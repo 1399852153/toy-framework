@@ -21,6 +21,7 @@ public class MyBatisTest {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             User param = new User();
+            param.set__frch_item_0("aaaaa");
 //            param.setId("123");
             param.setIdListQuery(Arrays.asList("123","321"));
 

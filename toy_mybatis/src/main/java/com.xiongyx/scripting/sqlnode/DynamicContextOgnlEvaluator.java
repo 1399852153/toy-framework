@@ -11,9 +11,9 @@ import java.util.Map;
  * @author xiongyx
  * on 2019/7/22.
  */
-public class ContextOgnlEvaluator {
+public class DynamicContextOgnlEvaluator {
 
-    private static final Logger logger = Logger.getLogger(ContextOgnlEvaluator.class);
+    private static final Logger logger = Logger.getLogger(DynamicContextOgnlEvaluator.class);
 
     /**
      * 解析 boolean表达式

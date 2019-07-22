@@ -73,7 +73,7 @@ public class ForEachSqlNode implements SqlNode{
     @Override
     public void apply(DynamicSqlParseContext context) {
         // 解析出 foreach collection对应的Iterable迭代对象
-        final Iterable<?> iterable = ContextOgnlEvaluator.evaluateIterable(collectionExpression, context);
+        final Iterable<?> iterable = DynamicContextOgnlEvaluator.evaluateIterable(collectionExpression, context);
         if (!iterable.iterator().hasNext()) {
             // 迭代对象为空，不处理直接返回
             return;
