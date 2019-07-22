@@ -1,5 +1,6 @@
 package com.xiongyx.parsing;
 
+import com.xiongyx.mapping.BoundSql;
 import com.xiongyx.pattern.Patterns;
 import com.xiongyx.util.ReflectionUtil;
 import org.apache.log4j.Logger;
@@ -20,9 +21,12 @@ public class SqlParamConvertHelper {
 
     private static Logger logger = Logger.getLogger(SqlParamConvertHelper.class);
 
-    public static List parseSqlParam(String sqlSource, Object param) {
+    public static List parseSqlParam(BoundSql boundSql) {
         try {
             List<Object> realParamList = new ArrayList<>();
+
+            Object param = boundSql.getParamObject();
+            String sqlSource = boundSql.getSqlText();
 
             // 参数 #{}匹配
             Matcher matcher = Patterns.param_pattern.matcher(sqlSource);

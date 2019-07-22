@@ -44,7 +44,7 @@ public class DefaultParameterHandler implements ParameterHandler
             BoundSql boundSql = sqlSource.getBoundSql(parameter);
 
             // 解析sqlSource中的#{}，获得其中的值，按照顺序构造一个实参列表
-            List realParams = SqlParamConvertHelper.parseSqlParam(boundSql.getSqlText(),parameter);
+            List realParams = SqlParamConvertHelper.parseSqlParam(boundSql);
             for(int i=0; i<realParams.size(); i++){
                 Object realParam = realParams.get(i);
                 // 向PreparedStatement注入参数 setObject(index,param),用于顶替?
