@@ -1,4 +1,4 @@
-package com.xiongyx.util;
+package com.xiongyx.scripting.sqlnode;
 
 import ognl.Ognl;
 import ognl.OgnlException;
@@ -9,11 +9,11 @@ import java.util.Map;
 
 /**
  * @author xiongyx
- * on 2019/7/21.
+ * on 2019/7/22.
  */
-public class OgnlUtil {
+public class ContextOgnlEvaluator {
 
-    private static final Logger logger = Logger.getLogger(OgnlUtil.class);
+    private static final Logger logger = Logger.getLogger(ContextOgnlEvaluator.class);
 
     /**
      * 解析 boolean表达式
@@ -35,12 +35,18 @@ public class OgnlUtil {
         }
     }
 
-    /**
-     * 解析 iterable表达式
-     * */
-    public static Iterable<?> evaluateIterable(String expression, Object parameterObject) {
+    public static Iterable<?> evaluateIterable(String expression,DynamicSqlParseContext context){
         try {
-            Object value = Ognl.getValue(expression, parameterObject);
+            Map<String, Object> bindings = context.getBindings();
+
+            // 先尝试从 binding中获取
+            Object value = Ognl.getValue(expression, bindings);
+
+            if(value == null){
+                // 再从传入的paramObject中获取
+                value = Ognl.getValue(expression, context.getParamObject());
+            }
+
             if (value == null) {
                 throw new RuntimeException("The expression '" + expression + "' evaluated to a null value.");
             }

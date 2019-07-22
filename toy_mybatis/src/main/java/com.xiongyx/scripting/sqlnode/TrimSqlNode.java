@@ -46,7 +46,7 @@ public class TrimSqlNode implements SqlNode{
         private StringBuilder newSql;
 
         FilteredSqlParseDynamicContext(DynamicSqlParseContext delegate) {
-            super(null);
+            super(delegate.getParamObject());
             this.delegate = delegate;
             this.newSql = new StringBuilder();
         }

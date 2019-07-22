@@ -1,7 +1,6 @@
 package com.xiongyx.scripting.sqlnode;
 
 import com.xiongyx.parsing.GenericTokenParser;
-import com.xiongyx.util.OgnlUtil;
 
 import java.util.Map;
 
@@ -73,9 +72,8 @@ public class ForEachSqlNode implements SqlNode{
 
     @Override
     public void apply(DynamicSqlParseContext context) {
-        Map<String, Object> bindings = context.getBindings();
         // 解析出 foreach collection对应的Iterable迭代对象
-        final Iterable<?> iterable = OgnlUtil.evaluateIterable(collectionExpression, bindings);
+        final Iterable<?> iterable = ContextOgnlEvaluator.evaluateIterable(collectionExpression, context);
         if (!iterable.iterator().hasNext()) {
             // 迭代对象为空，不处理直接返回
             return;
@@ -151,7 +149,7 @@ public class ForEachSqlNode implements SqlNode{
         private String item;
 
         FilteredDynamicContext(DynamicSqlParseContext delegate, String itemIndex, String item, int i) {
-            super(null);
+            super(delegate.getParamObject());
             this.delegate = delegate;
             this.index = i;
             this.itemIndex = itemIndex;
@@ -199,7 +197,7 @@ public class ForEachSqlNode implements SqlNode{
         private boolean prefixApplied;
 
         PrefixedContext(DynamicSqlParseContext delegate, String prefix) {
-            super(null);
+            super(delegate.getParamObject());
             this.delegate = delegate;
             this.prefix = prefix;
             this.prefixApplied = false;

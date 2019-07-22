@@ -15,13 +15,16 @@ public class DynamicSqlParseContext {
 
     private final StringBuilder sqlBuilder = new StringBuilder();
 
+    private Object paramObject;
+
     /**
      * 上下文环境中，绑定key参数时 用于区别不同参数(Foreach item)
      * */
     private int uniqueNumber = -1;
 
     public DynamicSqlParseContext(Object paramObject) {
-        // todo 根据参数对象，生成K/V 上下文环境
+        // 根据参数对象，生成K/V 上下文环境
+        this.paramObject = paramObject;
     }
 
     /**
@@ -36,6 +39,10 @@ public class DynamicSqlParseContext {
      * */
     public void bind(String name, Object value) {
         bindings.put(name, value);
+    }
+
+    public Object getParamObject() {
+        return paramObject;
     }
 
     /**
