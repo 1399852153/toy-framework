@@ -45,4 +45,9 @@ public class DefaultSqlSession implements SqlSession {
 
     }
 
+    @Override
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
 }
