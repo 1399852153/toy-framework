@@ -30,6 +30,14 @@
 ## 执行原理：
     session获取mapper，获取mapper时创建该mapper的一个代理对象
     代理对象的内部实现：执行sql
+    
+    
+    
+## 遗留问题
+InvocationHandler实现MapperProxy invoke 方法中的args参数会丢失原始参数类型信息，获取到的是Object类。
+后面解析mapper xml时无法通过反射拿到类中的方法。
+一种实现思路：通过method获取参数，获取类型信息，将args转换为参数原有类型。
+
 
 
 
