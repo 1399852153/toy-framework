@@ -109,7 +109,7 @@ public class ForEachSqlNode implements SqlNode{
                 // map collection对象的 item=list[index]
                 applyItem(context, o, uniqueNumber);
             }
-            // 递归处理
+            // 递归处理Foreach的内部节点
             contents.apply(new FilteredDynamicContext(context, index, item, uniqueNumber));
             if (first) {
                 first = !((PrefixedContext) context).isPrefixApplied();
@@ -219,11 +219,19 @@ public class ForEachSqlNode implements SqlNode{
 
         @Override
         public void appendSql(String sql) {
+            // 如果没有拼上 分隔符 && sql不为空
             if (!prefixApplied && sql != null && sql.trim().length() > 0) {
+                // 在被包装的context中拼接分隔符
                 delegate.appendSql(prefix);
+                // 在被包装的context中拼接
+                delegate.appendSql(sql);
+                // flag状态改变
                 prefixApplied = true;
+            }else{
+                // 单纯的在被包装的context中拼接
+                delegate.appendSql(sql);
             }
-            delegate.appendSql(sql);
+
         }
 
         @Override

@@ -28,7 +28,7 @@ public class DynamicSqlSource implements SqlSource{
         // 递归进去，绑定参数，拼接sql
         rootNode.apply(dynamicSqlParseContext);
 
-        // todo 构造最终的sql
+        // 构造最终的sql
         String sqlText = dynamicSqlParseContext.getSqlBuilder().toString();
 
         BoundSql boundSql = new BoundSql(paramObject,sqlText);
