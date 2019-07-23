@@ -1,5 +1,6 @@
 package com.xiongyx.demo;
 
+import com.xiongyx.demo.dao.UserDAO;
 import com.xiongyx.demo.model.User;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.session.SqlSession;
@@ -47,22 +48,16 @@ public class ApplicationMain {
         SqlSessionFactory sqlSessionFactory = SqlSessionFactoryBuilder.build(reader);
         SqlSession sqlSession = sqlSessionFactory.getSession();
 
-//        User user = new User();
-//        user.setId("123");
-//        user.setAge(12);
-//        user.setMoney(32141);
-//           sqlSession.insert();
-//        List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
-//        System.out.println(list);
-
+        UserDAO mapper = sqlSession.getMapper(UserDAO.class);
         Map<String,Object> param = new HashMap<>();
         param.put("id","123");
         param.put("age",12);
         param.put("money",32141);
-//        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUser",param);
+        // TODO mapper 传实体做参数
+        List<User> userList = mapper.getUserList(param);
 
         // todo 动态sql
-        List<User> list = sqlSession.selectList("test.dao.UserMapper.getUserByParam",param);
-        System.out.println(list);
+
+        System.out.println(userList);
     }
 }

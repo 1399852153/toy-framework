@@ -1,12 +1,16 @@
 package com.xiongyx.session.defaults;
 
+import com.xiongyx.binding.MapperProxy;
 import com.xiongyx.executor.Executor;
 import com.xiongyx.executor.SimpleExecutor;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
 import com.xiongyx.session.SqlSession;
 
+import java.lang.reflect.Proxy;
 import java.util.List;
+
+
 
 /**
  * @author xiongyx
@@ -24,8 +28,18 @@ public class DefaultSqlSession implements SqlSession {
     }
 
     @Override
+    public <T> T getMapper(Class<T> type) {
+
+        // TODO mapperInter 接口获取
+        Class mapperInterface = type;
+        MapperProxy<T> tMapperProxy = new MapperProxy<>(this, mapperInterface);
+        return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]{mapperInterface}, tMapperProxy);
+    }
+
+    @Override
     public <T> T selectOne(String statementId, Object parameter) {
-        return null;
+        throw new RuntimeException("未实现");
+        // return null;
     }
 
     @Override

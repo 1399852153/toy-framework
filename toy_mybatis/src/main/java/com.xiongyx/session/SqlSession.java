@@ -10,8 +10,19 @@ import java.util.List;
  */
 public interface SqlSession {
 
+
+    /**
+     * 获取mapper代理对象
+     *
+     * @param type
+     * @param <T>
+     * @return
+     */
+    <T> T getMapper(Class<T> type);
+
     /**
      * 查询单条记录
+     *
      * @param statementId
      * @param parameter
      * @return
@@ -21,6 +32,7 @@ public interface SqlSession {
 
     /**
      * 查询多条记录
+     *
      * @param statementId
      * @param parameter
      * @return
@@ -30,6 +42,7 @@ public interface SqlSession {
 
     /**
      * update
+     *
      * @param statementId
      * @param parameter
      */
@@ -38,6 +51,7 @@ public interface SqlSession {
 
     /**
      * insert
+     *
      * @param statementId
      * @param parameter
      */
