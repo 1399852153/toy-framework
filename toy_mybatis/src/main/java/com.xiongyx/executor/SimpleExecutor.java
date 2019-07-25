@@ -1,7 +1,7 @@
 package com.xiongyx.executor;
 
 import com.xiongyx.datasource.DataSource;
-import com.xiongyx.environment.Environment;
+import com.xiongyx.mapping.Environment;
 import com.xiongyx.executor.parameter.DefaultParameterHandler;
 import com.xiongyx.executor.parameter.ParameterHandler;
 import com.xiongyx.executor.resultset.DefaultResultSetHandler;
@@ -41,7 +41,7 @@ public class SimpleExecutor implements Executor{
             StatementHandler statementHandler = new SimpleStatementHandler(mappedStatement);
 
             // 通过StatementHandler和connection获取PreparedStatement
-            PreparedStatement preparedStatement = statementHandler.prepare(connection);
+            PreparedStatement preparedStatement = statementHandler.prepare(connection,parameter);
 
             // 实例化ParameterHandler，将SQL语句中？参数化
             ParameterHandler parameterHandler = new DefaultParameterHandler(parameter,mappedStatement);

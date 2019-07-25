@@ -1,6 +1,7 @@
 package com.xiongyx.model;
 
 import com.xiongyx.constant.Constant;
+import com.xiongyx.mapping.sqlsource.SqlSource;
 
 import java.util.StringJoiner;
 
@@ -20,7 +21,7 @@ public class MappedStatement {
 
     private String resultType;
 
-    private String sqlSource;
+    private SqlSource sqlSource;
 
     private Constant.SqlType sqlCommandType;
 
@@ -56,11 +57,11 @@ public class MappedStatement {
         this.resultType = resultType;
     }
 
-    public String getSqlSource() {
+    public SqlSource getSqlSource() {
         return sqlSource;
     }
 
-    public void setSqlSource(String sqlSource) {
+    public void setSqlSource(SqlSource sqlSource) {
         this.sqlSource = sqlSource;
     }
 

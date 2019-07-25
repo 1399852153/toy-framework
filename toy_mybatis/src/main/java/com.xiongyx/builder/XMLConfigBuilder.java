@@ -1,6 +1,6 @@
 package com.xiongyx.builder;
 
-import com.xiongyx.helper.ConfigXmlParseHelper;
+import com.xiongyx.parsing.ConfigXmlParseHelper;
 import com.xiongyx.model.Configuration;
 
 import java.io.Reader;

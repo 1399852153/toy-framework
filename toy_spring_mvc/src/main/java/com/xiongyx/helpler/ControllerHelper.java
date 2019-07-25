@@ -7,7 +7,7 @@ import com.xiongyx.bean.RequestHandler;
 import com.xiongyx.bean.RequestHandlerKey;
 import com.xiongyx.constant.URLConstant;
 import com.xiongyx.enums.RequestHttpMethodEnum;
-import com.xiongyx.helper.ClassHelper;
+import com.xiongyx.parsing.ClassHelper;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Method;

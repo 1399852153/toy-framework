@@ -4,7 +4,7 @@ import com.xiongyx.HelperLoader;
 import com.xiongyx.bean.RequestHandler;
 import com.xiongyx.bean.RequestHandlerKey;
 import com.xiongyx.enums.RequestHttpMethodEnum;
-import com.xiongyx.helper.BeanFactory;
+import com.xiongyx.parsing.BeanFactory;
 import com.xiongyx.util.ClassUtil;
 import com.xiongyx.util.ReflectionUtil;
 import org.slf4j.Logger;

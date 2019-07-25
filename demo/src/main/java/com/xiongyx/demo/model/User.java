@@ -1,6 +1,7 @@
 package com.xiongyx.demo.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author xiongyx
@@ -16,7 +17,7 @@ public class User {
 
     private double money;
 
-    private Date createtime;
+    private List<String> idListQuery;
 
     public String getId() {
         return id;
@@ -50,12 +51,12 @@ public class User {
         this.money = money;
     }
 
-    public Date getCreatetime() {
-        return createtime;
+    public List<String> getIdListQuery() {
+        return idListQuery;
     }
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
+    public void setIdListQuery(List<String> idListQuery) {
+        this.idListQuery = idListQuery;
     }
 
     @Override
@@ -65,6 +66,7 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", age=" + age +
                 ", money=" + money +
+                ", idListQuery=" + idListQuery +
                 '}';
     }
 }

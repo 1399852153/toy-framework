@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
 <!--		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
-<mapper namespace="com.xiongyx.demo.dao.UserDAO">
+<mapper namespace="test.dao.UserMapper">
 
 	<select id="getUser" resultType="com.xiongyx.demo.model.User">
 		select * from user
-		where
-			<!--id = #{id}-->
-		<!--and -->
-		age = #{age}
-		and money = #{money}
-	</select>
-
-
-	<select id="getUserList" resultType="com.xiongyx.demo.model.User">
-		select * from user
-		where
-		<!--id = #{id}-->
-		<!--and -->
-		age = #{age}
-		and money = #{money}
+		<where>
+			<if test="id != null">and id = #{id}</if>
+			<if test="age != null">and age = #{age}</if>
+			<if test="money != null">and money = #{money}</if>
+			<if test="idListQuery != null">
+				and id in
+				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</where>
 	</select>
 	
 	<select id="getUserByParam" resultType="com.xiongyx.demo.model.User">
