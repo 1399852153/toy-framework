@@ -1,4 +1,4 @@
-package com.xiongyx.scripting.sqlnode;
+package com.xiongyx.scripting;
 
 import ognl.Ognl;
 import ognl.OgnlException;

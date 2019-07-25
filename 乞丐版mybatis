@@ -24,7 +24,7 @@ RoutingStatementHandler 根据MappedStatement类型，使用策略模式进行St
 因为可以以不同的方式 初始化mybatis，配置文件/文件流/环境变量等等
 
 1.sqlSessionFactoryBuilder 支持多种方式初始化mybatis配置 ok
-2.解析sqlStatement中的子标签语句，实现动态传参 <where>、<set>、<if>等等(加强版 forEach)
+2.解析sqlStatement中的子标签语句，实现动态传参 <where>、<set>、<if>等等(加强版 forEach) ok
 3.resultMap解析结果集映射(加强版 嵌套映射 collection、association等)
 4.提供事务，批处理执行方式
 5.增加拦截器接口，并且自定义一个分页查询的插件

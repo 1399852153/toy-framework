@@ -1,7 +1,7 @@
 package com.xiongyx.mapping.sqlsource;
 
 import com.xiongyx.mapping.BoundSql;
-import com.xiongyx.scripting.sqlnode.DynamicSqlParseContext;
+import com.xiongyx.scripting.DynamicSqlParseContext;
 import com.xiongyx.scripting.sqlnode.MixedSqlNode;
 
 /**
