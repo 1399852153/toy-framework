@@ -1,7 +1,5 @@
 package com.xiongyx.scripting.sqlnode;
 
-import java.util.Map;
-
 /**
  * @author xiongyx
  * @date 2019/7/17
@@ -24,13 +22,8 @@ public class IfSqlNode implements SqlNode{
 
     @Override
     public void apply(DynamicSqlParseContext context) {
-        Map<String,Object> bindings = context.getBindings();
-        if(evalTestExpression(bindings)){
+        if(DynamicContextOgnlEvaluator.evaluateBoolean(testExpression,context)){
             contents.apply(context);
         }
-    }
-
-    private boolean evalTestExpression(Map<String,Object> bindings){
-        return true;
     }
 }

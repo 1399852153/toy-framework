@@ -18,9 +18,17 @@ public class DynamicContextOgnlEvaluator {
     /**
      * 解析 boolean表达式
      * */
-    public static boolean evaluateBoolean(String expression, Object parameterObject) {
+    public static boolean evaluateBoolean(String expression, DynamicSqlParseContext context) {
         try {
-            Object value = Ognl.getValue(expression, parameterObject);
+            Map<String, Object> bindings = context.getBindings();
+
+            Object value = Ognl.getValue(expression, bindings);
+
+            // 如果是false
+            if(value instanceof Boolean && !((boolean)value)){
+                // 再从传入的paramObject中获取
+                value = Ognl.getValue(expression, context.getParamObject());
+            }
 
             if (value instanceof Boolean) {
                 return (Boolean) value;
