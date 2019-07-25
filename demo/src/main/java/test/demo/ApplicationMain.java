@@ -54,7 +54,7 @@ public class ApplicationMain {
         User param = new User();
         param.setId("123");
         param.setAge(12);
-        param.setMoney(32141);
+        param.setMoney(32141d);
         param.setIdListQuery(Arrays.asList("aaaaa","bbbbb","ccccc"));
 
         sqlSession.selectList("test.demo.dao.UserDAO.getUserList",param);
