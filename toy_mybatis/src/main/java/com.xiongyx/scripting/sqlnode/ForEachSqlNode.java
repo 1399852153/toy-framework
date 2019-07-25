@@ -12,7 +12,11 @@ import java.util.Map;
  */
 public class ForEachSqlNode implements SqlNode{
 
-    private static final String ITEM_PREFIX = "__frch_";
+    /**
+     * foreach 节点迭代时的参数值前缀
+     * 使用"-"中划线开头 目的是为了避免和java的对象属性重名导致覆盖的bug出现
+     * */
+    private static final String ITEM_PREFIX = "-foreach-";
 
     private String collectionExpression;
     private String open;

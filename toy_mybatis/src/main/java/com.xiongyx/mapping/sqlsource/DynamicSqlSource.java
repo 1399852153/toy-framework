@@ -31,8 +31,6 @@ public class DynamicSqlSource implements SqlSource{
         // 构造最终的sql
         String sqlText = dynamicSqlParseContext.getSqlBuilder().toString();
 
-        BoundSql boundSql = new BoundSql(paramObject,sqlText);
-
-        return boundSql;
+        return new BoundSql(paramObject,sqlText,dynamicSqlParseContext.getBindings());
     }
 }

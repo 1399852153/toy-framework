@@ -60,7 +60,7 @@ public class SimpleStatementHandler implements StatementHandler {
     public PreparedStatement prepare(Connection paramConnection, Object paramObject) throws SQLException {
         SqlSource sqlSource = mappedStatement.getSqlSource();
 
-        // todo 获得BoundSql
+        // 获得BoundSql
         BoundSql boundSql = sqlSource.getBoundSql(paramObject);
         String originalSql = boundSql.getSqlText();
 

@@ -1,5 +1,7 @@
 package com.xiongyx.mapping;
 
+import java.util.Map;
+
 /**
  * @author xiongyx
  * @date 2019/7/17
@@ -18,24 +20,27 @@ public class BoundSql {
      * */
     private String sqlText;
 
-    public BoundSql(Object paramObject, String sqlText) {
+    /**
+     * 额外的参数对象
+     * */
+    private Map<String,Object> additionParams;
+
+    public BoundSql(Object paramObject, String sqlText, Map<String, Object> additionParams) {
         this.paramObject = paramObject;
         this.sqlText = sqlText;
+        this.additionParams = additionParams;
     }
 
     public Object getParamObject() {
         return paramObject;
     }
 
-    public void setParamObject(Object paramObject) {
-        this.paramObject = paramObject;
-    }
-
     public String getSqlText() {
         return sqlText;
     }
 
-    public void setSqlText(String sqlText) {
-        this.sqlText = sqlText;
+    public Map<String, Object> getAdditionParams() {
+        return additionParams;
     }
+
 }
