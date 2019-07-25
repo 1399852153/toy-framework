@@ -51,7 +51,7 @@ public class ApplicationMain {
         User user = new User();
         user.setId("123");
         user.setAge(12);
-        user.setMoney(32141);
+        user.setMoney(32141d);
         user.setIdListQuery(Arrays.asList("123","321"));
         List<Object> list = sqlSession.selectList("test.dao.UserMapper.getUser",user);
         System.out.println(list);

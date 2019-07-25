@@ -13,9 +13,9 @@ public class User {
 
     private String userName;
 
-    private int age;
+    private Integer age;
 
-    private double money;
+    private Double money;
 
     private List<String> idListQuery;
 
@@ -35,19 +35,19 @@ public class User {
         this.userName = userName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public double getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 
