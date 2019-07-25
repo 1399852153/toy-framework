@@ -1,9 +1,8 @@
-package com.xiongyx.demo.dao;
+package test.demo.dao;
 
-import com.xiongyx.demo.model.User;
+import test.demo.model.User;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Program Name: toy-framework
@@ -18,5 +17,5 @@ import java.util.Map;
 public interface UserDAO {
     User getUser(User param);
 
-    List<User> getUserList(Map param);
+    List<User> getUserList(User param);
 }

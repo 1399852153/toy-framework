@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
 <!--		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
-<mapper namespace="test.dao.UserMapper">
+<mapper namespace="test.demo.dao.UserMapper">
 
-	<select id="getUser" resultType="com.xiongyx.demo.model.User">
+	<select id="getUserList" resultType="test.demo.model.User">
 		select * from user
 		<where>
 			<if test="id != null">and id = #{id}</if>
@@ -18,7 +18,7 @@
 		</where>
 	</select>
 	
-	<select id="getUserByParam" resultType="com.xiongyx.demo.model.User">
+	<select id="getUserByParam" resultType="test.demo.model.User">
 		select * from user
 		<where>
 			<if test="id != null">and id = #{id}</if>

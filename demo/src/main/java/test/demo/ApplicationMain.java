@@ -1,8 +1,7 @@
-package com.xiongyx.demo;
+package test.demo;
 
-import com.xiongyx.demo.dao.UserDAO;
-import com.xiongyx.demo.model.User;
-import com.xiongyx.model.Configuration;
+import test.demo.dao.UserDAO;
+import test.demo.model.User;
 import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
 import com.xiongyx.session.SqlSessionFactoryBuilder;
@@ -11,9 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author xiongyx
@@ -50,10 +47,16 @@ public class ApplicationMain {
         SqlSession sqlSession = sqlSessionFactory.getSession();
 
         UserDAO mapper = sqlSession.getMapper(UserDAO.class);
-        Map<String,Object> param = new HashMap<>();
-        param.put("id","123");
-        param.put("age",12);
-        param.put("money",32141);
+//        Map<String,Object> param = new HashMap<>();
+//        param.put("id","123");
+//        param.put("age",12);
+//        param.put("money",32141);
+        User param = new User();
+        param.setId("123");
+        param.setAge(12);
+        param.setMoney(32141);
+        param.setIdListQuery(Arrays.asList("aaaaa","bbbbb","ccccc"));
+
         // TODO mapper 传实体做参数
         List<User> userList = mapper.getUserList(param);
 

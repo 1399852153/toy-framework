@@ -1,10 +1,10 @@
-package com.xiongyx.demo.service.impl;
+package test.demo.service.impl;
 
 import com.xiongyx.annotation.MyAutowired;
 import com.xiongyx.annotation.MyService;
-import com.xiongyx.demo.service.OrderService;
-import com.xiongyx.demo.service.ProductService;
-import com.xiongyx.demo.service.UserService;
+import test.demo.service.OrderService;
+import test.demo.service.ProductService;
+import test.demo.service.UserService;
 
 /**
  * @author xiongyx

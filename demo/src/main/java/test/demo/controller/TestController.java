@@ -1,20 +1,18 @@
-package com.xiongyx.demo.controller;
+package test.demo.controller;
 
 import com.xiongyx.annotation.*;
 import com.xiongyx.bean.MyModel;
 import com.xiongyx.bean.MyModelAndView;
-import com.xiongyx.demo.model.User;
-import com.xiongyx.demo.service.OrderService;
-import com.xiongyx.demo.service.ProductService;
-import com.xiongyx.demo.service.UserService;
+import test.demo.model.User;
+import test.demo.service.OrderService;
+import test.demo.service.ProductService;
+import test.demo.service.UserService;
 import com.xiongyx.enums.RequestHttpMethodEnum;
-import com.xiongyx.util.ClassUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * @author xiongyx

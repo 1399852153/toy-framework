@@ -1,4 +1,4 @@
-package com.xiongyx.demo.model;
+package test.demo.model;
 
 import java.util.Date;
 import java.util.List;
