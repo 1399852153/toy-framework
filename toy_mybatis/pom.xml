@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>toy-mybatis</artifactId>
-    <version>A-A</version>
+    <version>B-1</version>
     <name>toy-mybatis</name>
 
     <dependencies>

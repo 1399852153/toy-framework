@@ -41,6 +41,19 @@ InvocationHandler实现MapperProxy invoke 方法中的args参数会丢失原始�
 
 
 
+## 2019-07-28 22:16:45
+## 版本号：B-1
+* 实现通过sqlsesson 获取mapper，通过jdk生成代理代理对象。
+* 实现mapper的spring集成：通过factoryBean注册mapper接口，可让spring容器中管理mapper的bean。
+
+### 适配包与demo
+* [简易版Mybatis-Spring适配包](https://github.com/nothingax/micro-mybatis-spring)
+* [集成micro-mybatis-spring 与toy-mybatis 的demo](https://github.com/nothingax/micro-mybatis-spring-demo)
+
+
+
+
+
 
 
 
