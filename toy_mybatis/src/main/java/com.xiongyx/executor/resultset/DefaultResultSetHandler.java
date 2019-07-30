@@ -69,12 +69,12 @@ public class DefaultResultSetHandler implements ResultSetHandler
                     // jdbcType
                     String jdbcType = metaData.getColumnTypeName(i);
 
-                    String setterMethodName = ReflectionUtil.makeSetMethodName(columnName);
-                    Method setterMethod = eClass.getMethod(setterMethodName,eClass);
+                    // 获得setter方法
+                    Method setterMethod = ReflectionUtil.getSetterMethod(eClass,columnName,true);
                     // pojo setter方法的javaType
                     Class setterParamType = setterMethod.getParameterTypes()[0];
                     // 从resultSet中获取对应的值
-                    Object columnValue = TypeConvertUtil.getResultValueByType(resultSet,columnName,jdbcType,setterParamType.getSimpleName());
+                    Object columnValue = TypeConvertUtil.getResultValueByType(resultSet,columnName,jdbcType,setterParamType.getName());
 
                     HashMap<String, Object> map = new HashMap<>();
                     map.put(columnName, columnValue);
@@ -90,38 +90,11 @@ public class DefaultResultSetHandler implements ResultSetHandler
                 result.add(entity);
             }
 
-
-            // while (resultSet.next()) {
-            //     // 通过反射实例化返回类
-            //     Class<?> entityClass = Class.forName(mappedStatement.getResultType());
-            //     E entity = (E) entityClass.newInstance();
-            //     Field[] declaredFields = entityClass.getDeclaredFields();
-            //
-            //     for (Field field : declaredFields) {
-            //         // 对成员变量赋值
-            //         field.setAccessible(true);
-            //         Class<?> fieldType = field.getType();
-            //
-            //         // 目前只实现了string和int转换
-            //         if (String.class.equals(fieldType)) {
-            //             field.set(entity, resultSet.getString(field.getName()));
-            //         } else if (int.class.equals(fieldType) || Integer.class.equals(fieldType)) {
-            //             field.set(entity, resultSet.getInt(field.getName()));
-            //         } else {
-            //             // 其他类型自己转换，这里就直接设置了
-            //             field.set(entity, resultSet.getObject(field.getName()));
-            //         }
-            //     }
-            //
-            //     result.add(entity);
-            // }
-
             return result;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("handleResultSets error",e);
         }
-        return null;
     }
 
 }

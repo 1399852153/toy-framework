@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * @Author xiongyx
@@ -86,5 +87,35 @@ public class ReflectionUtil {
         String newKeyName = StringUtil.transFirstCharUpperCase(keyName);
 
         return "set" + newKeyName;
+    }
+
+    /**
+     * 获取指定类 指定属性名的method
+     * @param clazz 指定类
+     * @param propertyName 属性名
+     * @param mustExist 是否必须存在 如果为true，当没有找到对应setter方法时，将抛出异常
+     * */
+    public static Method getSetterMethod(Class clazz, String propertyName,boolean mustExist){
+        // 迭代当前类的所有public方法
+        for (Method method : clazz.getDeclaredMethods()) {
+            //set方法至少长度为4,非静态，返回值为空，参数只有一个
+
+            // 非静态方法 && 返回值void && 参数为1
+            if (!Modifier.isStatic(method.getModifiers())
+                    && method.getReturnType().equals(Void.TYPE)
+                    && method.getParameterTypes().length == 1) {
+
+                String setMethodName = makeSetMethodName(propertyName);
+                if(setMethodName.equals(method.getName())){
+                    return method;
+                }
+            }
+        }
+
+        if(mustExist){
+            throw new RuntimeException("no setter method clazz=" + clazz.getName() + " propertyName=" + propertyName);
+        }else{
+            return null;
+        }
     }
 }
