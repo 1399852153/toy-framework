@@ -5,17 +5,17 @@
 
 	<select id="getUserList" resultType="test.demo.model.User">
 		select * from user
-		<where>
-			<if test="id != null">and id = #{id}</if>
-			<if test="age != null">and age = #{age}</if>
-			<if test="money != null">and money = #{money}</if>
-			<if test="idListQuery != null">
-				and id in
-				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">
-					#{item}
-				</foreach>
-			</if>
-		</where>
+<!--		<where>-->
+<!--			<if test="id != null">and id = #{id}</if>-->
+<!--			<if test="age != null">and age = #{age}</if>-->
+<!--			<if test="money != null">and money = #{money}</if>-->
+<!--			<if test="idListQuery != null">-->
+<!--				and id in-->
+<!--				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">-->
+<!--					#{item}-->
+<!--				</foreach>-->
+<!--			</if>-->
+<!--		</where>-->
 	</select>
 	
 	<select id="getUserByParam" resultType="test.demo.model.User">

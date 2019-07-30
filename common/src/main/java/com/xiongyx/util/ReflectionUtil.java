@@ -75,4 +75,16 @@ public class ReflectionUtil {
 
         return "get" + newKeyName;
     }
+
+    /***
+     * 将通过keyName获得对应的bean对象的set方法名称的字符串
+     * @param keyName 属性名
+     * @return  返回set方法名称的字符串
+     */
+    public static String makeSetMethodName(String keyName){
+        //:::将第一个字母转为大写
+        String newKeyName = StringUtil.transFirstCharUpperCase(keyName);
+
+        return "set" + newKeyName;
+    }
 }

@@ -6,8 +6,11 @@ package com.xiongyx.executor.resultset;
 
 import com.xiongyx.model.MappedStatement;
 import com.xiongyx.util.JsonUtil;
+import com.xiongyx.util.ReflectionUtil;
+import com.xiongyx.util.TypeConvertUtil;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
@@ -56,15 +59,25 @@ public class DefaultResultSetHandler implements ResultSetHandler
             // FIXME mappedStatement  中的eclass  不正确
             Class<?> eClass = Class.forName(mappedStatement.getResultType());
 
-
             ResultSetMetaData metaData = resultSet.getMetaData();
             while (resultSet.next()) {
                 E entity = (E) eClass.newInstance();
-                for (int i = 0; i < metaData.getColumnCount(); i++) {
-                    String columnLabel = metaData.getColumnLabel(i + 1);
-                    Object columnValue = resultSet.getObject(columnLabel);
+                // 遍历metaData的列
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                    // 获得当前列的名称
+                    String columnName = metaData.getColumnLabel(i);
+                    // jdbcType
+                    String jdbcType = metaData.getColumnTypeName(i);
+
+                    String setterMethodName = ReflectionUtil.makeSetMethodName(columnName);
+                    Method setterMethod = eClass.getMethod(setterMethodName,eClass);
+                    // pojo setter方法的javaType
+                    Class setterParamType = setterMethod.getParameterTypes()[0];
+                    // 从resultSet中获取对应的值
+                    Object columnValue = TypeConvertUtil.getResultValueByType(resultSet,columnName,jdbcType,setterParamType.getSimpleName());
+
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put(columnLabel, columnValue);
+                    map.put(columnName, columnValue);
                     System.out.println(JsonUtil.objectToJsonString(map));
                     for (Map.Entry<String, Object> entry : map.entrySet()) {
                         String fieldName = entry.getKey();
