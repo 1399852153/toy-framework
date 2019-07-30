@@ -25,6 +25,7 @@ public class TypeConvertUtil {
                     return resultSet.getDouble(columnName);
                 case "boolean":
                 case "java.lang.Boolean":
+                    // boolean
                     return resultSet.getBoolean(columnName);
                 default:
                     return resultSet.getObject(columnName);
