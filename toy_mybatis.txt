@@ -1,32 +1,4 @@
-动态sql解析
-1. 在解析mapper-xml时，将mappedStatement中的内部sql语句解析成树形结构(SqlSource)
-    1.1 使用XPath，将mapper/(insert | delete | update | select)中的结构全部解析出来成为一个个的Node树形节点
-    1.2 将Node转为mybatis所对应的SqlNode，其中SqlNode有诸如IfSqlNode，WhereSqlNode等等子类，各自有不同的数据结构
-    1.3 SqlSource保存着一个RootSqlNode根节点，类型为MixedSqlNode(混合型)，内部递归保存着解析过后的树形SqlNode节点集合
+resultMap实现结果集 关系型R==>对象O的转换
+1.mapper-xml中 resultMap解析与初始化
+2.执行完sql查询出结果集，根据resultMap进行对应的映射
 
-举例说明:
-    <select id="getUser" resultType="com.xiongyx.User">
-    	select * from user
-    	<where>
-   			<if test="id != null">and id = #{id}</if>
-   			<if test="idListQuery != null">
-    			and id in
-    			<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">
-    				#{item}
-    			</foreach>
-    		</if>
-    	</where>
-    </select>
-
-    MixedNode（root）
-        staticTextSqlNode("select * from user")
-        whereSqlNode
-            staticTextSqlNode("/n")
-            ifSqlNode(test=("id != null"))
-                staticTextSqlNode("and id = #{id})
-            ifSqlNode(test=("idListQuery != null"))
-                forEachSqlNode(collection="idListQuery", index="index", item="item", open="(", separator=",", close=")")
-                    staticTextSqlNode("#{item})
-
-2. 在执行sql时，根据SqlSource，和传入的参数，将动态的sql参数转换为最终的sql交给jdbc执行
-   todo 暂时没完全想通Orz
