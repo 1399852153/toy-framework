@@ -69,7 +69,7 @@ public class DefaultResultSetHandler implements ResultSetHandler
                     // jdbcType
                     String jdbcType = metaData.getColumnTypeName(i);
 
-                    // 获得setter方法
+                    // 获得setter方法 todo 效率不高，可以使用objectWrapper将setterMethod封装起来
                     Method setterMethod = ReflectionUtil.getSetterMethod(eClass,columnName,true);
                     // pojo setter方法的javaType
                     Class setterParamType = setterMethod.getParameterTypes()[0];
