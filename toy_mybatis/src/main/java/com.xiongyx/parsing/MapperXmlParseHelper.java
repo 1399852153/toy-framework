@@ -47,25 +47,28 @@ public class MapperXmlParseHelper {
             String namespace = ((Element)mapperNode).getAttribute("namespace");
             NodeList nodeList = mapperNode.getChildNodes();
 
-            List<MappedStatement> mappedStatementList = new ArrayList<>();
             // 当前xml文件中的sql单元列表
             for(int i=0; i<nodeList.getLength(); i++){
                 Node node = nodeList.item(i);
 
                 if(node.getNodeType() == Node.ELEMENT_NODE){
-//                    if("resultMap".equals(node.getNodeName())){
-//                        // resultMap
-//                        ResultMap resultMap = parseResultMap(namespace,(Element)node);
-//
-//                    }else{
+                    if("resultMap".equals(node.getNodeName())){
+                        // resultMap
+                        ResultMap resultMap = parseResultMap(namespace,(Element)node);
+                        ResultMap old = Configuration.getInstance().addResultMap(resultMap.getId(),resultMap);
+                        if(old != null){
+                            // 存在相同的sqlId相同的resultMap
+                            throw new RuntimeException("has same resultMap id =>" + old.getId());
+                        }
+                    }else{
                         MappedStatement mappedStatement = parseMappedStatement(namespace,(Element)node);
                         // 加入 当前xml文件中的sql单元列表
                         MappedStatement old = Configuration.getInstance().addMappedStatement(mappedStatement.getSqlId(),mappedStatement);
                         if(old != null){
                             // 存在相同的sqlId相同的mappedStatement
-                            throw new RuntimeException("has same sqlId =>" + old.getSqlId());
+                            throw new RuntimeException("has same mappedStatement sqlId =>" + old.getSqlId());
                         }
-//                    }
+                    }
                 }
             }
         } catch (Exception e) {
@@ -125,12 +128,15 @@ public class MapperXmlParseHelper {
 
         NodeList children = resultMapNode.getChildNodes();
         for(int i=0; i<children.getLength(); i++){
-            Element element = (Element)children.item(i);
-            if(element.getNodeName().equals("result")){
-                String column = element.getAttribute("column");
-                String property = element.getAttribute("property");
+            Node child = children.item(i);
+            if(child instanceof Element){
+                Element element = (Element)child;
+                if(element.getNodeName().equals("result")){
+                    String column = element.getAttribute("column");
+                    String property = element.getAttribute("property");
 
-                resultMappingList.add(new ResultMapping(column,property));
+                    resultMappingList.add(new ResultMapping(column,property));
+                }
             }
         }
 
@@ -139,7 +145,6 @@ public class MapperXmlParseHelper {
         resultMap.setId(id);
         resultMap.setType(Class.forName(type));
         resultMap.setResultMappings(resultMappingList);
-
 
         return resultMap;
     }

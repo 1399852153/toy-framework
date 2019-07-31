@@ -2,12 +2,12 @@
 
 <mapper namespace="test.dao.BookMapper">
 
-<!--	<resultMap id="bookResultMap" type="test.demo.model.Book">-->
-<!--		<result column="id" property="id"/>-->
-<!--		<result column="book_name" property="bookName"/>-->
-<!--		<result column="author_id" property="authorId"/>-->
-<!--		<result column="price" property="price"/>-->
-<!--	</resultMap>-->
+	<resultMap id="bookResultMap" type="test.demo.model.Book">
+		<result column="id" property="id"/>
+		<result column="book_name" property="bookName"/>
+		<result column="author_id" property="authorId"/>
+		<result column="price" property="price"/>
+	</resultMap>
 
 	<select id="getBook" resultMap="bookResultMap">
 		select * from test_book

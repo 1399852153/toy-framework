@@ -51,7 +51,7 @@ public class MapperProxy<T> implements InvocationHandler {
         System.out.println("多个分支");
         // 接口全类名+statement
         String statementId = this.mapperInterface.getName() + "." + method.getName();
-        MappedStatement mappedStatement = this.sqlSession.getConfiguration().getMappedStatement(statementId);
+        MappedStatement mappedStatement = this.sqlSession.getConfiguration().getMappedStatement(statementId,true);
 
         Object param;
         Object result = null;

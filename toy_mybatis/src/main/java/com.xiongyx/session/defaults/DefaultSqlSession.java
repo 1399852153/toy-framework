@@ -44,7 +44,7 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public <E> List<E> selectList(String statementId, Object parameter) {
-        MappedStatement mappedStatement = configuration.getMappedStatement(statementId);
+        MappedStatement mappedStatement = configuration.getMappedStatement(statementId,true);
 
         return executor.doQuery(mappedStatement,parameter);
     }

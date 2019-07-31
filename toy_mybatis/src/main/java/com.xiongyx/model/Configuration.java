@@ -48,8 +48,14 @@ public class Configuration {
         return environment;
     }
 
-    public MappedStatement getMappedStatement(String statementID){
-        return mappedStatementMap.get(statementID);
+    public MappedStatement getMappedStatement(String statementID, boolean mustExist){
+        MappedStatement mappedStatement = mappedStatementMap.get(statementID);
+
+        if(mappedStatement == null && mustExist){
+            throw new RuntimeException("mappedStatement not exist statementID=" + statementID);
+        }
+
+        return mappedStatement;
     }
 
     public static Configuration getInstance(){
