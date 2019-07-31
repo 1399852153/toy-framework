@@ -19,6 +19,12 @@ public class MyBatisTest {
         Reader reader = Resources.getResourceAsReader("mybatis-config.xml");
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
         SqlSession session = sqlSessionFactory.openSession();
+
+//        testUser(session);
+        testBook(session);
+    }
+
+    private static void testUser(SqlSession session){
         try {
             User param = new User();
             param.set__frch_item_0("aaaaa");
@@ -35,5 +41,11 @@ public class MyBatisTest {
         } finally {
             session.close();
         }
+    }
+
+    private static void testBook(SqlSession session){
+        List<Book> bookList = session.selectList("getBook");
+        session.commit();
+        System.out.println(bookList);
     }
 }
