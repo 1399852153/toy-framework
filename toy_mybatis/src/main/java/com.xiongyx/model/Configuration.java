@@ -16,6 +16,8 @@ public class Configuration {
 
     private static final Logger logger = Logger.getLogger(Configuration.class);
 
+    private static final Configuration CONFIGURATION_HOLDER = new Configuration();
+
     private Environment environment;
 
     /**
@@ -28,6 +30,20 @@ public class Configuration {
      * */
     protected final Map<String, ResultMap> resultMaps = new HashMap<>();
 
+    public MappedStatement addMappedStatement(String mapperStatementKey, MappedStatement mappedStatement){
+        logger.info("mappedStatement=" + mappedStatement);
+        return mappedStatementMap.put(mapperStatementKey,mappedStatement);
+    }
+
+    public ResultMap addResultMap(String resultMapKey, ResultMap resultMap){
+        logger.info("resultMap=" + resultMap);
+        return resultMaps.put(resultMapKey,resultMap);
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
     public Environment getEnvironment() {
         return environment;
     }
@@ -36,35 +52,7 @@ public class Configuration {
         return mappedStatementMap.get(statementID);
     }
 
-    //==================================builder==============================
-
-    public static class Builder{
-        private Configuration target;
-
-        public Builder() {
-            target = new Configuration();
-        }
-
-        public Builder environment(Environment environment){
-            target.environment = environment;
-            return this;
-        }
-
-        public Builder mappedStatementMap(Map<String,MappedStatement> mappedStatementMap){
-            target.mappedStatementMap = mappedStatementMap;
-
-            // 打印扫描出的MappedStatement信息
-            mappedStatementMap.values().forEach(logger::info);
-            return this;
-        }
-
-        public Configuration build(){
-            return target;
-        }
-    }
-
-
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
+    public static Configuration getInstance(){
+        return CONFIGURATION_HOLDER;
     }
 }

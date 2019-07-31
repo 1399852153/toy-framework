@@ -43,13 +43,12 @@ public class ConfigXmlParseHelper {
 
         // 解析出environment配置
         Environment environment = parseEnvironmentNode(rootElement.element("environments"));
-        // 解析出mapper配置
-        Map<String, MappedStatement> mappedStatementMap = parseMapperNode(rootElement.element("mappers"));
+        Configuration.getInstance().setEnvironment(environment);
 
-        return new Configuration.Builder()
-                .environment(environment)
-                .mappedStatementMap(mappedStatementMap)
-                .build();
+        // 解析出mapper配置
+        parseMapperNode(rootElement.element("mappers"));
+
+        return Configuration.getInstance();
     }
 
     /**
@@ -76,18 +75,20 @@ public class ConfigXmlParseHelper {
     /**
      * 解析mapper节点
      * */
-    private static Map<String, MappedStatement> parseMapperNode(Element mapperNode){
+    private static void parseMapperNode(Element mapperNode){
         Element scanMapperNode = mapperNode.element("scan-mapper");
         // scan-mapper扫描
         if(scanMapperNode != null){
             String directorPath = scanMapperNode.attributeValue("package");
-            return scanMapperByPackage(directorPath);
+            scanMapperByPackage(directorPath);
+            return;
         }
 
         // mapper列表配置扫描
         List<Element> mapperElementList = mapperNode.elements("mapper");
         if(!mapperElementList.isEmpty()){
-            return parseMapperByMapperList(mapperElementList);
+            parseMapperByMapperList(mapperElementList);
+            return;
         }
 
         // 如果 scan-mapper和mapper配置全都不存在，抛出异常
@@ -97,52 +98,29 @@ public class ConfigXmlParseHelper {
     /**
      * 通过扫描指定文件夹 解析mapper-xml文件
      * */
-    private static Map<String, MappedStatement> scanMapperByPackage(String directorPath){
-        Map<String, MappedStatement> mappedStatementMap = new HashMap<>();
+    private static void scanMapperByPackage(String directorPath){
         // 扫描mapper文件夹下所有mapper文件
         try {
             Enumeration<URL> urls = Configuration.class.getClassLoader().getResources(directorPath);
 
             while(urls.hasMoreElements()){
                 URL url = urls.nextElement();
-                List<MappedStatement> mappedStatementList = MapperXmlScanUtil.scanMapperXml(url);
-
-                for(MappedStatement mappedStatement : mappedStatementList){
-                    MappedStatement old = mappedStatementMap.put(mappedStatement.getSqlId(),mappedStatement);
-                    if(old != null){
-                        // 存在相同的sqlId相同的mappedStatement
-                        throw new RuntimeException("has same sqlId =>" + old.getSqlId());
-                    }
-                }
+                MapperXmlScanUtil.scanMapperXml(url);
             }
         } catch (IOException e) {
             logger.info("scan mapper-xml error",e);
             throw new RuntimeException(e);
         }
-
-        return mappedStatementMap;
     }
 
     /**
      * 通过mapper配置列表 解析mapper-xml文件
      * */
-    private static Map<String, MappedStatement> parseMapperByMapperList(List<Element> mapperList){
-        Map<String, MappedStatement> mappedStatementMap = new HashMap<>();
-
+    private static void parseMapperByMapperList(List<Element> mapperList){
         for(Element mapperElement : mapperList){
             String resourcePath = mapperElement.attributeValue("resource");
             URL url = Configuration.class.getClassLoader().getResource(resourcePath);
-            List<MappedStatement> mappedStatementList = MapperXmlScanUtil.parseMapperXmlInFile(url);
-
-            for(MappedStatement mappedStatement : mappedStatementList){
-                MappedStatement old = mappedStatementMap.put(mappedStatement.getSqlId(),mappedStatement);
-                if(old != null){
-                    // 存在相同的sqlId相同的mappedStatement
-                    throw new RuntimeException("has same sqlId =>" + old.getSqlId());
-                }
-            }
+            MapperXmlScanUtil.parseMapperXmlInFile(url);
         }
-
-        return mappedStatementMap;
     }
 }
