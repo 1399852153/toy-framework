@@ -1,6 +1,7 @@
 package com.xiongyx.model;
 
 import com.xiongyx.mapping.Environment;
+import com.xiongyx.mapping.ResultMap;
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -17,7 +18,15 @@ public class Configuration {
 
     private Environment environment;
 
+    /**
+     * mappedStatement map集合
+     * */
     private Map<String,MappedStatement> mappedStatementMap = new HashMap<>();
+
+    /**
+     * resultMap map集合
+     * */
+    protected final Map<String, ResultMap> resultMaps = new HashMap<>();
 
     public Environment getEnvironment() {
         return environment;
