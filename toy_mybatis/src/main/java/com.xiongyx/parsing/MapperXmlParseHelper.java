@@ -1,10 +1,14 @@
 package com.xiongyx.parsing;
 
 import com.xiongyx.constant.Constant;
+import com.xiongyx.mapping.ResultMap;
+import com.xiongyx.mapping.ResultMapping;
 import com.xiongyx.mapping.sqlsource.SqlSource;
+import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -50,12 +54,18 @@ org.w3c.dom.Document doc = dBuilder.parse(mapperXmlFile);
             List<MappedStatement> mappedStatementList = new ArrayList<>();
             // 当前xml文件中的sql单元列表
             for(int i=0; i<nodeList.getLength(); i++){
-                Node sqlUnitNode = nodeList.item(i);
+                Node node = nodeList.item(i);
 
-                if(sqlUnitNode.getNodeType() == Node.ELEMENT_NODE){
-                    MappedStatement mappedStatement = parseMappedStatement(namespace,(Element)sqlUnitNode);
-                    // 加入 当前xml文件中的sql单元列表
-                    mappedStatementList.add(mappedStatement);
+                if(node.getNodeType() == Node.ELEMENT_NODE){
+                    if("resultMap".equals(node.getNodeName())){
+                        // resultMap
+                        ResultMap resultMap = parseResultMap(namespace,(Element)node);
+
+                    }else{
+                        MappedStatement mappedStatement = parseMappedStatement(namespace,(Element)node);
+                        // 加入 当前xml文件中的sql单元列表
+                        mappedStatementList.add(mappedStatement);
+                    }
                 }
             }
             return mappedStatementList;
@@ -66,6 +76,9 @@ org.w3c.dom.Document doc = dBuilder.parse(mapperXmlFile);
         }
     }
 
+    /**
+     * 解析sql单元 insert/update/delete/select
+     * */
     private static MappedStatement parseMappedStatement(String namespace, Element sqlUnitNode){
         String eleName = sqlUnitNode.getNodeName();
         MappedStatement statement = new MappedStatement();
@@ -100,5 +113,35 @@ org.w3c.dom.Document doc = dBuilder.parse(mapperXmlFile);
         statement.setSqlSource(sqlSource);
 
         return statement;
+    }
+
+    /**
+     * 解析resultMap
+     * */
+    private static ResultMap parseResultMap(String namespace, Element resultMapNode) throws ClassNotFoundException {
+        String id = namespace + "." + resultMapNode.getAttribute("id");
+        String type = resultMapNode.getAttribute("type");
+
+        List<ResultMapping> resultMappingList = new ArrayList<>();
+
+        NodeList children = resultMapNode.getChildNodes();
+        for(int i=0; i<children.getLength(); i++){
+            Element element = (Element)children.item(i);
+            if(element.getNodeName().equals("result")){
+                String column = element.getAttribute("column");
+                String property = element.getAttribute("property");
+
+                resultMappingList.add(new ResultMapping(column,property));
+            }
+        }
+
+        //设置resultMap的唯一ID = namespace + "." + resultMap.id
+        ResultMap resultMap = new ResultMap();
+        resultMap.setId(id);
+        resultMap.setType(Class.forName(type));
+        resultMap.setResultMappings(resultMappingList);
+
+
+        return resultMap;
     }
 }

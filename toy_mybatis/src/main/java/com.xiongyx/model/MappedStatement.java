@@ -1,8 +1,10 @@
 package com.xiongyx.model;
 
 import com.xiongyx.constant.Constant;
+import com.xiongyx.mapping.ResultMapping;
 import com.xiongyx.mapping.sqlsource.SqlSource;
 
+import java.util.List;
 import java.util.StringJoiner;
 
 /**
@@ -22,6 +24,8 @@ public class MappedStatement {
     private String resultType;
 
     private SqlSource sqlSource;
+
+    private List<ResultMapping> resultMappingList;
 
     private Constant.SqlType sqlCommandType;
 
@@ -65,6 +69,14 @@ public class MappedStatement {
         this.sqlSource = sqlSource;
     }
 
+    public List<ResultMapping> getResultMappingList() {
+        return resultMappingList;
+    }
+
+    public void setResultMappingList(List<ResultMapping> resultMappingList) {
+        this.resultMappingList = resultMappingList;
+    }
+
     public Constant.SqlType getSqlCommandType() {
         return sqlCommandType;
     }
@@ -75,12 +87,14 @@ public class MappedStatement {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", MappedStatement.class.getSimpleName() + "[", "]").add("nameSpace='" + nameSpace + "'")
-            .add("sqlId='" + sqlId + "'")
-            .add("paramType='" + paramType + "'")
-            .add("resultType='" + resultType + "'")
-            .add("sqlSource='" + sqlSource + "'")
-            .add("sqlCommandType=" + sqlCommandType)
-            .toString();
+        return "MappedStatement{" +
+                "nameSpace='" + nameSpace + '\'' +
+                ", sqlId='" + sqlId + '\'' +
+                ", paramType='" + paramType + '\'' +
+                ", resultType='" + resultType + '\'' +
+                ", sqlSource=" + sqlSource +
+                ", resultMappingList=" + resultMappingList +
+                ", sqlCommandType=" + sqlCommandType +
+                '}';
     }
 }

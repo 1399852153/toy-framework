@@ -9,6 +9,11 @@ public class ResultMapping {
     private String column;
     private String property;
 
+    public ResultMapping(String column, String property) {
+        this.column = column;
+        this.property = property;
+    }
+
     public String getColumn() {
         return column;
     }
