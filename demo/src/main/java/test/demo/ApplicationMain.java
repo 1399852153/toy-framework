@@ -57,11 +57,11 @@ public class ApplicationMain {
         param.setMoney(32141d);
         param.setIdListQuery(Arrays.asList("aaaaa","bbbbb","ccccc"));
 
-        sqlSession.selectList("test.demo.dao.UserDAO.getUserList",param);
+        List<User> userList = sqlSession.selectList("test.demo.dao.UserDAO.getUserList",param);
 
         // TODO mapper 传实体做参数
 //        List<User> userList = mapper.getUserList(param);
 
-//        System.out.println(userList);
+        System.out.println(userList);
     }
 }

@@ -47,54 +47,70 @@ public class DefaultResultSetHandler implements ResultSetHandler
     @Override
     public <E> List<E> handleResultSets(ResultSet resultSet) {
         try {
-
-            List<E> result = new ArrayList<>();
-
             if (null == resultSet) {
                 return null;
             }
 
-
-
             // FIXME mappedStatement  中的eclass  不正确
-            Class<?> eClass = Class.forName(mappedStatement.getResultType());
-
-            ResultSetMetaData metaData = resultSet.getMetaData();
-            while (resultSet.next()) {
-                E entity = (E) eClass.newInstance();
-                // 遍历metaData的列
-                for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                    // 获得当前列的名称
-                    String columnName = metaData.getColumnLabel(i);
-                    // jdbcType
-                    String jdbcType = metaData.getColumnTypeName(i);
-
-                    // 获得setter方法 todo 效率不高，可以使用objectWrapper将setterMethod封装起来
-                    Method setterMethod = ReflectionUtil.getSetterMethod(eClass,columnName,true);
-                    // pojo setter方法的javaType
-                    Class setterParamType = setterMethod.getParameterTypes()[0];
-                    // 从resultSet中获取对应的值
-                    Object columnValue = TypeConvertUtil.getResultValueByType(resultSet,columnName,jdbcType,setterParamType.getName());
-
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put(columnName, columnValue);
-                    System.out.println(JsonUtil.objectToJsonString(map));
-                    for (Map.Entry<String, Object> entry : map.entrySet()) {
-                        String fieldName = entry.getKey();
-                        Object fieldValue = entry.getValue();
-                        Field field = eClass.getDeclaredField(fieldName);
-                        field.setAccessible(true);
-                        field.set(entity, fieldValue);
-                    }
-                }
-                result.add(entity);
+            if(this.mappedStatement.getResultType() != null){
+                return handleResultType(resultSet);
+            }else{
+                return handlerResultMap(resultSet);
             }
-
-            return result;
         }
         catch (Exception e) {
             throw new RuntimeException("handleResultSets error",e);
         }
     }
 
+    /**
+     * 处理resultType类型
+     * */
+    private <E> List<E> handleResultType(ResultSet resultSet) throws Exception {
+        List<E> result = new ArrayList<>();
+
+        Class<?> eClass = Class.forName(mappedStatement.getResultType());
+
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        while (resultSet.next()) {
+            E entity = (E) eClass.newInstance();
+            // 遍历metaData的列
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                // 获得当前列的名称
+                String columnName = metaData.getColumnLabel(i);
+                // jdbcType
+                String jdbcType = metaData.getColumnTypeName(i);
+
+                // 获得setter方法 todo 效率不高，可以使用objectWrapper将setterMethod封装起来
+                Method setterMethod = ReflectionUtil.getSetterMethod(eClass,columnName,true);
+                // pojo setter方法的javaType
+                Class setterParamType = setterMethod.getParameterTypes()[0];
+                // 从resultSet中获取对应的值
+                Object columnValue = TypeConvertUtil.getResultValueByType(resultSet,columnName,jdbcType,setterParamType.getName());
+
+                HashMap<String, Object> map = new HashMap<>();
+                map.put(columnName, columnValue);
+                System.out.println(JsonUtil.objectToJsonString(map));
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    String fieldName = entry.getKey();
+                    Object fieldValue = entry.getValue();
+                    Field field = eClass.getDeclaredField(fieldName);
+                    field.setAccessible(true);
+                    field.set(entity, fieldValue);
+                }
+            }
+            result.add(entity);
+        }
+
+        return result;
+    }
+
+    /**
+     * 处理resultMap类型
+     * */
+    private <E> List<E> handlerResultMap(ResultSet resultSet) throws Exception{
+
+
+        return null;
+    }
 }
