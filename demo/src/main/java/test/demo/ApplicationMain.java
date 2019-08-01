@@ -1,6 +1,7 @@
 package test.demo;
 
 import test.demo.dao.UserDAO;
+import test.demo.model.Book;
 import test.demo.model.User;
 import com.xiongyx.session.SqlSession;
 import com.xiongyx.session.SqlSessionFactory;
@@ -51,17 +52,22 @@ public class ApplicationMain {
 //        param.put("id","123");
 //        param.put("age",12);
 //        param.put("money",32141);
-        User param = new User();
-        param.setId("123");
-        param.setAge(12);
-        param.setMoney(32141d);
-        param.setIdListQuery(Arrays.asList("aaaaa","bbbbb","ccccc"));
-
-        List<User> userList = sqlSession.selectList("test.demo.dao.UserDAO.getUserList",param);
+//        User param = new User();
+//        param.setId("123");
+//        param.setAge(12);
+//        param.setMoney(32141d);
+//        param.setIdListQuery(Arrays.asList("aaaaa","bbbbb","ccccc"));
+//
+//        List<User> userList = sqlSession.selectList("test.demo.dao.UserDAO.getUserList",param);
 
         // TODO mapper 传实体做参数
 //        List<User> userList = mapper.getUserList(param);
 
-        System.out.println(userList);
+//        System.out.println(userList);
+
+        Book param = new Book();
+        param.setBookName("小老弟");
+        List<Book> bookList = sqlSession.selectList("test.dao.BookMapper.getBook",param);
+        System.out.println(bookList);
     }
 }

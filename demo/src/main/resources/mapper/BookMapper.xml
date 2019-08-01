@@ -11,5 +11,13 @@
 
 	<select id="getBook" resultMap="bookResultMap">
 		select * from test_book
+		<where>
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+			<if test="bookName != null and bookName != ''">
+				and book_name = #{bookName}
+			</if>
+		</where>
 	</select>
 </mapper>

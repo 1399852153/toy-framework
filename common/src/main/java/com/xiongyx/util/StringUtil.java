@@ -1,10 +1,16 @@
 package com.xiongyx.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author xiongyx
  * on 2019/7/6.
  */
 public class StringUtil {
+
+    public static boolean isEmpty(String str){
+        return StringUtils.isEmpty(str);
+    }
 
     /**
      * 将字符串的第一个字母转为大写

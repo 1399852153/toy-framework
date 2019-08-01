@@ -58,6 +58,16 @@ public class Configuration {
         return mappedStatement;
     }
 
+    public ResultMap getResultMap(String resultMapID, boolean mustExist){
+        ResultMap resultMap = resultMaps.get(resultMapID);
+
+        if(resultMap == null && mustExist){
+            throw new RuntimeException("resultMap not exist resultMapID=" + resultMapID);
+        }
+
+        return resultMap;
+    }
+
     public static Configuration getInstance(){
         return CONFIGURATION_HOLDER;
     }

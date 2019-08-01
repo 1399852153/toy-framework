@@ -136,11 +136,12 @@ public class MapperXmlParseHelper {
             Node child = children.item(i);
             if(child instanceof Element){
                 Element element = (Element)child;
-                if(element.getNodeName().equals("result")){
+                if("result".equals(element.getNodeName())){
                     String column = element.getAttribute("column");
                     String property = element.getAttribute("property");
+                    String jdbcType = element.getAttribute("property");
 
-                    resultMappingList.add(new ResultMapping(column,property));
+                    resultMappingList.add(new ResultMapping(column,property,jdbcType));
                 }
             }
         }

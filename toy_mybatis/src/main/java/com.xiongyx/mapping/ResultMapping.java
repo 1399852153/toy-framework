@@ -8,10 +8,12 @@ public class ResultMapping {
 
     private String column;
     private String property;
+    private String jdbcType;
 
-    public ResultMapping(String column, String property) {
+    public ResultMapping(String column, String property, String jdbcType) {
         this.column = column;
         this.property = property;
+        this.jdbcType = jdbcType;
     }
 
     public String getColumn() {
@@ -30,11 +32,20 @@ public class ResultMapping {
         this.property = property;
     }
 
+    public String getJdbcType() {
+        return jdbcType;
+    }
+
+    public void setJdbcType(String jdbcType) {
+        this.jdbcType = jdbcType;
+    }
+
     @Override
     public String toString() {
         return "ResultMapping{" +
                 "column='" + column + '\'' +
                 ", property='" + property + '\'' +
+                ", jdbcType='" + jdbcType + '\'' +
                 '}';
     }
 }
