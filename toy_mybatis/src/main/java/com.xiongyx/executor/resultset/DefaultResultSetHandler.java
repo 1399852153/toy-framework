@@ -38,11 +38,7 @@ public class DefaultResultSetHandler implements ResultSetHandler{
 
     private final MappedStatement mappedStatement;
 
-    /**
-     * @param mappedStatement
-     */
-    public DefaultResultSetHandler(MappedStatement mappedStatement)
-    {
+    public DefaultResultSetHandler(MappedStatement mappedStatement) {
         this.mappedStatement = mappedStatement;
     }
 

@@ -50,8 +50,6 @@ public class SimpleExecutor implements Executor{
             // 执行SQL，得到结果集ResultSet
             ResultSet resultSet = statementHandler.query(preparedStatement);
 
-            // return tClass;
-
             //7.实例化ResultSetHandler，通过反射将ResultSet中结果设置到目标resultType对象中
             ResultSetHandler resultSetHandler = new DefaultResultSetHandler(mappedStatement);
             return resultSetHandler.handleResultSets(resultSet);
