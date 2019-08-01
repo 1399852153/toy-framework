@@ -42,16 +42,6 @@ public class MapperXmlScanUtil {
     //======================================私有方法==============================================
 
     private static void parseMapperXml(File file){
-        List<MappedStatement> collector = new ArrayList<>();
-
-        // 递归扫描 mapper文件
-        parseMapperXmlRecur(file);
-    }
-
-    /**
-     * 递归解析
-     * */
-    private static void parseMapperXmlRecur(File file){
         File[] files = file.listFiles(
                 item-> item.isFile() && item.getName().endsWith(".xml") || item.isDirectory()
         );
@@ -65,7 +55,8 @@ public class MapperXmlScanUtil {
                 // 从文件中解析出 mapper映射数据
                 MapperXmlParseHelper.parseMapperXml(fileItem);
             }else{
-                parseMapperXmlRecur(fileItem);
+                // 递归解析
+                parseMapperXml(fileItem);
             }
         }
     }

@@ -23,6 +23,8 @@ public class MappedStatement {
 
     private String resultType;
 
+    private String resultMap;
+
     private SqlSource sqlSource;
 
     private List<ResultMapping> resultMappingList;
@@ -61,6 +63,14 @@ public class MappedStatement {
         this.resultType = resultType;
     }
 
+    public String getResultMap() {
+        return resultMap;
+    }
+
+    public void setResultMap(String resultMap) {
+        this.resultMap = resultMap;
+    }
+
     public SqlSource getSqlSource() {
         return sqlSource;
     }
@@ -92,6 +102,7 @@ public class MappedStatement {
                 ", sqlId='" + sqlId + '\'' +
                 ", paramType='" + paramType + '\'' +
                 ", resultType='" + resultType + '\'' +
+                ", resultMap='" + resultMap + '\'' +
                 ", sqlSource=" + sqlSource +
                 ", resultMappingList=" + resultMappingList +
                 ", sqlCommandType=" + sqlCommandType +

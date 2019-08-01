@@ -87,9 +87,14 @@ public class MapperXmlParseHelper {
 
         if (Constant.SqlType.SELECT.value().equals(eleName)) {
             // select
+            statement.setSqlCommandType(Constant.SqlType.SELECT);
+
+            // resultType
             String resultType = sqlUnitNode.getAttribute("resultType");
             statement.setResultType(resultType);
-            statement.setSqlCommandType(Constant.SqlType.SELECT);
+            // resultMap
+            String resultMap = sqlUnitNode.getAttribute("resultMap");
+            statement.setResultMap(resultMap);
         } else if (Constant.SqlType.UPDATE.value().equals(eleName)) {
             // update
             statement.setSqlCommandType(Constant.SqlType.UPDATE);
