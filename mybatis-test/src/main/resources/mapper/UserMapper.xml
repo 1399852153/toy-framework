@@ -34,10 +34,16 @@
 
 
 	<resultMap id="getUserLinkedQueryMap" type="com.xiongyx.User">
-		<result column="id" property="id"/>
+		<id column="id" property="id"/>
 		<result column="userName" property="userName"/>
 		<result column="age" property="age"/>
 		<result column="money" property="money"/>
+
+		<association property="account" javaType="com.xiongyx.Account">
+			<id column="accountId" property="id"/>
+			<result column="password" property="password"/>
+		</association>
+
 		<collection property="bookList" ofType="com.xiongyx.Book">
 			<id column="bookId" property="id"/>
 			<result column="book_name" property="bookName"/>
@@ -59,6 +65,10 @@
 			price
  		from user inner join test_book
  		on `user`.id = test_book.author_id
+	</select>
+
+	<select id="result_map_test" resultMap="getUserLinkedQueryMap">
+		select * from result_map_test
 	</select>
 
 	<update id="updateUser">

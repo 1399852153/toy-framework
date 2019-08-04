@@ -30,8 +30,10 @@ public class MyBatisTest {
 //            param.setId("321312");
 
             List<User> userList = session.selectList("getUserLinkedQuery", param);
-            session.commit();
             System.out.println(userList);
+//            List<User> userList2 = session.selectList("result_map_test", param);
+//            System.out.println(userList2);
+            session.commit();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

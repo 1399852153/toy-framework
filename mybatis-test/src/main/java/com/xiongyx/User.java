@@ -21,6 +21,7 @@ public class User {
 
     private List<Book> bookList;
 
+    private Account account;
 
     public String getId() {
         return id;
@@ -69,6 +70,14 @@ public class User {
 
     public void setBookList(List<Book> bookList) {
         this.bookList = bookList;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     @Override
