@@ -20,20 +20,16 @@ public class MyBatisTest {
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
         SqlSession session = sqlSessionFactory.openSession();
 
-//        testUser(session);
-        testBook(session);
+        testUser(session);
+//        testBook(session);
     }
 
     private static void testUser(SqlSession session){
         try {
             User param = new User();
-            param.set__frch_item_0("aaaaa");
-//            param.setId("123");
-            param.setIdListQuery(Arrays.asList("123","321"));
+//            param.setId("321312");
 
-//            param.setAge(12);
-//            param.setMoney(32141);
-            List<User> userList = session.selectList("getUser", param);
+            List<User> userList = session.selectList("getUserLinkedQuery", param);
             session.commit();
             System.out.println(userList);
         } catch (Exception e) {

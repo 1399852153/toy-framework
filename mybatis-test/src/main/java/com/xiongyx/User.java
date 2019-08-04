@@ -17,17 +17,9 @@ public class User {
 
     private Double money;
 
-    private String __frch_item_0;
-
     private List<String> idListQuery;
 
-    public String get__frch_item_0() {
-        return __frch_item_0;
-    }
-
-    public void set__frch_item_0(String __frch_item_0) {
-        this.__frch_item_0 = __frch_item_0;
-    }
+    private List<Book> bookList;
 
 
     public String getId() {
@@ -71,6 +63,14 @@ public class User {
         this.idListQuery = idListQuery;
     }
 
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -79,6 +79,7 @@ public class User {
                 ", age=" + age +
                 ", money=" + money +
                 ", idListQuery=" + idListQuery +
+                ", bookList=" + bookList +
                 '}';
     }
 }

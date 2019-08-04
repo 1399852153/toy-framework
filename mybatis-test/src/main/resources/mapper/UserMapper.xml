@@ -30,17 +30,43 @@
 			<if test="money != null">and money = #{money}</if>
 		</where>
 	</select>
-	
-<!--	<select id="getAll" resultType="com.xiongyx.User">-->
-<!--		select * from user-->
-<!--	</select>-->
-<!--	-->
-<!--	<update id="updateUser">-->
-<!--		update user-->
-<!--		<set>-->
-<!--			<if test="name != null">name = '张三2'</if>-->
-<!--		</set>-->
-<!--		where id = #{id}-->
-<!--	</update>-->
+
+
+
+	<resultMap id="getUserLinkedQueryMap" type="com.xiongyx.User">
+		<result column="id" property="id"/>
+		<result column="userName" property="userName"/>
+		<result column="age" property="age"/>
+		<result column="money" property="money"/>
+		<collection property="bookList" ofType="com.xiongyx.Book">
+			<id column="bookId" property="id"/>
+			<result column="book_name" property="bookName"/>
+			<result column="author_id" property="authorId"/>
+			<result column="price" property="price"/>
+		</collection>
+	</resultMap>
+
+
+	<select id="getUserLinkedQuery" resultMap="getUserLinkedQueryMap">
+		select
+			`user`.id,
+			userName,
+			age,
+			money,
+			test_book.id as 'bookId',
+			book_name,
+			author_id,
+			price
+ 		from user inner join test_book
+ 		on `user`.id = test_book.author_id
+	</select>
+
+	<update id="updateUser">
+		update user
+		<set>
+			<if test="name != null">name = '张三2'</if>
+		</set>
+		where id = #{id}
+	</update>
 	
 </mapper>

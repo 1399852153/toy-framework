@@ -19,7 +19,7 @@ create table test_book(
 	id varchar(32) not null COMMENT '主键 id',
 
 	book_name varchar(20) not null COMMENT '书名',
-	author_id int not null COMMENT '作者id',
+	author_id varchar(32) not null COMMENT '作者id',
     price int not null COMMENT '价格',
 	primary key(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
