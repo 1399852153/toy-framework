@@ -2,3 +2,15 @@ resultMap实现结果集 关系型R==>对象O的转换
 1.mapper-xml中 resultMap解析与初始化
 2.执行完sql查询出结果集，根据resultMap进行对应的映射
 
+嵌套的resultMap实现思路
+1.解析出符合要求的resultMap(association、collection等)
+2.嵌套的resultMap包含普通的字段映射和嵌套映射
+    根据普通的映射字段，构造出一个唯一的key，对应一个value(一个映射的最外层对象 resultMap指定的类型对象),加入一个临时的map
+    迭代jdbc ResultSet，发现key相同的，就不创建最外层对象，而是去拼接内部的嵌套resultMap
+3.解析嵌套的resultMap
+    对于非嵌套的字段，直接获取对应的值
+    对于嵌套的association、collection，将其看作一个内部的resultMap，递归的生成返回一个Object对象，并将其和外部的对象进行对应的关联(一对一，一对多)
+
+
+
+
