@@ -65,9 +65,9 @@ public class ApplicationMain {
 
 //        System.out.println(userList);
 
-        Book param = new Book();
-        param.setBookName("小老弟");
-        List<Book> bookList = sqlSession.selectList("test.dao.BookMapper.getBook",param);
-        System.out.println(bookList);
+//        Book param = new Book();
+//        param.setBookName("小老弟");
+//        List<Book> bookList = sqlSession.selectList("test.dao.BookMapper.getBook",param);
+//        System.out.println(bookList);
     }
 }

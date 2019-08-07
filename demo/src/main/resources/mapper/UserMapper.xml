@@ -12,6 +12,13 @@
 		<association property="account" javaType="test.demo.model.Account">
 			<id column="accountId" property="id"/>
 			<result column="password" property="password"/>
+
+<!--			<collection property="bookList" ofType="test.demo.model.Book">-->
+<!--				<id column="bookId" property="id"/>-->
+<!--				<result column="book_name" property="bookName"/>-->
+<!--				<result column="author_id" property="authorId"/>-->
+<!--				<result column="price" property="price"/>-->
+<!--			</collection>-->
 		</association>
 
 		<collection property="bookList" ofType="test.demo.model.Book">
