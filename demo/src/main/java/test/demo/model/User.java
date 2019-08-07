@@ -1,6 +1,5 @@
 package test.demo.model;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +17,10 @@ public class User {
     private Double money;
 
     private List<String> idListQuery;
+
+    private List<Book> bookList;
+
+    private Account account;
 
     public String getId() {
         return id;
@@ -39,6 +42,7 @@ public class User {
         return age;
     }
 
+
     public void setAge(Integer age) {
         this.age = age;
     }
@@ -59,6 +63,22 @@ public class User {
         this.idListQuery = idListQuery;
     }
 
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -67,6 +87,7 @@ public class User {
                 ", age=" + age +
                 ", money=" + money +
                 ", idListQuery=" + idListQuery +
+                ", bookList=" + bookList +
                 '}';
     }
 }

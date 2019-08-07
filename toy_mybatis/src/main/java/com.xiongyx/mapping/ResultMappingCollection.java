@@ -20,9 +20,10 @@ public class ResultMappingCollection extends ResultMapping{
      * */
     private List<ResultMapping> compositeResultMappingList;
 
-    public ResultMappingCollection(String column, String property, String jdbcType) {
-        super(column, property, jdbcType);
+    public ResultMappingCollection(String column, String property, String jdbcType, boolean isId) {
+        super(column, property, jdbcType, isId);
     }
+
 
     public String getType() {
         return type;

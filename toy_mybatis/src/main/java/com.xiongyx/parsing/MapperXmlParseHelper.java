@@ -3,6 +3,8 @@ package com.xiongyx.parsing;
 import com.xiongyx.constant.Constant;
 import com.xiongyx.mapping.ResultMap;
 import com.xiongyx.mapping.ResultMapping;
+import com.xiongyx.mapping.ResultMappingAssociation;
+import com.xiongyx.mapping.ResultMappingCollection;
 import com.xiongyx.mapping.sqlsource.SqlSource;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
@@ -129,22 +131,7 @@ public class MapperXmlParseHelper {
         String id = namespace + "." + resultMapNode.getAttribute("id");
         String type = resultMapNode.getAttribute("type");
 
-        List<ResultMapping> resultMappingList = new ArrayList<>();
-
-        NodeList children = resultMapNode.getChildNodes();
-        for(int i=0; i<children.getLength(); i++){
-            Node child = children.item(i);
-            if(child instanceof Element){
-                Element element = (Element)child;
-                if("result".equals(element.getNodeName())){
-                    String column = element.getAttribute("column");
-                    String property = element.getAttribute("property");
-                    String jdbcType = element.getAttribute("property");
-
-                    resultMappingList.add(new ResultMapping(column,property,jdbcType));
-                }
-            }
-        }
+        List<ResultMapping> resultMappingList = parseResultMappingList(resultMapNode);
 
         //设置resultMap的唯一ID = namespace + "." + resultMap.id
         ResultMap resultMap = new ResultMap();
@@ -153,5 +140,73 @@ public class MapperXmlParseHelper {
         resultMap.setResultMappings(resultMappingList);
 
         return resultMap;
+    }
+
+
+    private static List<ResultMapping> parseResultMappingList(Element parent){
+        List<ResultMapping> resultMappingList = new ArrayList<>();
+
+        NodeList children = parent.getChildNodes();
+        for(int i=0; i<children.getLength(); i++){
+            Node child = children.item(i);
+            if(child instanceof Element){
+                Element element = (Element)child;
+                String nodeName = element.getNodeName();
+                ResultMapping compositeResultMapping = parseResultMapping(element,nodeName);
+                resultMappingList.add(compositeResultMapping);
+            }
+        }
+
+        return resultMappingList;
+    }
+
+    private static ResultMapping parseResultMapping(Element element, String nodeName){
+        if("result".equals(nodeName)) {
+            // 普通映射
+            String column = element.getAttribute("column");
+            String property = element.getAttribute("property");
+            String jdbcType = element.getAttribute("property");
+
+            return new ResultMapping(column,property,jdbcType,false);
+        } else if("id".equals(nodeName)){
+            // 普通映射
+            String column = element.getAttribute("column");
+            String property = element.getAttribute("property");
+            String jdbcType = element.getAttribute("property");
+
+            return new ResultMapping(column,property,jdbcType,true);
+        } else if("association".equals(nodeName)){
+            // 普通映射字段
+            String column = element.getAttribute("column");
+            String property = element.getAttribute("property");
+            String jdbcType = element.getAttribute("property");
+
+            ResultMappingAssociation association = new ResultMappingAssociation(column,property,jdbcType,false);
+
+            String javaType = element.getAttribute("javaType");
+
+            List<ResultMapping> resultMappingList = parseResultMappingList(element);
+            association.setType(javaType);
+            association.setCompositeResultMappingList(resultMappingList);
+
+            return association;
+        }else if("collection".equals(nodeName)){
+            // 普通映射字段
+            String column = element.getAttribute("column");
+            String property = element.getAttribute("property");
+            String jdbcType = element.getAttribute("property");
+
+            ResultMappingCollection collection = new ResultMappingCollection(column,property,jdbcType,false);
+
+            String javaType = element.getAttribute("javaType");
+
+            List<ResultMapping> resultMappingList = parseResultMappingList(element);
+            collection.setType(javaType);
+            collection.setCompositeResultMappingList(resultMappingList);
+
+            return collection;
+        }
+
+        throw new RuntimeException("unknown nodeName=" + nodeName);
     }
 }

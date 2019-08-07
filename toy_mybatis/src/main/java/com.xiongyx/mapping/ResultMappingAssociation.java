@@ -19,9 +19,9 @@ public class ResultMappingAssociation extends ResultMapping{
      * 内部复合的 字段映射集合
      * */
     private List<ResultMapping> compositeResultMappingList;
-    
-    public ResultMappingAssociation(String column, String property, String jdbcType) {
-        super(column, property, jdbcType);
+
+    public ResultMappingAssociation(String column, String property, String jdbcType, boolean isId) {
+        super(column, property, jdbcType, isId);
     }
 
     public String getType() {

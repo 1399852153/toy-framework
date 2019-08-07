@@ -9,11 +9,13 @@ public class ResultMapping {
     private String column;
     private String property;
     private String jdbcType;
+    private boolean isId;
 
-    public ResultMapping(String column, String property, String jdbcType) {
+    public ResultMapping(String column, String property, String jdbcType, boolean isId) {
         this.column = column;
         this.property = property;
         this.jdbcType = jdbcType;
+        this.isId = isId;
     }
 
     public String getColumn() {
@@ -40,12 +42,21 @@ public class ResultMapping {
         this.jdbcType = jdbcType;
     }
 
+    public boolean isId() {
+        return isId;
+    }
+
+    public void setId(boolean id) {
+        isId = id;
+    }
+
     @Override
     public String toString() {
         return "ResultMapping{" +
                 "column='" + column + '\'' +
                 ", property='" + property + '\'' +
                 ", jdbcType='" + jdbcType + '\'' +
+                ", isId=" + isId +
                 '}';
     }
 }
