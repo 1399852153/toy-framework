@@ -6,6 +6,8 @@ package com.xiongyx.executor.resultset;
 
 import com.xiongyx.mapping.ResultMap;
 import com.xiongyx.mapping.ResultMapping;
+import com.xiongyx.mapping.ResultMappingAssociation;
+import com.xiongyx.mapping.ResultMappingCollection;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
 import com.xiongyx.util.JsonUtil;
@@ -20,10 +22,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -37,6 +37,8 @@ public class DefaultResultSetHandler implements ResultSetHandler{
     private static final Logger logger = Logger.getLogger(DefaultResultSetHandler.class);
 
     private final MappedStatement mappedStatement;
+
+    private Map<String,Object> storeObjects = new HashMap<>();
 
     public DefaultResultSetHandler(MappedStatement mappedStatement) {
         this.mappedStatement = mappedStatement;
@@ -110,22 +112,38 @@ public class DefaultResultSetHandler implements ResultSetHandler{
         Class<?> eClass = resultMap.getType();
 
         List<ResultMapping> resultMappingList = resultMap.getResultMappings();
+
         while (resultSet.next()) {
             E entity = (E) eClass.newInstance();
 
             for(ResultMapping resultMapping : resultMappingList){
-                // 获得当前列的名称
-                String columnName = resultMapping.getColumn();
-                String jdbcType = resultMapping.getJdbcType();
-                String property = resultMapping.getProperty();
+                if(resultMapping instanceof ResultMappingAssociation || resultMapping instanceof ResultMappingCollection){
+                    // association/collection
+                    // 由于前面已经排序完成，走到这里说明最外层主属性已经映射完毕
 
-                setColumnValue(entity,eClass,resultSet,property,columnName,jdbcType);
+                    List<ResultMapping> simpleResultMappings = resultMap.getSimpleResultMappings();
+                    // todo 根据简单映射和已经完成字段映射的对象生成唯一的key
+                    // todo 存入storeObjects
+
+                }else{
+                    // 简单映射
+                    handleSimpleResultMapping(entity,eClass,resultSet,resultMapping);
+                }
             }
             result.add(entity);
             logger.info("=========================");
         }
 
         return result;
+    }
+
+    private <E> void handleSimpleResultMapping(E entity,Class<?> eClass,ResultSet resultSet,ResultMapping resultMapping) throws Exception {
+        // 获得当前列的名称
+        String columnName = resultMapping.getColumn();
+        String jdbcType = resultMapping.getJdbcType();
+        String property = resultMapping.getProperty();
+
+        setColumnValue(entity,eClass,resultSet,property,columnName,jdbcType);
     }
 
     private <E> void setColumnValue(E entity,Class<?> eClass,ResultSet resultSet,String property,String columnName,String jdbcType) throws Exception {
