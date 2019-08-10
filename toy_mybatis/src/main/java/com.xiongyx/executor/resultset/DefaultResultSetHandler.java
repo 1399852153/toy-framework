@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.xiongyx.executor.resultset;
 
 import com.xiongyx.mapping.ResultMap;
@@ -21,14 +18,13 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
  * DefaultResultSetHandler.java
  * 
- * @author PLF
- * @date 2019年3月6日
+ * @author xiongyx
+ * @date 2019/07/10
  */
 public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
@@ -158,7 +154,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         return "";
     }
 
-    private <E> void handleSimpleResultMapping(E entity,Class<?> eClass,ResultSet resultSet,ResultMapping resultMapping) throws Exception {
+    private void handleSimpleResultMapping(E entity,Class<?> eClass,ResultSet resultSet,ResultMapping resultMapping) throws Exception {
         // 获得当前列的名称
         String columnName = resultMapping.getColumn();
         String jdbcType = resultMapping.getJdbcType();
@@ -167,7 +163,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         setColumnValue(entity,eClass,resultSet,property,columnName,jdbcType);
     }
 
-    private <E> void setColumnValue(E entity,Class<?> eClass,ResultSet resultSet,String property,String columnName,String jdbcType) throws Exception {
+    private void setColumnValue(E entity,Class<?> eClass,ResultSet resultSet,String property,String columnName,String jdbcType) throws Exception {
         // 获得setter方法 todo 效率不高，可以使用objectWrapper将setterMethod封装起来
         Method setterMethod = ReflectionUtil.getSetterMethod(eClass,property,true);
         // pojo setter方法的javaType
