@@ -65,7 +65,7 @@ public class ResultMapParseHelper {
 
             return new ResultMapping(column,property,jdbcType,false,ResultMappingEnum.RESULT);
         } else if(ResultMappingEnum.ASSOCIATION.getName().equals(nodeName)){
-            // 普通映射字段
+            // association映射
             String column = element.getAttribute("column");
             String property = element.getAttribute("property");
             String jdbcType = element.getAttribute("property");
@@ -80,7 +80,7 @@ public class ResultMapParseHelper {
 
             return association;
         }else if(ResultMappingEnum.COLLECTION.getName().equals(nodeName)){
-            // 普通映射字段
+            // collection映射
             String column = element.getAttribute("column");
             String property = element.getAttribute("property");
             String jdbcType = element.getAttribute("property");
