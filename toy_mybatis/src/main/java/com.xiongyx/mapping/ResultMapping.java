@@ -10,12 +10,14 @@ public class ResultMapping {
     private String property;
     private String jdbcType;
     private boolean isId;
+    private int order;
 
-    public ResultMapping(String column, String property, String jdbcType, boolean isId) {
+    public ResultMapping(String column, String property, String jdbcType, boolean isId, ResultMappingEnum resultMappingEnum) {
         this.column = column;
         this.property = property;
         this.jdbcType = jdbcType;
         this.isId = isId;
+        this.order = resultMappingEnum.getOrder();
     }
 
     public String getColumn() {

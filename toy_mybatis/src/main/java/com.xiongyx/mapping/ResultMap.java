@@ -17,20 +17,17 @@ public class ResultMap {
     private List<ResultMapping> simpleResultMappings = new ArrayList<>();
     private List<ResultMapping> compositeResultMappings = new ArrayList<>();
 
+    public ResultMap(String id, Class<?> type) {
+        this.id = id;
+        this.type = type;
+    }
+
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Class<?> getType() {
         return type;
-    }
-
-    public void setType(Class<?> type) {
-        this.type = type;
     }
 
     public List<ResultMapping> getResultMappings() {
@@ -45,7 +42,7 @@ public class ResultMap {
             if(o1 instanceof ResultMappingAssociation || o1 instanceof ResultMappingCollection ){
                 return -1;
             }else{
-                return 1;
+                return 0;
             }
         });
 

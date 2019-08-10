@@ -4,38 +4,33 @@
 <mapper namespace="test.dao.UserMapper">
 
 	<select id="getUser" resultType="com.xiongyx.User">
-		select * from user
-		<where>
+		select * from test_user
+		<!--<where>-->
+			<!--<if test="idListQuery != null">-->
+				<!--and id in-->
+				<!--<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">-->
+					<!--#{item}-->
+				<!--</foreach>-->
+			<!--</if>-->
 
-<!--			<if test="__frch_item_0 != null">and id = #{__frch_item_0}</if>-->
+			<!--<if test="idListQuery != null">-->
+				<!--and id in-->
+				<!--<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">-->
+					<!--#{item}-->
+				<!--</foreach>-->
+			<!--</if>-->
 
-
-			<if test="idListQuery != null">
-				and id in
-				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">
-					#{item}
-				</foreach>
-			</if>
-
-			<if test="idListQuery != null">
-				and id in
-				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">
-					#{item}
-				</foreach>
-			</if>
-
-
-			<if test="id != null">and id = #{id}</if>
-			<if test="age != null">and age = #{age}</if>
-			<if test="money != null">and money = #{money}</if>
-		</where>
+			<!--<if test="id != null">and id = #{id}</if>-->
+			<!--<if test="age != null">and age = #{age}</if>-->
+			<!--<if test="money != null">and money = #{money}</if>-->
+		<!--</where>-->
 	</select>
 
 
 
 	<resultMap id="getUserLinkedQueryMap" type="com.xiongyx.User">
 		<id column="id" property="id"/>
-		<result column="userName" property="userName"/>
+		<id column="userName" property="userName"/>
 		<result column="age" property="age"/>
 		<result column="money" property="money"/>
 
@@ -54,8 +49,8 @@
 
 
 	<select id="getUserLinkedQuery" resultMap="getUserLinkedQueryMap">
-		select
-			`user`.id,
+			select
+			test_user.id,
 			userName,
 			age,
 			money,
@@ -63,12 +58,8 @@
 			book_name,
 			author_id,
 			price
- 		from user inner join test_book
- 		on `user`.id = test_book.author_id
-	</select>
-
-	<select id="result_map_test" resultMap="getUserLinkedQueryMap">
-		select * from result_map_test
+ 		from test_user inner join test_book
+ 		on test_user.id = test_book.author_id
 	</select>
 
 	<update id="updateUser">

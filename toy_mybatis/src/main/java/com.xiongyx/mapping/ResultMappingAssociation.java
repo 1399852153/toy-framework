@@ -21,7 +21,7 @@ public class ResultMappingAssociation extends ResultMapping{
     private List<ResultMapping> compositeResultMappingList;
 
     public ResultMappingAssociation(String column, String property, String jdbcType, boolean isId) {
-        super(column, property, jdbcType, isId);
+        super(column, property, jdbcType, isId,ResultMappingEnum.ASSOCIATION);
     }
 
     public String getType() {
