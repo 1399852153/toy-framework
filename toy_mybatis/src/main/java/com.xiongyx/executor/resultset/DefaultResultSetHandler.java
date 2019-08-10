@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,7 +102,45 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
             resultMap = Configuration.getInstance().getResultMap(fullyKey,true);
         }
 
-        List<E> result = new ArrayList<>();
+        if(resultMap.isNested()){
+            // 处理嵌套resultMap
+            return handleNestedResultMap(resultMap,resultSet);
+        }else{
+            // 处理简单resultMap
+            return handleSimpleResultMap(resultMap,resultSet);
+        }
+    }
+
+    /**
+     * 处理简单resultMap
+     * */
+    @SuppressWarnings("unchecked")
+    private List<E> handleSimpleResultMap(ResultMap resultMap, ResultSet resultSet) throws Exception {
+        List<E> resultList = new ArrayList<>();
+        // 映射的对象类型
+        Class<?> eClass = resultMap.getType();
+
+        List<ResultMapping> resultMappingList = resultMap.getResultMappings();
+
+        while (resultSet.next()) {
+            E entity = (E) eClass.newInstance();
+
+            for(ResultMapping resultMapping : resultMappingList){
+                // 简单映射
+                handleSimpleResultMapping(entity,eClass,resultSet,resultMapping);
+            }
+            resultList.add(entity);
+            logger.info("=========================");
+        }
+
+        return resultList;
+    }
+
+    /**
+     * 处理嵌套resultMap
+     * */
+    @SuppressWarnings("unchecked")
+    private List<E> handleNestedResultMap(ResultMap resultMap, ResultSet resultSet) throws Exception{
         // 映射的对象类型
         Class<?> eClass = resultMap.getType();
 
@@ -126,15 +165,10 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                     handleSimpleResultMapping(entity,eClass,resultSet,resultMapping);
                 }
             }
-            result.add(entity);
             logger.info("=========================");
         }
 
-        if(resultMap.isNested()){
-            return new ArrayList<>(storeObjects.values());
-        }
-
-        return result;
+        return new ArrayList<>(storeObjects.values());
     }
 
     /**
