@@ -1,7 +1,9 @@
 package com.xiongyx.parsing;
 
+import com.xiongyx.constant.Constant;
 import com.xiongyx.mapping.sqlsource.DynamicSqlSource;
 import com.xiongyx.mapping.sqlsource.SqlSource;
+import com.xiongyx.model.MappedStatement;
 import com.xiongyx.parsing.handler.SqlNodeHandler;
 import com.xiongyx.parsing.handler.SqlNodeHandlerFactory;
 import com.xiongyx.scripting.sqlnode.MixedSqlNode;
@@ -24,16 +26,47 @@ import java.util.List;
 public class MappedStatementParseHelper {
 
     /**
-     * 解析sql单元，构造SqlSource
+     * 解析sql单元 insert/update/delete/select
      * */
-    public static SqlSource parseSqlUnit(Element sqlUnitNode){
-        // 解析对应的 sqlUnitNode，获得SqlNode有序列表
-        List<SqlNode> contents = parseDynamicSqlNode(sqlUnitNode);
+    public static MappedStatement parseMappedStatement(String namespace, Element sqlUnitNode){
+        String eleName = sqlUnitNode.getNodeName();
+        MappedStatement statement = new MappedStatement();
 
-        // rootNode是一个MixedNode，持有一个 contentsList
-        MixedSqlNode rootNode = new MixedSqlNode(contents);
+        if (Constant.SqlType.SELECT.value().equals(eleName)) {
+            // select
+            statement.setSqlCommandType(Constant.SqlType.SELECT);
 
-        return new DynamicSqlSource(rootNode);
+            // resultType
+            String resultType = sqlUnitNode.getAttribute("resultType");
+            statement.setResultType(resultType);
+            // resultMap
+            String resultMap = sqlUnitNode.getAttribute("resultMap");
+            statement.setResultMap(resultMap);
+        } else if (Constant.SqlType.UPDATE.value().equals(eleName)) {
+            // update
+            statement.setSqlCommandType(Constant.SqlType.UPDATE);
+        } else if (Constant.SqlType.INSERT.value().equals(eleName)) {
+            // insert
+            statement.setSqlCommandType(Constant.SqlType.INSERT);
+        } else if (Constant.SqlType.DELETE.value().equals(eleName)) {
+            // delete
+            statement.setSqlCommandType(Constant.SqlType.DELETE);
+        } else{
+            // default 默认类型
+            statement.setSqlCommandType(Constant.SqlType.DEFAULT);
+        }
+
+        //设置SQL的唯一ID = namespace + "." + mapper.id
+        String sqlId = namespace + "." + sqlUnitNode.getAttribute("id");
+
+        statement.setSqlId(sqlId);
+        statement.setNameSpace(namespace);
+
+        // 构造SqlSource
+        SqlSource sqlSource = MappedStatementParseHelper.parseSqlUnit(sqlUnitNode);
+        statement.setSqlSource(sqlSource);
+
+        return statement;
     }
 
     public static List<SqlNode> parseDynamicSqlNode(Element sqlUnitNode){
@@ -65,5 +98,18 @@ public class MappedStatementParseHelper {
         }
 
         return contents;
+    }
+
+    /**
+     * 解析sql单元，构造SqlSource
+     * */
+    private static SqlSource parseSqlUnit(Element sqlUnitNode){
+        // 解析对应的 sqlUnitNode，获得SqlNode有序列表
+        List<SqlNode> contents = parseDynamicSqlNode(sqlUnitNode);
+
+        // rootNode是一个MixedNode，持有一个 contentsList
+        MixedSqlNode rootNode = new MixedSqlNode(contents);
+
+        return new DynamicSqlSource(rootNode);
     }
 }
