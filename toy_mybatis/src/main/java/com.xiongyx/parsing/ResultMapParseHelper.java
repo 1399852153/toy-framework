@@ -13,7 +13,7 @@ import java.util.List;
  * @author xiongyx
  * @date 2019/8/10
  */
-public class ResultMapParseHelpler {
+public class ResultMapParseHelper {
 
     /**
      * 解析resultMap

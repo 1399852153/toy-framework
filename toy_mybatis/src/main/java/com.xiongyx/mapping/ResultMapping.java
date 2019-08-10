@@ -1,5 +1,7 @@
 package com.xiongyx.mapping;
 
+import java.util.StringJoiner;
+
 /**
  * @author xiongyx
  * on 2019/7/31.
@@ -24,41 +26,29 @@ public class ResultMapping {
         return column;
     }
 
-    public void setColumn(String column) {
-        this.column = column;
-    }
-
     public String getProperty() {
         return property;
-    }
-
-    public void setProperty(String property) {
-        this.property = property;
     }
 
     public String getJdbcType() {
         return jdbcType;
     }
 
-    public void setJdbcType(String jdbcType) {
-        this.jdbcType = jdbcType;
-    }
-
     public boolean isId() {
         return isId;
     }
 
-    public void setId(boolean id) {
-        isId = id;
+    public int getOrder() {
+        return order;
     }
 
     @Override
     public String toString() {
-        return "ResultMapping{" +
-                "column='" + column + '\'' +
-                ", property='" + property + '\'' +
-                ", jdbcType='" + jdbcType + '\'' +
-                ", isId=" + isId +
-                '}';
+        return new StringJoiner(", ", ResultMapping.class.getSimpleName() + "[", "]").add("column='" + column + "'")
+            .add("property='" + property + "'")
+            .add("jdbcType='" + jdbcType + "'")
+            .add("isId=" + isId)
+            .add("order=" + order)
+            .toString();
     }
 }

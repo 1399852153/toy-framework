@@ -2,9 +2,6 @@ package com.xiongyx.parsing;
 
 import com.xiongyx.constant.Constant;
 import com.xiongyx.mapping.ResultMap;
-import com.xiongyx.mapping.ResultMapping;
-import com.xiongyx.mapping.ResultMappingAssociation;
-import com.xiongyx.mapping.ResultMappingCollection;
 import com.xiongyx.mapping.sqlsource.SqlSource;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
@@ -17,8 +14,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author xiongyx
@@ -56,7 +51,7 @@ public class MapperXmlParseHelper {
                 if(node.getNodeType() == Node.ELEMENT_NODE){
                     if("resultMap".equals(node.getNodeName())){
                         // resultMap解析
-                        ResultMap resultMap = ResultMapParseHelpler.parseResultMap(namespace,(Element)node);
+                        ResultMap resultMap = ResultMapParseHelper.parseResultMap(namespace,(Element)node);
                         ResultMap old = Configuration.getInstance().addResultMap(resultMap.getId(),resultMap);
                         if(old != null){
                             // 存在相同的sqlId相同的resultMap

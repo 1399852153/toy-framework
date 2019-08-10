@@ -1,7 +1,9 @@
 package com.xiongyx.mapping;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * @author xiongyx
@@ -14,6 +16,7 @@ public class ResultMap {
     private String id;
     private Class<?> type;
     private List<ResultMapping> resultMappings;
+    private List<ResultMapping> idResultMapping = new ArrayList<>();
     private List<ResultMapping> simpleResultMappings = new ArrayList<>();
     private List<ResultMapping> compositeResultMappings = new ArrayList<>();
 
@@ -38,21 +41,26 @@ public class ResultMap {
         this.resultMappings = resultMappings;
 
         // 对resultMappingList进行排序，使得普通的映射在排在前
-        resultMappings.sort((o1, o2) -> {
-            if(o1 instanceof ResultMappingAssociation || o1 instanceof ResultMappingCollection ){
-                return -1;
-            }else{
-                return 0;
-            }
-        });
+        resultMappings.sort(Comparator.comparingInt(ResultMapping::getOrder));
 
         for(ResultMapping resultMapping : resultMappings){
             if(resultMapping instanceof ResultMappingAssociation || resultMapping instanceof ResultMappingCollection){
+                // 复合结果映射
                 compositeResultMappings.add(resultMapping);
             }else{
+                if(resultMapping.isId()){
+                    // id结果映射
+                    idResultMapping.add(resultMapping);
+                }
+
+                // 简单结果映射
                 simpleResultMappings.add(resultMapping);
             }
         }
+    }
+
+    public List<ResultMapping> getIdResultMapping() {
+        return idResultMapping;
     }
 
     public List<ResultMapping> getSimpleResultMappings() {
@@ -65,12 +73,12 @@ public class ResultMap {
 
     @Override
     public String toString() {
-        return "ResultMap{" +
-                "id='" + id + '\'' +
-                ", type=" + type +
-                ", resultMappings=" + resultMappings +
-                ", simpleResultMappings=" + simpleResultMappings +
-                ", compositeResultMappings=" + compositeResultMappings +
-                '}';
+        return new StringJoiner(", ", ResultMap.class.getSimpleName() + "[", "]").add("id='" + id + "'")
+            .add("type=" + type)
+            .add("resultMappings=" + resultMappings)
+            .add("idResultMapping=" + idResultMapping)
+            .add("simpleResultMappings=" + simpleResultMappings)
+            .add("compositeResultMappings=" + compositeResultMappings)
+            .toString();
     }
 }
