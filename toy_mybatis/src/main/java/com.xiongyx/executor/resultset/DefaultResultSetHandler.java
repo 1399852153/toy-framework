@@ -15,7 +15,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -159,6 +158,9 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                     List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
                     String rowKey = getRowKey(rowKeyResultMappings);
 
+                    if(!storeObjects.containsKey(rowKey)){
+                        storeObjects.put(rowKey,entity);
+                    }
 
                 }else{
                     // 简单映射
@@ -168,6 +170,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
             logger.info("=========================");
         }
 
+        // 嵌套查询 返回storeObjects的数据
         return new ArrayList<>(storeObjects.values());
     }
 
