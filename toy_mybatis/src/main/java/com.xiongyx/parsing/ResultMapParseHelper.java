@@ -1,7 +1,6 @@
 package com.xiongyx.parsing;
 
 import com.xiongyx.mapping.*;
-import org.omg.CORBA.TRANSACTION_MODE;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
