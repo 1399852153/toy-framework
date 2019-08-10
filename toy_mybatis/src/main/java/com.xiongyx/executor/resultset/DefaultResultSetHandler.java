@@ -30,13 +30,13 @@ import java.util.Map;
  * @author PLF
  * @date 2019年3月6日
  */
-public class DefaultResultSetHandler implements ResultSetHandler{
+public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
     private static final Logger logger = Logger.getLogger(DefaultResultSetHandler.class);
 
     private final MappedStatement mappedStatement;
 
-    private Map<String,Object> storeObjects = new HashMap<>();
+    private HashMap<String,E> storeObjects = new HashMap<>();
 
     public DefaultResultSetHandler(MappedStatement mappedStatement) {
         this.mappedStatement = mappedStatement;
@@ -47,7 +47,7 @@ public class DefaultResultSetHandler implements ResultSetHandler{
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <E> List<E> handleResultSets(ResultSet resultSet) {
+    public List<E> handleResultSets(ResultSet resultSet) {
         try {
             if (null == resultSet) {
                 return null;
@@ -67,7 +67,7 @@ public class DefaultResultSetHandler implements ResultSetHandler{
     /**
      * 处理resultType类型
      * */
-    private <E> List<E> handleResultType(ResultSet resultSet) throws Exception {
+    private List<E> handleResultType(ResultSet resultSet) throws Exception {
         List<E> result = new ArrayList<>();
         // 映射的对象类型
         Class<?> eClass = Class.forName(mappedStatement.getResultType());
@@ -95,7 +95,7 @@ public class DefaultResultSetHandler implements ResultSetHandler{
     /**
      * 处理resultMap类型
      * */
-    private <E> List<E> handlerResultMap(ResultSet resultSet) throws Exception{
+    private List<E> handlerResultMap(ResultSet resultSet) throws Exception{
         String resultMapKey = this.mappedStatement.getResultMap();
         // 尝试用全名获取
         ResultMap resultMap = Configuration.getInstance().getResultMap(resultMapKey,false);
@@ -117,11 +117,13 @@ public class DefaultResultSetHandler implements ResultSetHandler{
             for(ResultMapping resultMapping : resultMappingList){
                 if(resultMapping instanceof ResultMappingAssociation || resultMapping instanceof ResultMappingCollection){
                     // association/collection
-                    // 由于前面已经排序完成，走到这里说明最外层主属性已经映射完毕
+                    // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
 
                     // todo 根据简单映射和已经完成字段映射的对象生成唯一的key
                     // todo 存入storeObjects
                     List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
+                    String rowKey = getRowKey(rowKeyResultMappings);
+
 
                 }else{
                     // 简单映射
@@ -130,6 +132,10 @@ public class DefaultResultSetHandler implements ResultSetHandler{
             }
             result.add(entity);
             logger.info("=========================");
+        }
+
+        if(resultMap.isNested()){
+            return new ArrayList<>(storeObjects.values());
         }
 
         return result;
@@ -146,6 +152,10 @@ public class DefaultResultSetHandler implements ResultSetHandler{
             // 将id集合映射 综合起来作为唯一标识
             return resultMap.getIdResultMapping();
         }
+    }
+
+    private String getRowKey(List<ResultMapping> rowKeyResultMappings){
+        return "";
     }
 
     private <E> void handleSimpleResultMapping(E entity,Class<?> eClass,ResultSet resultSet,ResultMapping resultMapping) throws Exception {

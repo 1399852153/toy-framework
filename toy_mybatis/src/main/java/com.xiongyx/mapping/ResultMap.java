@@ -15,6 +15,7 @@ public class ResultMap {
 
     private String id;
     private Class<?> type;
+    private boolean isNested;
     private List<ResultMapping> resultMappings;
     private List<ResultMapping> idResultMapping = new ArrayList<>();
     private List<ResultMapping> simpleResultMappings = new ArrayList<>();
@@ -33,6 +34,10 @@ public class ResultMap {
         return type;
     }
 
+    public boolean isNested() {
+        return isNested;
+    }
+
     public List<ResultMapping> getResultMappings() {
         return resultMappings;
     }
@@ -45,6 +50,10 @@ public class ResultMap {
 
         for(ResultMapping resultMapping : resultMappings){
             if(resultMapping instanceof ResultMappingAssociation || resultMapping instanceof ResultMappingCollection){
+                if(!isNested){
+                    // 当存在复合结果映射时，isNested = true
+                    isNested = true;
+                }
                 // 复合结果映射
                 compositeResultMappings.add(resultMapping);
             }else{
