@@ -3,14 +3,12 @@
  */
 package com.xiongyx.executor.resultset;
 
-
 import com.xiongyx.mapping.ResultMap;
 import com.xiongyx.mapping.ResultMapping;
 import com.xiongyx.mapping.ResultMappingAssociation;
 import com.xiongyx.mapping.ResultMappingCollection;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
-import com.xiongyx.util.JsonUtil;
 import com.xiongyx.util.ReflectionUtil;
 import com.xiongyx.util.StringUtil;
 import com.xiongyx.util.TypeConvertUtil;
@@ -18,12 +16,12 @@ import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -121,9 +119,9 @@ public class DefaultResultSetHandler implements ResultSetHandler{
                     // association/collection
                     // 由于前面已经排序完成，走到这里说明最外层主属性已经映射完毕
 
-                    List<ResultMapping> simpleResultMappings = resultMap.getSimpleResultMappings();
                     // todo 根据简单映射和已经完成字段映射的对象生成唯一的key
                     // todo 存入storeObjects
+                    List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
 
                 }else{
                     // 简单映射
@@ -135,6 +133,19 @@ public class DefaultResultSetHandler implements ResultSetHandler{
         }
 
         return result;
+    }
+
+    /**
+     * 获取resultMapping集合 用于构建 orm映射对象的唯一key
+     * */
+    private List<ResultMapping> getResultMappingListByRowKey(ResultMap resultMap){
+        if(resultMap.getIdResultMapping().isEmpty()){
+            // 如果不存在id集合映射，将所有的简单集合综合起来作为唯一标识
+            return resultMap.getSimpleResultMappings();
+        }else{
+            // 将id集合映射 综合起来作为唯一标识
+            return resultMap.getIdResultMapping();
+        }
     }
 
     private <E> void handleSimpleResultMapping(E entity,Class<?> eClass,ResultSet resultSet,ResultMapping resultMapping) throws Exception {
