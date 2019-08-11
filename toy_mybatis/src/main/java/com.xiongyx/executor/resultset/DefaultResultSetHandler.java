@@ -156,7 +156,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                     // todo 根据简单映射和已经完成字段映射的对象生成唯一的key
                     // todo 存入storeObjects
                     List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
-                    String rowKey = getRowKey(rowKeyResultMappings);
+                    String rowKey = getRowKey(resultMap,rowKeyResultMappings,entity);
 
                     if(!storeObjects.containsKey(rowKey)){
                         storeObjects.put(rowKey,entity);
@@ -187,8 +187,15 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         }
     }
 
-    private String getRowKey(List<ResultMapping> rowKeyResultMappings){
-        return "";
+    private String getRowKey(ResultMap resultMap,List<ResultMapping> rowKeyResultMappings,E entity){
+        StringBuilder rowKey = new StringBuilder(resultMap.getId()).append(":");
+        for(ResultMapping rowKeyItem : rowKeyResultMappings){
+            String property = rowKeyItem.getProperty();
+            Object propertyValue = ReflectionUtil.getPropertyValue(property,entity);
+            rowKey.append(propertyValue).append("_");
+        }
+
+        return rowKey.toString();
     }
 
     private void handleSimpleResultMapping(E entity,Class<?> eClass,ResultSet resultSet,ResultMapping resultMapping) throws Exception {

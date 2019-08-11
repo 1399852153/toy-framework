@@ -65,6 +65,17 @@ public class ReflectionUtil {
         }
     }
 
+    public static Object getPropertyValue(String propertyName, Object target){
+        String getterName = makeGetMethodName(propertyName);
+
+        try {
+            Method method = target.getClass().getMethod(getterName);
+            return method.invoke(target);
+        } catch (Exception e) {
+            throw new RuntimeException("getPropertyValue error",e);
+        }
+    }
+
     /***
      * 将通过keyName获得对应的bean对象的get方法名称的字符串
      * @param keyName 属性名
