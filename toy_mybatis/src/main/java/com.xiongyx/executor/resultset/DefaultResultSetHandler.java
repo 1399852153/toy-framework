@@ -32,7 +32,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
     private final MappedStatement mappedStatement;
 
-    private HashMap<String,E> storeObjects = new HashMap<>();
+    private HashMap<String,E> nestedResultObjects = new HashMap<>();
 
     public DefaultResultSetHandler(MappedStatement mappedStatement) {
         this.mappedStatement = mappedStatement;
@@ -153,15 +153,21 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                     // association/collection
                     // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
 
-                    // todo 根据简单映射和已经完成字段映射的对象生成唯一的key
-                    // todo 存入storeObjects
+                    // 根据简单映射和已经完成字段映射的对象生成唯一的key
                     List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
                     String rowKey = getRowKey(resultMap,rowKeyResultMappings,entity);
 
-                    if(!storeObjects.containsKey(rowKey)){
-                        storeObjects.put(rowKey,entity);
+                    // 存入storeObjects
+                    E linkedObject;
+                    if(!nestedResultObjects.containsKey(rowKey)){
+                        nestedResultObjects.put(rowKey,entity);
+                        linkedObject = entity;
+                    }else{
+                        linkedObject = nestedResultObjects.get(rowKey);
                     }
 
+                    // 嵌套对象和外部对象进行关联
+                    linkedObject(resultMapping,linkedObject);
                 }else{
                     // 简单映射
                     handleSimpleResultMapping(entity,eClass,resultSet,resultMapping);
@@ -171,7 +177,14 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         }
 
         // 嵌套查询 返回storeObjects的数据
-        return new ArrayList<>(storeObjects.values());
+        return new ArrayList<>(nestedResultObjects.values());
+    }
+
+    /**
+     * 嵌套对象和外部对象进行关联
+     * */
+    private void linkedObject(ResultMapping nestedResultMapping,E entity){
+
     }
 
     /**
