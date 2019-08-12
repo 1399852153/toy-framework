@@ -50,7 +50,7 @@ public class ResultMapParseHelper {
 
     private static ResultMapping parseResultMapping(Element element, String nodeName){
         if(ResultMappingEnum.ID.getName().equals(nodeName)) {
-            // 普通映射
+            // id映射
             String column = element.getAttribute("column");
             String property = element.getAttribute("property");
             String jdbcType = element.getAttribute("property");
