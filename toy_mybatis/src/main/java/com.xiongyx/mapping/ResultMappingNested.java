@@ -30,10 +30,17 @@ public class ResultMappingNested extends ResultMapping{
      * */
     private ResultMap innerResultMap;
 
-    public ResultMappingNested(ResultMap resultMap,String column, String property, String jdbcType, boolean isId, ResultMappingEnum resultMappingEnum, List<ResultMapping> compositeResultMappingList) {
+    public ResultMappingNested(ResultMap resultMap,String column, String property, String jdbcType, boolean isId, ResultMappingEnum resultMappingEnum, List<ResultMapping> compositeResultMappingList)
+        throws ClassNotFoundException {
         super(resultMap,column, property, jdbcType, isId,resultMappingEnum);
         this.resultMappingEnum = resultMappingEnum;
         this.compositeResultMappingList = compositeResultMappingList;
+
+        // 初始化内部 innerResultMap
+        String innerResultMapId = resultMap.getId() + "[" + resultMappingEnum.getName() + "]";
+        ResultMap innerResultMap = new ResultMap(innerResultMapId,Class.forName(type));
+        innerResultMap.setResultMappings(compositeResultMappingList);
+        this.innerResultMap = innerResultMap;
     }
 
     public String getType() {
