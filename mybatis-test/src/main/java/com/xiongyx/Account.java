@@ -1,5 +1,7 @@
 package com.xiongyx;
 
+import java.util.StringJoiner;
+
 /**
  * @author xiongyx
  * on 2019/8/4.
@@ -32,5 +34,13 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Account.class.getSimpleName() + "[", "]").add("id='" + id + "'")
+            .add("userId='" + userId + "'")
+            .add("password='" + password + "'")
+            .toString();
     }
 }

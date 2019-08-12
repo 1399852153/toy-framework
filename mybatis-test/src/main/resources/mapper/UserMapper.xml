@@ -30,12 +30,13 @@
 
 	<resultMap id="getUserLinkedQueryMap" type="com.xiongyx.User">
 		<id column="id" property="id"/>
-		<id column="userName" property="userName"/>
+		<result column="userName" property="userName"/>
 		<result column="age" property="age"/>
 		<result column="money" property="money"/>
 
 		<association property="account" javaType="com.xiongyx.Account">
 			<id column="accountId" property="id"/>
+			<result column="user_id" property="userId"/>
 			<result column="password" property="password"/>
 		</association>
 
@@ -49,17 +50,21 @@
 
 
 	<select id="getUserLinkedQuery" resultMap="getUserLinkedQueryMap">
-			select
+		select
 			test_user.id,
 			userName,
 			age,
 			money,
+			test_account.id as 'accountId',
+			test_account.user_id,
+			test_account.`password`,
 			test_book.id as 'bookId',
-			book_name,
-			author_id,
-			price
- 		from test_user inner join test_book
- 		on test_user.id = test_book.author_id
+			test_book.book_name,
+			test_book.author_id,
+			test_book.price
+ 		from test_user
+ 		inner join test_book on test_user.id = test_book.author_id
+ 		inner join test_account on test_user.id = test_account.user_id
 	</select>
 
 	<update id="updateUser">

@@ -2,6 +2,7 @@ package com.xiongyx;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * @author xiongyx
@@ -82,13 +83,13 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", userName='" + userName + '\'' +
-                ", age=" + age +
-                ", money=" + money +
-                ", idListQuery=" + idListQuery +
-                ", bookList=" + bookList +
-                '}';
+        return new StringJoiner(", ", User.class.getSimpleName() + "[", "]").add("id='" + id + "'")
+            .add("userName='" + userName + "'")
+            .add("age=" + age)
+            .add("money=" + money)
+            .add("idListQuery=" + idListQuery)
+            .add("bookList=" + bookList)
+            .add("account=" + account)
+            .toString();
     }
 }
