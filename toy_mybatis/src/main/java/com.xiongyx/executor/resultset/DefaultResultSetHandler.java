@@ -150,24 +150,8 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
             for(ResultMapping resultMapping : resultMappingList){
                 if(resultMapping instanceof ResultMappingAssociation || resultMapping instanceof ResultMappingCollection){
-                    // association/collection
-                    // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
-
-                    // 根据简单映射和已经完成字段映射的对象生成唯一的key
-                    List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
-                    String rowKey = getRowKey(resultMap,rowKeyResultMappings,entity);
-
-                    // 存入storeObjects
-                    E linkedObject;
-                    if(!nestedResultObjects.containsKey(rowKey)){
-                        nestedResultObjects.put(rowKey,entity);
-                        linkedObject = entity;
-                    }else{
-                        linkedObject = nestedResultObjects.get(rowKey);
-                    }
-
-                    // 嵌套对象和外部对象进行关联
-                    linkedObject(resultMapping,linkedObject);
+                    // 嵌套映射
+                    getRowValue(resultMap,resultSet,entity);
                 }else{
                     // 简单映射
                     handleSimpleResultMapping(entity,eClass,resultSet,resultMapping);
@@ -178,6 +162,40 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
         // 嵌套查询 返回storeObjects的数据
         return new ArrayList<>(nestedResultObjects.values());
+    }
+
+    @SuppressWarnings("unchecked")
+    private Object getRowValue(ResultMap resultMap, ResultSet resultSet, E entity) throws Exception {
+        // 映射的对象类型
+        Class<?> eClass = resultMap.getType();
+        List<ResultMapping> resultMappingList = resultMap.getResultMappings();
+
+        for(ResultMapping resultMapping : resultMappingList){
+            if(resultMapping instanceof ResultMappingAssociation || resultMapping instanceof ResultMappingCollection){
+                // association/collection
+
+                // 根据简单映射和已经完成字段映射的对象生成唯一的key
+                List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
+                String rowKey = getRowKey(resultMap,rowKeyResultMappings,entity);
+                // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
+
+                if(!nestedResultObjects.containsKey(rowKey)){
+                    nestedResultObjects.put(rowKey,entity);
+                }
+
+                // todo 1.从resultMapping中获取嵌套resultMap信息
+                // todo 2.从resultMapping中获取嵌套resultMap子对象类型
+
+                Object subObject = getRowValue(null,resultSet,null);
+                // todo 将subObject和parentObject关联起来
+            }else{
+                // 简单映射
+                handleSimpleResultMapping(entity,eClass,resultSet,resultMapping);
+            }
+        }
+        logger.info("=========================");
+
+        return entity;
     }
 
     /**
