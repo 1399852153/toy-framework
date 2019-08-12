@@ -49,7 +49,7 @@ public class ResultMap {
         resultMappings.sort(Comparator.comparingInt(ResultMapping::getOrder));
 
         for(ResultMapping resultMapping : resultMappings){
-            if(resultMapping instanceof ResultMappingAssociation || resultMapping instanceof ResultMappingCollection){
+            if(resultMapping instanceof ResultMappingNested){
                 if(!isNested){
                     // 当存在复合结果映射时，isNested = true
                     isNested = true;

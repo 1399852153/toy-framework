@@ -69,13 +69,12 @@ public class ResultMapParseHelper {
             String property = element.getAttribute("property");
             String jdbcType = element.getAttribute("property");
 
-            ResultMappingAssociation association = new ResultMappingAssociation(column,property,jdbcType,false);
 
             String javaType = element.getAttribute("javaType");
 
             List<ResultMapping> resultMappingList = parseResultMappingList(element);
+            ResultMappingNested association = new ResultMappingNested(column,property,jdbcType,false, ResultMappingEnum.ASSOCIATION,resultMappingList);
             association.setType(javaType);
-            association.setCompositeResultMappingList(resultMappingList);
 
             return association;
         }else if(ResultMappingEnum.COLLECTION.getName().equals(nodeName)){
@@ -84,13 +83,12 @@ public class ResultMapParseHelper {
             String property = element.getAttribute("property");
             String jdbcType = element.getAttribute("property");
 
-            ResultMappingCollection collection = new ResultMappingCollection(column,property,jdbcType,false);
 
             String javaType = element.getAttribute("javaType");
 
             List<ResultMapping> resultMappingList = parseResultMappingList(element);
+            ResultMappingNested collection = new ResultMappingNested(column,property,jdbcType,false, ResultMappingEnum.COLLECTION,resultMappingList);
             collection.setType(javaType);
-            collection.setCompositeResultMappingList(resultMappingList);
 
             return collection;
         }

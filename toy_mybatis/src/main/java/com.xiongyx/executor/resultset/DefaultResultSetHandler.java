@@ -2,8 +2,7 @@ package com.xiongyx.executor.resultset;
 
 import com.xiongyx.mapping.ResultMap;
 import com.xiongyx.mapping.ResultMapping;
-import com.xiongyx.mapping.ResultMappingAssociation;
-import com.xiongyx.mapping.ResultMappingCollection;
+import com.xiongyx.mapping.ResultMappingNested;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
 import com.xiongyx.util.ReflectionUtil;
@@ -149,7 +148,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
             E entity = (E) eClass.newInstance();
 
             for(ResultMapping resultMapping : resultMappingList){
-                if(resultMapping instanceof ResultMappingAssociation || resultMapping instanceof ResultMappingCollection){
+                if(resultMapping instanceof ResultMappingNested){
                     // 嵌套映射
                     getRowValue(resultMap,resultSet,entity);
                 }else{
@@ -171,7 +170,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         List<ResultMapping> resultMappingList = resultMap.getResultMappings();
 
         for(ResultMapping resultMapping : resultMappingList){
-            if(resultMapping instanceof ResultMappingAssociation || resultMapping instanceof ResultMappingCollection){
+            if(resultMapping instanceof ResultMappingNested){
                 // association/collection
 
                 // 根据简单映射和已经完成字段映射的对象生成唯一的key
