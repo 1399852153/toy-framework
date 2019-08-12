@@ -171,6 +171,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
         for(ResultMapping resultMapping : resultMappingList){
             if(resultMapping instanceof ResultMappingNested){
+                ResultMappingNested resultMappingNested = (ResultMappingNested)resultMapping;
                 // association/collection
 
                 // 根据简单映射和已经完成字段映射的对象生成唯一的key
@@ -182,10 +183,12 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                     nestedResultObjects.put(rowKey,entity);
                 }
 
-                // todo 1.从resultMapping中获取嵌套resultMap信息
-                // todo 2.从resultMapping中获取嵌套resultMap子对象类型
+                // 从resultMapping中获取嵌套resultMap信息
+                ResultMap innerResultMap = resultMappingNested.getInnerResultMap();
+                // 从resultMapping中获取嵌套resultMap子对象类型
+                Class clazzType = Class.forName(resultMappingNested.getType());
 
-                Object subObject = getRowValue(null,resultSet,null);
+                Object subObject = getRowValue(innerResultMap,resultSet,(E)clazzType.newInstance());
                 // todo 将subObject和parentObject关联起来
             }else{
                 // 简单映射

@@ -58,4 +58,8 @@ public class ResultMappingNested extends ResultMapping{
     public ResultMappingEnum getResultMappingEnum() {
         return resultMappingEnum;
     }
+
+    public ResultMap getInnerResultMap() {
+        return innerResultMap;
+    }
 }
