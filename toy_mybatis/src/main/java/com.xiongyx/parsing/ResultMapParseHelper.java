@@ -21,17 +21,17 @@ public class ResultMapParseHelper {
         String id = namespace + "." + resultMapNode.getAttribute("id");
         String type = resultMapNode.getAttribute("type");
 
-        List<ResultMapping> resultMappingList = parseResultMappingList(resultMapNode);
-
         //设置resultMap的唯一ID = namespace + "." + resultMap.id
         ResultMap resultMap = new ResultMap(id,Class.forName(type));
+
+        List<ResultMapping> resultMappingList = parseResultMappingList(resultMap,resultMapNode);
         resultMap.setResultMappings(resultMappingList);
 
         return resultMap;
     }
 
 
-    private static List<ResultMapping> parseResultMappingList(Element parent){
+    private static List<ResultMapping> parseResultMappingList(ResultMap resultMap,Element parent){
         List<ResultMapping> resultMappingList = new ArrayList<>();
 
         NodeList children = parent.getChildNodes();
@@ -40,7 +40,7 @@ public class ResultMapParseHelper {
             if(child instanceof Element){
                 Element element = (Element)child;
                 String nodeName = element.getNodeName();
-                ResultMapping compositeResultMapping = parseResultMapping(element,nodeName);
+                ResultMapping compositeResultMapping = parseResultMapping(resultMap,element,nodeName);
                 resultMappingList.add(compositeResultMapping);
             }
         }
@@ -48,21 +48,21 @@ public class ResultMapParseHelper {
         return resultMappingList;
     }
 
-    private static ResultMapping parseResultMapping(Element element, String nodeName){
+    private static ResultMapping parseResultMapping(ResultMap resultMap,Element element, String nodeName){
         if(ResultMappingEnum.ID.getName().equals(nodeName)) {
             // id映射
             String column = element.getAttribute("column");
             String property = element.getAttribute("property");
             String jdbcType = element.getAttribute("property");
 
-            return new ResultMapping(column,property,jdbcType, true,ResultMappingEnum.ID);
+            return new ResultMapping(resultMap,column,property,jdbcType, true,ResultMappingEnum.ID);
         } else if(ResultMappingEnum.RESULT.getName().equals(nodeName)){
             // 普通映射
             String column = element.getAttribute("column");
             String property = element.getAttribute("property");
             String jdbcType = element.getAttribute("property");
 
-            return new ResultMapping(column,property,jdbcType,false,ResultMappingEnum.RESULT);
+            return new ResultMapping(resultMap,column,property,jdbcType,false,ResultMappingEnum.RESULT);
         } else if(ResultMappingEnum.ASSOCIATION.getName().equals(nodeName)){
             // association映射
             String column = element.getAttribute("column");
@@ -70,8 +70,9 @@ public class ResultMapParseHelper {
             String jdbcType = element.getAttribute("property");
             String javaType = element.getAttribute("javaType");
 
-            List<ResultMapping> resultMappingList = parseResultMappingList(element);
-            ResultMappingNested association = new ResultMappingNested(column,property,jdbcType,false, ResultMappingEnum.ASSOCIATION,resultMappingList);
+            List<ResultMapping> resultMappingList = parseResultMappingList(resultMap,element);
+            ResultMappingNested association = new ResultMappingNested(resultMap,column,property,jdbcType,false, ResultMappingEnum.ASSOCIATION,
+                resultMappingList);
             association.setType(javaType);
 
             return association;
@@ -82,8 +83,9 @@ public class ResultMapParseHelper {
             String jdbcType = element.getAttribute("property");
             String javaType = element.getAttribute("javaType");
 
-            List<ResultMapping> resultMappingList = parseResultMappingList(element);
-            ResultMappingNested collection = new ResultMappingNested(column,property,jdbcType,false, ResultMappingEnum.COLLECTION,resultMappingList);
+            List<ResultMapping> resultMappingList = parseResultMappingList(resultMap,element);
+            ResultMappingNested collection = new ResultMappingNested(resultMap,column,property,jdbcType,false, ResultMappingEnum.COLLECTION,
+                resultMappingList);
             collection.setType(javaType);
 
             return collection;

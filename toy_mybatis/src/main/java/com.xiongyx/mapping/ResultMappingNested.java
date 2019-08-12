@@ -25,8 +25,13 @@ public class ResultMappingNested extends ResultMapping{
      * */
     private ResultMappingEnum resultMappingEnum;
 
-    public ResultMappingNested(String column, String property, String jdbcType, boolean isId, ResultMappingEnum resultMappingEnum, List<ResultMapping> compositeResultMappingList) {
-        super(column, property, jdbcType, isId,resultMappingEnum);
+    /**
+     * 内存resultMap
+     * */
+    private ResultMap innerResultMap;
+
+    public ResultMappingNested(ResultMap resultMap,String column, String property, String jdbcType, boolean isId, ResultMappingEnum resultMappingEnum, List<ResultMapping> compositeResultMappingList) {
+        super(resultMap,column, property, jdbcType, isId,resultMappingEnum);
         this.resultMappingEnum = resultMappingEnum;
         this.compositeResultMappingList = compositeResultMappingList;
     }
