@@ -68,8 +68,6 @@ public class ResultMapParseHelper {
             String column = element.getAttribute("column");
             String property = element.getAttribute("property");
             String jdbcType = element.getAttribute("property");
-
-
             String javaType = element.getAttribute("javaType");
 
             List<ResultMapping> resultMappingList = parseResultMappingList(element);
@@ -82,8 +80,6 @@ public class ResultMapParseHelper {
             String column = element.getAttribute("column");
             String property = element.getAttribute("property");
             String jdbcType = element.getAttribute("property");
-
-
             String javaType = element.getAttribute("javaType");
 
             List<ResultMapping> resultMappingList = parseResultMappingList(element);
