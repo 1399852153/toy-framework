@@ -33,7 +33,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
     private final MappedStatement mappedStatement;
 
-    private HashMap<String,E> nestedResults = new HashMap<>();
+    private HashMap<String,Object> nestedResults = new HashMap<>();
 
     private HashMap<String,Object> storeObjects = new HashMap<>();
 
@@ -146,41 +146,19 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         // 映射的对象类型
         Class<?> eClass = resultMap.getType();
 
-        List<ResultMapping> resultMappingList = resultMap.getResultMappings();
-
         while (resultSet.next()) {
             E entity = (E)ReflectionUtil.newInstance(eClass);
-
-            for(ResultMapping resultMapping : resultMappingList){
-                if(resultMapping instanceof ResultMappingNested){
-                    // 根据简单映射和已经完成字段映射的对象生成唯一的key
-                    List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
-                    String rowKey = getRowKey(resultMap,rowKeyResultMappings,entity);
-                    // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
-
-                    if(!nestedResults.containsKey(rowKey)){
-                        nestedResults.put(rowKey,entity);
-                    }else{
-                        // 从nestedResults中获取
-                        entity = nestedResults.get(rowKey);
-                    }
-
-                    // 嵌套映射
-                    getRowValue(resultMap,resultSet,entity);
-                }else{
-                    // 简单映射
-                    handleSimpleResultMapping(entity,eClass,resultSet,resultMapping);
-                }
-            }
+            // 嵌套映射
+            getRowValue(resultMap,resultSet,entity,true);
             logger.info("=========================");
         }
 
         // 嵌套查询 返回storeObjects的数据
-        return new ArrayList<>(nestedResults.values());
+        return new ArrayList(nestedResults.values());
     }
 
     @SuppressWarnings("unchecked")
-    private Object getRowValue(ResultMap resultMap, ResultSet resultSet, Object entity) throws Exception {
+    private Object getRowValue(ResultMap resultMap, ResultSet resultSet, Object entity, boolean isAncestor) throws Exception {
         // 映射的对象类型
         Class<?> eClass = resultMap.getType();
         List<ResultMapping> resultMappingList = resultMap.getResultMappings();
@@ -195,10 +173,18 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                 String rowKey = getRowKey(resultMap,rowKeyResultMappings,entity);
                 // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
 
-                if(!storeObjects.containsKey(rowKey)){
-                    storeObjects.put(rowKey,entity);
+                if(isAncestor){
+                    if(!nestedResults.containsKey(rowKey)){
+                        nestedResults.put(rowKey,entity);
+                    }else{
+                        entity = nestedResults.get(rowKey);
+                    }
                 }else{
-                    entity = storeObjects.get(rowKey);
+                    if(!storeObjects.containsKey(rowKey)){
+                        storeObjects.put(rowKey,entity);
+                    }else{
+                        entity = storeObjects.get(rowKey);
+                    }
                 }
 
                 // 从resultMapping中获取嵌套resultMap信息
@@ -206,7 +192,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                 // 从resultMapping中获取嵌套resultMap子对象类型
                 Class clazzType = Class.forName(resultMappingNested.getType());
 
-                Object subObject = getRowValue(innerResultMap,resultSet,(E)ReflectionUtil.newInstance(clazzType));
+                Object subObject = getRowValue(innerResultMap,resultSet,(E)ReflectionUtil.newInstance(clazzType),false);
                 // 将subObject和parentObject关联起来
                 if(resultMappingNested.getResultMappingEnum().equals(ResultMappingEnum.ASSOCIATION)){
                     LinkedObjectUtil.setAssociationProperty(entity,resultMapping.getProperty(),subObject);
