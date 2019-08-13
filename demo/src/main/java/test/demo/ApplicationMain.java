@@ -59,7 +59,7 @@ public class ApplicationMain {
 //        param.setIdListQuery(Arrays.asList("aaaaa","bbbbb","ccccc"));
 //
         List<User> userList = sqlSession.selectList("test.demo.dao.UserDAO.getUserLinkedQuery",param);
-        System.out.println(userList);
+        userList.forEach(System.out::println);
 
         // TODO mapper 传实体做参数
 //        List<User> userList = mapper.getUserList(param);

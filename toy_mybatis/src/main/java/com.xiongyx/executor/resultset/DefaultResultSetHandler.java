@@ -33,7 +33,9 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
     private final MappedStatement mappedStatement;
 
-    private HashMap<String,E> nestedResultObjects = new HashMap<>();
+    private HashMap<String,E> nestedResults = new HashMap<>();
+
+    private HashMap<String,Object> storeObjects = new HashMap<>();
 
     public DefaultResultSetHandler(MappedStatement mappedStatement) {
         this.mappedStatement = mappedStatement;
@@ -151,6 +153,18 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
             for(ResultMapping resultMapping : resultMappingList){
                 if(resultMapping instanceof ResultMappingNested){
+                    // 根据简单映射和已经完成字段映射的对象生成唯一的key
+                    List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
+                    String rowKey = getRowKey(resultMap,rowKeyResultMappings,entity);
+                    // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
+
+                    if(!nestedResults.containsKey(rowKey)){
+                        nestedResults.put(rowKey,entity);
+                    }else{
+                        // 从nestedResults中获取
+                        entity = nestedResults.get(rowKey);
+                    }
+
                     // 嵌套映射
                     getRowValue(resultMap,resultSet,entity);
                 }else{
@@ -162,11 +176,11 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         }
 
         // 嵌套查询 返回storeObjects的数据
-        return new ArrayList<>(nestedResultObjects.values());
+        return new ArrayList<>(nestedResults.values());
     }
 
     @SuppressWarnings("unchecked")
-    private Object getRowValue(ResultMap resultMap, ResultSet resultSet, E entity) throws Exception {
+    private Object getRowValue(ResultMap resultMap, ResultSet resultSet, Object entity) throws Exception {
         // 映射的对象类型
         Class<?> eClass = resultMap.getType();
         List<ResultMapping> resultMappingList = resultMap.getResultMappings();
@@ -181,8 +195,10 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                 String rowKey = getRowKey(resultMap,rowKeyResultMappings,entity);
                 // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
 
-                if(!nestedResultObjects.containsKey(rowKey)){
-                    nestedResultObjects.put(rowKey,entity);
+                if(!storeObjects.containsKey(rowKey)){
+                    storeObjects.put(rowKey,entity);
+                }else{
+                    entity = storeObjects.get(rowKey);
                 }
 
                 // 从resultMapping中获取嵌套resultMap信息
@@ -220,7 +236,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         }
     }
 
-    private String getRowKey(ResultMap resultMap,List<ResultMapping> rowKeyResultMappings,E entity){
+    private String getRowKey(ResultMap resultMap,List<ResultMapping> rowKeyResultMappings,Object entity){
         StringBuilder rowKey = new StringBuilder(resultMap.getId()).append(":");
         for(ResultMapping rowKeyItem : rowKeyResultMappings){
             String property = rowKeyItem.getProperty();
@@ -231,7 +247,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         return rowKey.toString();
     }
 
-    private void handleSimpleResultMapping(E entity,Class<?> eClass,ResultSet resultSet,ResultMapping resultMapping) throws Exception {
+    private void handleSimpleResultMapping(Object entity,Class<?> eClass,ResultSet resultSet,ResultMapping resultMapping) throws Exception {
         // 获得当前列的名称
         String columnName = resultMapping.getColumn();
         String jdbcType = resultMapping.getJdbcType();
@@ -240,7 +256,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         setColumnValue(entity,eClass,resultSet,property,columnName,jdbcType);
     }
 
-    private void setColumnValue(E entity,Class<?> eClass,ResultSet resultSet,String property,String columnName,String jdbcType) throws Exception {
+    private void setColumnValue(Object entity,Class<?> eClass,ResultSet resultSet,String property,String columnName,String jdbcType) throws Exception {
         // 获得setter方法 todo 效率不高，可以使用objectWrapper将setterMethod封装起来
         Method setterMethod = ReflectionUtil.getSetterMethod(eClass,property,true);
         // pojo setter方法的javaType

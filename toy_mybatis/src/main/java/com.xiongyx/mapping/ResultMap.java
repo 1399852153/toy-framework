@@ -82,12 +82,14 @@ public class ResultMap {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", ResultMap.class.getSimpleName() + "[", "]").add("id='" + id + "'")
-            .add("type=" + type)
-            .add("resultMappings=" + resultMappings)
-            .add("idResultMapping=" + idResultMapping)
-            .add("simpleResultMappings=" + simpleResultMappings)
-            .add("compositeResultMappings=" + compositeResultMappings)
-            .toString();
+        return "ResultMap{" +
+                "id='" + id + '\'' +
+                ", type=" + type +
+                ", isNested=" + isNested +
+                ", resultMappings=" + resultMappings +
+                ", idResultMapping=" + idResultMapping +
+                ", simpleResultMappings=" + simpleResultMappings +
+                ", compositeResultMappings=" + compositeResultMappings +
+                '}';
     }
 }

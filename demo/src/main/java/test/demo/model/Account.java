@@ -7,6 +7,7 @@ package test.demo.model;
 public class Account {
 
     private String id;
+    private String userId;
     private String password;
 
     public String getId() {
@@ -17,11 +18,28 @@ public class Account {
         this.id = id;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

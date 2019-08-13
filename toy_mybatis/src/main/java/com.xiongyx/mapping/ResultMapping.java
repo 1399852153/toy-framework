@@ -50,7 +50,7 @@ public class ResultMapping {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", ResultMapping.class.getSimpleName() + "[", "]").add("parentResultMap=" + parentResultMap)
+        return new StringJoiner(", ", ResultMapping.class.getSimpleName() + "[", "]")
             .add("column='" + column + "'")
             .add("property='" + property + "'")
             .add("jdbcType='" + jdbcType + "'")
