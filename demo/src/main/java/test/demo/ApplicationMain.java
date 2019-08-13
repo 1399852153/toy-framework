@@ -61,14 +61,6 @@ public class ApplicationMain {
         List<User> userList = sqlSession.selectList("test.demo.dao.UserDAO.getUserLinkedQuery",param);
         userList.forEach(System.out::println);
 
-        // TODO mapper 传实体做参数
-//        List<User> userList = mapper.getUserList(param);
 
-//        System.out.println(userList);
-
-//        Book param = new Book();
-//        param.setBookName("小老弟");
-//        List<Book> bookList = sqlSession.selectList("test.dao.BookMapper.getBook",param);
-//        System.out.println(bookList);
     }
 }
