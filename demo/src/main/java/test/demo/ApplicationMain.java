@@ -52,13 +52,14 @@ public class ApplicationMain {
 //        param.put("id","123");
 //        param.put("age",12);
 //        param.put("money",32141);
-//        User param = new User();
+        User param = new User();
 //        param.setId("123");
 //        param.setAge(12);
 //        param.setMoney(32141d);
 //        param.setIdListQuery(Arrays.asList("aaaaa","bbbbb","ccccc"));
 //
-//        List<User> userList = sqlSession.selectList("test.demo.dao.UserDAO.getUserList",param);
+        List<User> userList = sqlSession.selectList("test.demo.dao.UserDAO.getUserLinkedQuery",param);
+        System.out.println(userList);
 
         // TODO mapper 传实体做参数
 //        List<User> userList = mapper.getUserList(param);

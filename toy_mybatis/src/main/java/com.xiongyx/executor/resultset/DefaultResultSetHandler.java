@@ -208,13 +208,6 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
     }
 
     /**
-     * 嵌套对象和外部对象进行关联
-     * */
-    private void linkedObject(ResultMapping nestedResultMapping,E entity){
-
-    }
-
-    /**
      * 获取resultMapping集合 用于构建 orm映射对象的唯一key
      * */
     private List<ResultMapping> getResultMappingListByRowKey(ResultMap resultMap){

@@ -11,17 +11,11 @@
 
 		<association property="account" javaType="test.demo.model.Account">
 			<id column="accountId" property="id"/>
+			<result column="user_id" property="userId"/>
 			<result column="password" property="password"/>
-
-<!--			<collection property="bookList" ofType="test.demo.model.Book">-->
-<!--				<id column="bookId" property="id"/>-->
-<!--				<result column="book_name" property="bookName"/>-->
-<!--				<result column="author_id" property="authorId"/>-->
-<!--				<result column="price" property="price"/>-->
-<!--			</collection>-->
 		</association>
 
-		<collection property="bookList" ofType="test.demo.model.Book">
+		<collection property="bookList" javaType="test.demo.model.Book">
 			<id column="bookId" property="id"/>
 			<result column="book_name" property="bookName"/>
 			<result column="author_id" property="authorId"/>
@@ -29,32 +23,41 @@
 		</collection>
 	</resultMap>
 
-	<select id="getUserList" resultType="test.demo.model.User">
-		select * from test_user
-		<where>
-			<if test="id != null">and id = #{id}</if>
-			<if test="age != null">and age = #{age}</if>
-			<if test="money != null">and money = #{money}</if>
-			<if test="idListQuery != null">
-				and id in
-				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">
-					#{item}
-				</foreach>
-			</if>
-		</where>
-	</select>
-	
-	<select id="getUserByParam" resultType="test.demo.model.User">
-		select * from user
-		<where>
-			<if test="id != null">and id = #{id}</if>
-			<if test="age != null">and age = #{age}</if>
-			<if test="money != null">and money = #{money}</if>
-		</where>
+	<select id="getUserLinkedQuery" resultMap="getUserLinkedQueryMap">
+		select
+		test_user.id,
+		userName,
+		age,
+		money,
+		test_account.id as 'accountId',
+		test_account.user_id,
+		test_account.`password`,
+		test_book.id as 'bookId',
+		test_book.book_name,
+		test_book.author_id,
+		test_book.price
+		from test_user
+		inner join test_book on test_user.id = test_book.author_id
+		inner join test_account on test_user.id = test_account.user_id
 	</select>
 
-	<update id="updateUser">
-		update user set name = '张三2' where id = #{id}
-	</update>
+<!--	<select id="getUserList" resultType="test.demo.model.User">-->
+<!--		select * from test_user-->
+<!--		<where>-->
+<!--			<if test="id != null">and id = #{id}</if>-->
+<!--			<if test="age != null">and age = #{age}</if>-->
+<!--			<if test="money != null">and money = #{money}</if>-->
+<!--			<if test="idListQuery != null">-->
+<!--				and id in-->
+<!--				<foreach collection="idListQuery" index="index" item="item" open="(" separator="," close=")">-->
+<!--					#{item}-->
+<!--				</foreach>-->
+<!--			</if>-->
+<!--		</where>-->
+<!--	</select>-->
+
+<!--	<update id="updateUser">-->
+<!--		update user set name = '张三2' where id = #{id}-->
+<!--	</update>-->
 	
 </mapper>

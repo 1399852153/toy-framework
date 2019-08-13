@@ -30,25 +30,28 @@ public class ResultMappingNested extends ResultMapping{
      * */
     private ResultMap innerResultMap;
 
-    public ResultMappingNested(ResultMap resultMap,String column, String property, String jdbcType, boolean isId, ResultMappingEnum resultMappingEnum, List<ResultMapping> compositeResultMappingList)
-        throws ClassNotFoundException {
+    public ResultMappingNested(ResultMap resultMap,String column, String property, String jdbcType,
+                               boolean isId, ResultMappingEnum resultMappingEnum, List<ResultMapping> compositeResultMappingList,String type) {
         super(resultMap,column, property, jdbcType, isId,resultMappingEnum);
         this.resultMappingEnum = resultMappingEnum;
         this.compositeResultMappingList = compositeResultMappingList;
+        this.type = type;
 
         // 初始化内部 innerResultMap
         String innerResultMapId = resultMap.getId() + "[" + resultMappingEnum.getName() + "]";
-        ResultMap innerResultMap = new ResultMap(innerResultMapId,Class.forName(type));
-        innerResultMap.setResultMappings(compositeResultMappingList);
-        this.innerResultMap = innerResultMap;
+
+        try {
+            ResultMap innerResultMap = new ResultMap(innerResultMapId,Class.forName(type));
+            innerResultMap.setResultMappings(compositeResultMappingList);
+            this.innerResultMap = innerResultMap;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException("ResultMappingNested init error",e);
+        }
     }
 
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public List<ResultMapping> getCompositeResultMappingList() {

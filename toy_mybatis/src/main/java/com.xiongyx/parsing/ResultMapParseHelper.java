@@ -72,8 +72,7 @@ public class ResultMapParseHelper {
 
             List<ResultMapping> resultMappingList = parseResultMappingList(resultMap,element);
             ResultMappingNested association = new ResultMappingNested(resultMap,column,property,jdbcType,false, ResultMappingEnum.ASSOCIATION,
-                resultMappingList);
-            association.setType(javaType);
+                resultMappingList,javaType);
 
             return association;
         }else if(ResultMappingEnum.COLLECTION.getName().equals(nodeName)){
@@ -85,8 +84,7 @@ public class ResultMapParseHelper {
 
             List<ResultMapping> resultMappingList = parseResultMappingList(resultMap,element);
             ResultMappingNested collection = new ResultMappingNested(resultMap,column,property,jdbcType,false, ResultMappingEnum.COLLECTION,
-                resultMappingList);
-            collection.setType(javaType);
+                resultMappingList,javaType);
 
             return collection;
         }
