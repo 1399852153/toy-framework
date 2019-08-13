@@ -65,4 +65,14 @@ public class ResultMappingNested extends ResultMapping{
     public ResultMap getInnerResultMap() {
         return innerResultMap;
     }
+
+    @Override
+    public String toString() {
+        return "ResultMappingNested{" + super.toString() +
+                "type='" + type + '\'' +
+                ", compositeResultMappingList=" + compositeResultMappingList +
+                ", resultMappingEnum=" + resultMappingEnum +
+                ", innerResultMap=" + innerResultMap +
+                '}';
+    }
 }
