@@ -65,6 +65,9 @@ public class ReflectionUtil {
         }
     }
 
+    /**
+     * 获取属性对应的value值
+     * */
     public static Object getPropertyValue(String propertyName, Object target){
         String getterName = makeGetMethodName(propertyName);
 

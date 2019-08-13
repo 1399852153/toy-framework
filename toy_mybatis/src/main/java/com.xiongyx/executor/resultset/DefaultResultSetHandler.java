@@ -2,9 +2,11 @@ package com.xiongyx.executor.resultset;
 
 import com.xiongyx.mapping.ResultMap;
 import com.xiongyx.mapping.ResultMapping;
+import com.xiongyx.mapping.ResultMappingEnum;
 import com.xiongyx.mapping.ResultMappingNested;
 import com.xiongyx.model.Configuration;
 import com.xiongyx.model.MappedStatement;
+import com.xiongyx.util.LinkedObjectUtil;
 import com.xiongyx.util.ReflectionUtil;
 import com.xiongyx.util.StringUtil;
 import com.xiongyx.util.TypeConvertUtil;
@@ -145,7 +147,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
         List<ResultMapping> resultMappingList = resultMap.getResultMappings();
 
         while (resultSet.next()) {
-            E entity = (E) eClass.newInstance();
+            E entity = (E)ReflectionUtil.newInstance(eClass);
 
             for(ResultMapping resultMapping : resultMappingList){
                 if(resultMapping instanceof ResultMappingNested){
@@ -188,8 +190,13 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                 // 从resultMapping中获取嵌套resultMap子对象类型
                 Class clazzType = Class.forName(resultMappingNested.getType());
 
-                Object subObject = getRowValue(innerResultMap,resultSet,(E)clazzType.newInstance());
-                // todo 将subObject和parentObject关联起来
+                Object subObject = getRowValue(innerResultMap,resultSet,(E)ReflectionUtil.newInstance(clazzType));
+                // 将subObject和parentObject关联起来
+                if(resultMappingNested.getResultMappingEnum().equals(ResultMappingEnum.ASSOCIATION)){
+                    LinkedObjectUtil.setAssociationProperty(entity,resultMapping.getProperty(),subObject);
+                }else{
+                    LinkedObjectUtil.setCollectionProperty(entity,resultMapping.getProperty(),"java.util.ArrayList",subObject);
+                }
             }else{
                 // 简单映射
                 handleSimpleResultMapping(entity,eClass,resultSet,resultMapping);
