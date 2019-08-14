@@ -83,13 +83,14 @@ public class User {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", User.class.getSimpleName() + "[", "]").add("id='" + id + "'")
-            .add("userName='" + userName + "'")
-            .add("age=" + age)
-            .add("money=" + money)
-            .add("idListQuery=" + idListQuery)
-            .add("bookList=" + bookList)
-            .add("account=" + account)
-            .toString();
+        return "User{" +
+            "id='" + id + '\'' +
+            ", userName='" + userName + '\'' +
+            ", age=" + age +
+            ", money=" + money +
+            ", idListQuery=" + idListQuery + '\n' +
+            ", bookList=" + bookList + '\n' +
+            ", account=" + account + '\n' +
+            '}';
     }
 }
