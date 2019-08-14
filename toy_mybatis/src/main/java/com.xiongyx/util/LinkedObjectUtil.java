@@ -22,10 +22,11 @@ public class LinkedObjectUtil {
      * 设置Collection属性
      * */
     @SuppressWarnings("unchecked")
-    public static void setCollectionProperty(Object parent,String propertyName,String collectionType,Object subObject) throws Exception {
+    public static void setCollectionProperty(Object parent,String propertyName,Object subObject) throws Exception {
         Object collectionObj = ReflectionUtil.getPropertyValue(propertyName,parent);
         if(collectionObj == null){
-            Class collectionClass = Class.forName(collectionType);
+
+            Class collectionClass = ReflectionUtil.getPropertyType(propertyName,parent);
             Object newCollection = ReflectionUtil.newInstance(collectionClass);
             if(newCollection instanceof Collection){
                 ((Collection)newCollection).add(subObject);
@@ -33,7 +34,7 @@ public class LinkedObjectUtil {
                 Field field = parentClass.getDeclaredField(propertyName);
                 ReflectionUtil.setField(parent,field,newCollection);
             }else{
-                throw new RuntimeException("setCollectionProperty error property is not a collection: javaType=" + collectionType);
+                throw new RuntimeException("setCollectionProperty error property is not a collection: propertyName=" + propertyName);
             }
         }else{
             if(collectionObj instanceof Collection){

@@ -66,6 +66,18 @@ public class ReflectionUtil {
     }
 
     /**
+     * 获取属性对应的类型
+     * */
+    public static Class<?> getPropertyType(String propertyName, Object target){
+        try {
+            Field field = target.getClass().getField(propertyName);
+            return field.getType();
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException("getPropertyType error",e);
+        }
+    }
+
+    /**
      * 获取属性对应的value值
      * */
     public static Object getPropertyValue(String propertyName, Object target){

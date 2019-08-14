@@ -158,7 +158,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private Object getRowValue(ResultMap resultMap, ResultSet resultSet, Object entity, boolean isAncestor) throws Exception {
+    private Object getRowValue(ResultMap resultMap, ResultSet resultSet, Object parent, boolean isAncestor) throws Exception {
         // 映射的对象类型
         Class<?> eClass = resultMap.getType();
         List<ResultMapping> resultMappingList = resultMap.getResultMappings();
@@ -170,20 +170,20 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
                 // 根据简单映射和已经完成字段映射的对象生成唯一的key
                 List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
-                String rowKey = getRowKey(resultMap,rowKeyResultMappings,entity);
+                String rowKey = getRowKey(resultMap,rowKeyResultMappings,parent);
                 // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
 
                 if(isAncestor){
                     if(!nestedResults.containsKey(rowKey)){
-                        nestedResults.put(rowKey,entity);
+                        nestedResults.put(rowKey,parent);
                     }else{
-                        entity = nestedResults.get(rowKey);
+                        parent = nestedResults.get(rowKey);
                     }
                 }else{
                     if(!storeObjects.containsKey(rowKey)){
-                        storeObjects.put(rowKey,entity);
+                        storeObjects.put(rowKey,parent);
                     }else{
-                        entity = storeObjects.get(rowKey);
+                        parent = storeObjects.get(rowKey);
                     }
                 }
 
@@ -192,21 +192,24 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                 // 从resultMapping中获取嵌套resultMap子对象类型
                 Class clazzType = Class.forName(resultMappingNested.getType());
 
-                Object subObject = getRowValue(innerResultMap,resultSet,(E)ReflectionUtil.newInstance(clazzType),false);
-                // 将subObject和parentObject关联起来
+                // 递归的构造出内部嵌套对象
+                Object subObject = getRowValue(innerResultMap,resultSet, ReflectionUtil.newInstance(clazzType),false);
+                // 将parentObject和subObject关联起来
                 if(resultMappingNested.getResultMappingEnum().equals(ResultMappingEnum.ASSOCIATION)){
-                    LinkedObjectUtil.setAssociationProperty(entity,resultMapping.getProperty(),subObject);
+                    // 设置Association 一对一关联
+                    LinkedObjectUtil.setAssociationProperty(parent,resultMapping.getProperty(),subObject);
                 }else{
-                    LinkedObjectUtil.setCollectionProperty(entity,resultMapping.getProperty(),"java.util.ArrayList",subObject);
+                    // 设置Collection 一对多关联
+                    LinkedObjectUtil.setCollectionProperty(parent,resultMapping.getProperty(),subObject);
                 }
             }else{
                 // 简单映射
-                handleSimpleResultMapping(entity,eClass,resultSet,resultMapping);
+                handleSimpleResultMapping(parent,eClass,resultSet,resultMapping);
             }
         }
         logger.info("=========================");
 
-        return entity;
+        return parent;
     }
 
     /**
