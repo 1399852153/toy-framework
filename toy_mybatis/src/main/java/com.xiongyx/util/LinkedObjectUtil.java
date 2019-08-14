@@ -1,7 +1,7 @@
 package com.xiongyx.util;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * @author xiongyx
@@ -27,7 +27,8 @@ public class LinkedObjectUtil {
         if(collectionObj == null){
 
             Class collectionClass = ReflectionUtil.getPropertyType(propertyName,parent);
-            Object newCollection = ReflectionUtil.newInstance(collectionClass);
+            Class collectionClassImpl = getCollectionImplByClass(collectionClass);
+            Object newCollection = ReflectionUtil.newInstance(collectionClassImpl);
             if(newCollection instanceof Collection){
                 ((Collection)newCollection).add(subObject);
                 Class parentClass = parent.getClass();
@@ -43,5 +44,26 @@ public class LinkedObjectUtil {
                 throw new RuntimeException("setCollectionProperty error property is not a collection: propertyName=" + propertyName);
             }
         }
+    }
+
+    /**
+     * 将collectionClass接口 转化为其对应的实现
+     * 暂时只支持常见的集合类转化
+     * */
+    private static Class getCollectionImplByClass(Class collectionClass){
+        if(collectionClass == List.class || collectionClass == Collection.class){
+            return ArrayList.class;
+        }
+
+        if(collectionClass == Map.class){
+            return HashMap.class;
+        }
+
+        if(collectionClass == Set.class){
+            return HashSet.class;
+        }
+
+        // 默认情况，返回原class
+        return collectionClass;
     }
 }

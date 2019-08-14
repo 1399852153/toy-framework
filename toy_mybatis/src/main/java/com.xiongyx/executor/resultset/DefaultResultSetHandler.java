@@ -158,7 +158,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private Object getRowValue(ResultMap resultMap, ResultSet resultSet, Object parent, boolean isAncestor) throws Exception {
+    private void getRowValue(ResultMap resultMap, ResultSet resultSet, Object parent, boolean isAncestor) throws Exception {
         // 映射的对象类型
         Class<?> eClass = resultMap.getType();
         List<ResultMapping> resultMappingList = resultMap.getResultMappings();
@@ -170,16 +170,19 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
                 // 根据简单映射和已经完成字段映射的对象生成唯一的key
                 List<ResultMapping> rowKeyResultMappings = getResultMappingListByRowKey(resultMap);
-                String rowKey = getRowKey(resultMap,rowKeyResultMappings,parent);
                 // 由于已经排序完成，走到这里说明最外层主属性已经映射完毕
+                String rowKey = getRowKey(resultMap,rowKeyResultMappings,parent);
 
+                // 是否是最外层对象
                 if(isAncestor){
+                    // 将其存储在nestedResults中，作为最终的结果集
                     if(!nestedResults.containsKey(rowKey)){
                         nestedResults.put(rowKey,parent);
                     }else{
                         parent = nestedResults.get(rowKey);
                     }
                 }else{
+                    // 将其存储在storeObjects，作为内部的数据进行处理
                     if(!storeObjects.containsKey(rowKey)){
                         storeObjects.put(rowKey,parent);
                     }else{
@@ -193,7 +196,9 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                 Class clazzType = Class.forName(resultMappingNested.getType());
 
                 // 递归的构造出内部嵌套对象
-                Object subObject = getRowValue(innerResultMap,resultSet, ReflectionUtil.newInstance(clazzType),false);
+                Object subObject = ReflectionUtil.newInstance(clazzType);
+                // 内部对象==>isAncestor=false传入
+                getRowValue(innerResultMap,resultSet,subObject,false);
                 // 将parentObject和subObject关联起来
                 if(resultMappingNested.getResultMappingEnum().equals(ResultMappingEnum.ASSOCIATION)){
                     // 设置Association 一对一关联
@@ -207,9 +212,6 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
                 handleSimpleResultMapping(parent,eClass,resultSet,resultMapping);
             }
         }
-        logger.info("=========================");
-
-        return parent;
     }
 
     /**
@@ -246,7 +248,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
     }
 
     private void setColumnValue(Object entity,Class<?> eClass,ResultSet resultSet,String property,String columnName,String jdbcType) throws Exception {
-        // 获得setter方法 todo 效率不高，可以使用objectWrapper将setterMethod封装起来
+        // 获得setter方法 todo 效率不高，可以使用objectWrapper将setterMethod缓存起来
         Method setterMethod = ReflectionUtil.getSetterMethod(eClass,property,true);
         // pojo setter方法的javaType
         Class setterParamType = setterMethod.getParameterTypes()[0];

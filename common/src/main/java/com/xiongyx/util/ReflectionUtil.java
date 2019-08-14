@@ -70,7 +70,7 @@ public class ReflectionUtil {
      * */
     public static Class<?> getPropertyType(String propertyName, Object target){
         try {
-            Field field = target.getClass().getField(propertyName);
+            Field field = target.getClass().getDeclaredField(propertyName);
             return field.getType();
         } catch (NoSuchFieldException e) {
             throw new RuntimeException("getPropertyType error",e);
