@@ -151,7 +151,6 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
             E entity = (E)ReflectionUtil.newInstance(eClass);
             // 嵌套映射
             getRowValue(resultMap,resultSet,entity,true);
-            logger.info("=========================");
         }
 
         // 嵌套查询 返回storeObjects的数据
@@ -256,7 +255,6 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
 
         // 从resultSet中获取对应的值
         Object columnValue = TypeConvertUtil.getResultValueByType(resultSet,columnName,jdbcType,setterParamType.getName());
-        logger.info("{" + property + ":" + columnValue + "}");
 
         Field field = eClass.getDeclaredField(property);
         field.setAccessible(true);
