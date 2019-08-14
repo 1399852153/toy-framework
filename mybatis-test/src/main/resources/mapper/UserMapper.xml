@@ -45,6 +45,11 @@
 			<result column="book_name" property="bookName"/>
 			<result column="author_id" property="authorId"/>
 			<result column="price" property="price"/>
+			<result column="libraryId" property="libraryId"/>
+			<association property="library" javaType="com.xiongyx.Library">
+				<id column="libraryId" property="id"/>
+				<result column="address" property="address"/>
+			</association>
 		</collection>
 	</resultMap>
 
@@ -61,10 +66,13 @@
 			test_book.id as 'bookId',
 			test_book.book_name,
 			test_book.author_id,
-			test_book.price
+			test_book.price,
+			test_library.id as 'libraryId',
+			test_library.address
  		from test_user
  		inner join test_book on test_user.id = test_book.author_id
  		inner join test_account on test_user.id = test_account.user_id
+		inner join test_library on test_book.library_id = test_library.id
 	</select>
 
 	<update id="updateUser">

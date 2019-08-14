@@ -10,6 +10,8 @@ public class Book {
     private String bookName;
     private String authorId;
     private Integer price;
+    private String libraryId;
+    private Library library;
 
     public String getId() {
         return id;
@@ -43,6 +45,22 @@ public class Book {
         this.price = price;
     }
 
+    public String getLibraryId() {
+        return libraryId;
+    }
+
+    public void setLibraryId(String libraryId) {
+        this.libraryId = libraryId;
+    }
+
+    public Library getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -50,6 +68,8 @@ public class Book {
                 ", bookName='" + bookName + '\'' +
                 ", authorId='" + authorId + '\'' +
                 ", price=" + price +
+                ", libraryId='" + libraryId + '\'' +
+                ", library=" + library +
                 '}';
     }
 }
