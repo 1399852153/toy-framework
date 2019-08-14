@@ -66,6 +66,7 @@ public class DefaultResultSetHandler <E> implements ResultSetHandler {
     /**
      * 处理resultType类型
      * */
+    @SuppressWarnings("unchecked")
     private List<E> handleResultType(ResultSet resultSet) throws Exception {
         List<E> result = new ArrayList<>();
         // 映射的对象类型
