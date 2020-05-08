@@ -38,7 +38,13 @@ InvocationHandler实现MapperProxy invoke 方法中的args参数会丢失原始�
 后面解析mapper xml时无法通过反射拿到类中的方法。
 一种实现思路：通过method获取参数，获取类型信息，将args转换为参数原有类型。
 
-
+1.Future
+2.ComplateFuture
+3.ThreadPool 线程池
+4.操作系统事件驱动
+5.JAVA NIO
+6.volatile 指令重排序
+7.scaleble io in java
 
 
 
